@@ -15,12 +15,10 @@ const TJ = {
 /* ── ステップ見出し ── */
 function StepHead({ n, title, sub }) {
   return (
-    <div style={{ display:'flex', alignItems:'center', gap:10, padding:'8px 2px 0' }}>
-      <div style={{ width:30, height:30, borderRadius:'50%', background:TJ.blueGrad, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:TJ.round, fontWeight:900, fontSize:15, flexShrink:0, boxShadow:'0 4px 10px rgba(0,150,250,.3)' }}>{n}</div>
-      <div>
-        <div style={{ fontFamily:TJ.round, fontWeight:900, fontSize:15, color:TJ.text, lineHeight:1.3 }}>{title}</div>
-        {sub && <div style={{ fontSize:10.5, color:TJ.sub, fontWeight:600, marginTop:1 }}>{sub}</div>}
-      </div>
+    <div style={{ padding:'6px 2px 0' }}>
+      <div style={{ fontFamily:TJ.round, fontWeight:800, fontSize:10, letterSpacing:2, color:TJ.blue }}>STEP {n} / 5</div>
+      <div style={{ fontFamily:TJ.round, fontWeight:900, fontSize:19, color:TJ.text, lineHeight:1.3, marginTop:3 }}>{title}</div>
+      {sub && <div style={{ fontSize:11.5, color:TJ.sub, fontWeight:600, marginTop:3 }}>{sub}</div>}
     </div>
   );
 }
@@ -303,7 +301,7 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
           </JCard>
 
           {/* ── STEP 5 ── */}
-          <StepHead n={5} title="さいしょの一歩をえらぼう" sub="目標に近づくアクションをチャレンジに登録" />
+          <StepHead n={5} title="つぎのチャレンジをえらぼう" sub="目標に近づくアクションをチャレンジに登録" />
           <JCard>
             <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:14 }}>
               {goal.actions.map((a, i) => {
@@ -332,7 +330,7 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
       )}
       {!goal && (
         <div style={{ fontSize:11.5, color:TJ.sub, fontWeight:600, textAlign:'center', padding:'2px 0 6px', lineHeight:1.7 }}>
-          ☝️ 気になる仕事をえらぶと、目標までの現在地と<br/>「さいしょの一歩」が見られるよ
+          ☝️ 気になる仕事をえらぶと、目標までの現在地と<br/>「つぎのチャレンジ」が見られるよ
         </div>
       )}
     </>
@@ -352,7 +350,7 @@ function TorisetsuStrengths() {
 }
 
 /* ── STEP 4+5 のみ（未来のヒントタブ用） ── */
-function TorisetsuFuture({ nav, goChallenge }) {
+function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
   const saved = (nav.state && nav.state.career) || {};
   const [interests, setInterests] = useTJ(saved.interests || []);
   const [custom, setCustom] = useTJ(saved.custom || '');
@@ -375,6 +373,61 @@ function TorisetsuFuture({ nav, goChallenge }) {
   const goal = ALL_CAREERS.find(c=>c.id===goalId);
   const mixCareers = INTERESTS.filter(i=>interests.includes(i.key)).map(i=>i.career);
 
+  const gapCard = goal ? (
+    <JCard style={{border:`2px solid ${TJ.blue}`,boxShadow:'0 6px 20px rgba(0,150,250,.14)'}}>
+      <div style={{display:'flex',alignItems:'center',gap:9,marginBottom:4}}>
+        <span style={{fontSize:20}}>{goal.icon}</span>
+        <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:14,color:TJ.text}}>「{goal.title}」までの現在地</div>
+      </div>
+      <div style={{fontSize:11,color:TJ.sub,fontWeight:600,marginBottom:14,lineHeight:1.6}}>この仕事で活きるコンピテンシーと、いまのキミの数値だよ</div>
+      {goal.comps.map(([name,now,target])=><GapBar key={name} name={name} now={now} target={target}/>)}
+      <div style={{marginTop:4,background:TJ.orangeSoft,borderRadius:10,padding:'10px 12px',fontSize:11,color:'#9a6a2e',fontWeight:700,lineHeight:1.65}}>💡 足りない分は「のびしろ」。アクションで少しずつ近づけるよ</div>
+    </JCard>
+  ) : null;
+
+  /* ── STEP 5: つぎのチャレンジ ── */
+  if (step === 5) {
+    if (!goal) return (
+      <JCard style={{textAlign:'center',padding:'28px 18px'}}>
+        <div style={{fontSize:36,marginBottom:8}}>🎯</div>
+        <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:14.5,color:TJ.text,marginBottom:6}}>まだ目標がえらばれていないよ</div>
+        <p style={{fontSize:11.5,color:TJ.sub,lineHeight:1.7,margin:'0 0 16px'}}>ひとつ前のSTEPにもどって、<br/>気になる仕事をえらんでみよう</p>
+        <button onClick={()=>goBack&&goBack()}
+          style={{background:TJ.blueGrad,color:'#fff',border:'none',borderRadius:999,padding:'12px 26px',fontFamily:TJ.round,fontWeight:800,fontSize:13,cursor:'pointer',boxShadow:'0 6px 16px rgba(0,150,250,.3)'}}>
+          ← 目標をえらびに行く
+        </button>
+      </JCard>
+    );
+    return (
+      <>
+        {gapCard}
+        <StepHead n={5} title="つぎのチャレンジをえらぼう" sub="目標に近づくアクションをチャレンジに登録"/>
+        <JCard>
+          <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:14}}>
+            {goal.actions.map((a,i)=>{const on=pickedActions.includes(a);return(
+              <button key={i} onClick={()=>toggleAction(a)}
+                style={{textAlign:'left',display:'flex',alignItems:'center',gap:11,cursor:'pointer',background:on?TJ.greenSoft:TJ.bg,border:`2px solid ${on?TJ.green:'transparent'}`,borderRadius:12,padding:'12px 13px',transition:'all .15s'}}>
+                <div style={{width:22,height:22,borderRadius:7,flexShrink:0,border:`2px solid ${on?TJ.green:'#c8cdd2'}`,background:on?TJ.green:'#fff',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  {on&&<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                </div>
+                <span style={{fontSize:12.5,color:TJ.text,fontWeight:700,lineHeight:1.55}}>{a}</span>
+              </button>
+            );})}
+          </div>
+          {registered?(
+            <div style={{textAlign:'center',background:TJ.greenSoft,borderRadius:12,padding:'13px',fontFamily:TJ.round,fontWeight:800,fontSize:13,color:'#2E7D32'}}>🎉 チャレンジに登録したよ！</div>
+          ):(
+            <button onClick={registerChallenge} disabled={!pickedActions.length}
+              style={{width:'100%',background:pickedActions.length?TJ.orangeGrad:'#d6d6d6',color:'#fff',border:'none',borderRadius:999,padding:'14px',fontFamily:TJ.round,fontWeight:800,fontSize:14,cursor:pickedActions.length?'pointer':'default',boxShadow:pickedActions.length?'0 8px 20px rgba(252,133,36,.34)':'none'}}>
+              👣 チャレンジに登録する{pickedActions.length?`（${pickedActions.length}件）`:''}
+            </button>
+          )}
+        </JCard>
+      </>
+    );
+  }
+
+  /* ── STEP 4: 未来のヒント ── */
   return (
     <>
       <StepHead n={4} title="キミの強みが活きる未来のヒント" sub="この強み、こんな仕事で活きるかも" />
@@ -411,48 +464,87 @@ function TorisetsuFuture({ nav, goChallenge }) {
           </div>
         </>
       )}
-      {goal&&(
-        <>
-          <JCard style={{border:`2px solid ${TJ.blue}`,boxShadow:'0 6px 20px rgba(0,150,250,.14)'}}>
-            <div style={{display:'flex',alignItems:'center',gap:9,marginBottom:4}}>
-              <span style={{fontSize:20}}>{goal.icon}</span>
-              <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:14,color:TJ.text}}>「{goal.title}」までの現在地</div>
-            </div>
-            <div style={{fontSize:11,color:TJ.sub,fontWeight:600,marginBottom:14,lineHeight:1.6}}>この仕事で活きるコンピテンシーと、いまのキミの数値だよ</div>
-            {goal.comps.map(([name,now,target])=><GapBar key={name} name={name} now={now} target={target}/>)}
-            <div style={{marginTop:4,background:TJ.orangeSoft,borderRadius:10,padding:'10px 12px',fontSize:11,color:'#9a6a2e',fontWeight:700,lineHeight:1.65}}>💡 足りない分は「のびしろ」。下のアクションで少しずつ近づけるよ</div>
-          </JCard>
-          <StepHead n={5} title="さいしょの一歩をえらぼう" sub="目標に近づくアクションをチャレンジに登録"/>
-          <JCard>
-            <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:14}}>
-              {goal.actions.map((a,i)=>{const on=pickedActions.includes(a);return(
-                <button key={i} onClick={()=>toggleAction(a)}
-                  style={{textAlign:'left',display:'flex',alignItems:'center',gap:11,cursor:'pointer',background:on?TJ.greenSoft:TJ.bg,border:`2px solid ${on?TJ.green:'transparent'}`,borderRadius:12,padding:'12px 13px',transition:'all .15s'}}>
-                  <div style={{width:22,height:22,borderRadius:7,flexShrink:0,border:`2px solid ${on?TJ.green:'#c8cdd2'}`,background:on?TJ.green:'#fff',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                    {on&&<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
-                  </div>
-                  <span style={{fontSize:12.5,color:TJ.text,fontWeight:700,lineHeight:1.55}}>{a}</span>
-                </button>
-              );})}
-            </div>
-            {registered?(
-              <div style={{textAlign:'center',background:TJ.greenSoft,borderRadius:12,padding:'13px',fontFamily:TJ.round,fontWeight:800,fontSize:13,color:'#2E7D32'}}>🎉 チャレンジに登録したよ！</div>
-            ):(
-              <button onClick={registerChallenge} disabled={!pickedActions.length}
-                style={{width:'100%',background:pickedActions.length?TJ.orangeGrad:'#d6d6d6',color:'#fff',border:'none',borderRadius:999,padding:'14px',fontFamily:TJ.round,fontWeight:800,fontSize:14,cursor:pickedActions.length?'pointer':'default',boxShadow:pickedActions.length?'0 8px 20px rgba(252,133,36,.34)':'none'}}>
-                👣 チャレンジに登録する{pickedActions.length?`（${pickedActions.length}件）`:''}
-              </button>
-            )}
-          </JCard>
-        </>
-      )}
+      {goal&&gapCard}
+      {goal&&<div style={{fontSize:11.5,color:TJ.sub,fontWeight:700,textAlign:'center',padding:'2px 0 4px'}}>下の「つぎへ →」で、つぎのチャレンジをえらぼう ✨</div>}
       {!goal&&(
         <div style={{fontSize:11.5,color:TJ.sub,fontWeight:600,textAlign:'center',padding:'2px 0 6px',lineHeight:1.7}}>
-          ☝️ 気になる仕事をえらぶと、目標までの現在地と<br/>「さいしょの一歩」が見られるよ
+          ☝️ 気になる仕事をえらぶと、目標までの現在地と<br/>「つぎのチャレンジ」が見られるよ
         </div>
       )}
     </>
   );
 }
 
-Object.assign(window, { TorisetsuJourneyExt, TorisetsuStrengths, TorisetsuFuture, JStepHead: StepHead });
+/* ── ステップインジケーター＆フッターナビ（トリセツ統合UI） ── */
+const TORI_STEPS = ['トリセツ','強みTOP3','みんなの発見','未来のヒント','つぎのチャレンジ'];
+
+const TORI_STEP_CHIPS = [['📖','トリセツ'],['🏆','強みTOP3'],['💬','みんなの発見'],['💡','未来のヒント'],['👣','つぎのチャレンジ']];
+
+function ToriStepIndicator({ step, onJump }) {
+  const railRef = React.useRef(null);
+  React.useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const el = rail.children[step - 1];
+    if (el) rail.scrollTo({ left: Math.max(0, el.offsetLeft - 56), behavior: 'smooth' });
+  }, [step]);
+  return (
+    <div style={{ flexShrink:0, background:TJ.surface, paddingTop:10, boxShadow:'0 2px 10px rgba(20,40,60,.05)', position:'relative', zIndex:5 }}>
+      <div ref={railRef} style={{ display:'flex', gap:7, overflowX:'auto', padding:'0 14px 10px', scrollbarWidth:'none' }}>
+        {TORI_STEP_CHIPS.map(([icon, label], i) => {
+          const n = i + 1, active = n === step, done = n < step;
+          return (
+            <button key={n} onClick={() => onJump(n)}
+              style={{ flexShrink:0, display:'flex', alignItems:'center', gap:6, border:'none', cursor:'pointer',
+                borderRadius:999, padding:'8px 14px', fontFamily:TJ.round, fontWeight:800, fontSize:11.5,
+                background: active ? TJ.blueGrad : done ? TJ.blueSoft : '#f1f3f5',
+                color: active ? '#fff' : done ? TJ.blueDark : '#9aa1a7',
+                boxShadow: active ? '0 5px 14px rgba(0,150,250,.35)' : 'none' }}>
+              <span style={{ fontSize:13 }}>{done ? '✓' : icon}</span>{label}
+            </button>
+          );
+        })}
+      </div>
+      <div style={{ height:3, background:'#eef1f4' }}>
+        <div style={{ height:'100%', width:`${(step / 5) * 100}%`, background:'linear-gradient(90deg,#0096fa,#FC8524)' }}></div>
+      </div>
+    </div>
+  );
+}
+
+function ToriStepNav({ step, goStep, onShare }) {
+  const first = step === 1, last = step === 5;
+  const nextLabel = last ? null : TORI_STEP_CHIPS[step][1];
+  const circ = (disabled) => ({
+    width:46, height:46, borderRadius:'50%', border:'none', flexShrink:0,
+    background:'#fff',
+    boxShadow: disabled ? 'inset 0 0 0 1.5px #e7eaec' : 'inset 0 0 0 1.5px #d6d6d6, 0 2px 8px rgba(20,40,60,.06)',
+    color: disabled ? '#ccd2d7' : TJ.text, cursor: disabled ? 'default' : 'pointer',
+    display:'flex', alignItems:'center', justifyContent:'center',
+  });
+  return (
+    <div style={{ display:'flex', gap:10, alignItems:'center', marginTop:6 }}>
+      <button onClick={() => !first && goStep(step - 1)} disabled={first} aria-label="もどる" style={circ(first)}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button onClick={onShare} aria-label="シェア" style={{ ...circ(false), color:TJ.blue }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      {last ? (
+        <button onClick={() => goStep(1)}
+          style={{ flex:1, height:50, background:TJ.blueGrad, color:'#fff', border:'none', borderRadius:999, fontFamily:TJ.round, fontWeight:800, fontSize:14, cursor:'pointer', boxShadow:'0 8px 20px rgba(0,150,250,.32)', display:'flex', alignItems:'center', justifyContent:'center', gap:7 }}>
+          🔁 トリセツを見直す
+        </button>
+      ) : (
+        <button onClick={() => goStep(step + 1)}
+          style={{ flex:1, height:50, background:TJ.orangeGrad, color:'#fff', border:'none', borderRadius:999, fontFamily:TJ.round, fontWeight:800, fontSize:13.5, cursor:'pointer', boxShadow:'0 8px 20px rgba(252,133,36,.34)', display:'flex', alignItems:'center', justifyContent:'center', gap:8, padding:'0 18px' }}>
+          <span style={{ opacity:.85, fontSize:11, fontWeight:700 }}>つぎへ</span>
+          <span style={{ whiteSpace:'nowrap' }}>{nextLabel}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      )}
+    </div>
+  );
+}
+
+Object.assign(window, { TorisetsuJourneyExt, TorisetsuStrengths, TorisetsuFuture, Top3Section, VoicesSection, ToriStepIndicator, ToriStepNav, JStepHead: StepHead });

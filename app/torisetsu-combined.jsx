@@ -126,11 +126,11 @@ function StickyHero() {
 }
 
 function TabBar({ tab, setTab }) {
-  const tabs = [['📖', 'トリセツ'], ['🌿', '進化ツリー'], ['💡', '未来のヒント']];
+  const tabs = [['📖', 'トリセツ'], ['🌿', '進化ツリー']];
   return (
     <div style={{ background: TC.surface, borderBottom: `1px solid ${TC.border}`, display: 'flex', flexShrink: 0 }}>
       {tabs.map(([icon, label], i) =>
-      <button key={label} onClick={() => setTab(i)} style={{ flex: 1, padding: '9px 4px 8px', background: 'none', border: 'none', cursor: 'pointer', borderBottom: `2.5px solid ${tab === i ? TC.orange : 'transparent'}`, transition: 'border-color .15s' }}>
+      <button key={label} onClick={() => setTab(i)} style={{ flex: 1, padding: '9px 4px 8px', background: 'none', border: 'none', cursor: 'pointer', boxShadow: tab === i ? `inset 0 -2.5px 0 ${TC.orange}` : 'none' }}>
           <div style={{ fontSize: 15 }}>{icon}</div>
           <div style={{ fontSize: 10.5, fontWeight: 700, color: tab === i ? TC.orange : TC.textSub, marginTop: 2, fontFamily: TC.font }}>{label}</div>
         </button>
@@ -168,7 +168,6 @@ function Accordion({ icon, label, children }) {
 // ── Tab 1: トリセツ ───────────────────────────────────────
 function TorisetsuTab({ nav, goChallenge }) {
   const StepHead = window.JStepHead;
-  const Strengths = window.TorisetsuStrengths;
   return (
     <>
       {StepHead && <StepHead n={1} title="今のキミのトリセツ" sub="まずはじっくり読んでみよう" />}
@@ -264,8 +263,6 @@ function TorisetsuTab({ nav, goChallenge }) {
         </Accordion>
       </div>
 
-      {/* STEP 2: 強みTOP3 / STEP 3: みんなの発見 */}
-      {Strengths && <Strengths />}
     </>);
 
 }
@@ -731,6 +728,17 @@ function TorisetsuCombined({ initialTab = 0 }) {
   const [tab, setTab] = useTc(initialTab);
   const [showTree, setShowTree] = useTc(false);
   const [showShare, setShowShare] = useTc(false);
+  const savedStep = (nav.state && nav.state.torisetsuStep) || 1;
+  const [step, setStep] = useTc(savedStep);
+  const scrollRef = React.useRef(null);
+  const goStep = (n) => {
+    const next = Math.min(5, Math.max(1, n));
+    setStep(next);
+    nav.update && nav.update({ torisetsuStep: next });
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  };
+  const StepInd = window.ToriStepIndicator, StepNav = window.ToriStepNav, StepHead = window.JStepHead;
+  const Top3 = window.Top3Section, Voices = window.VoicesSection, Future = window.TorisetsuFuture;
 
   if (showTree) {
     return (
@@ -745,34 +753,25 @@ function TorisetsuCombined({ initialTab = 0 }) {
       <StatusBar />
       <StickyHero />
       <TabBar tab={tab} setTab={setTab} />
-      <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden', WebkitOverflowScrolling: 'touch' }}>
-        <div style={{ padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 14, paddingBottom: 32 }}>
-          {tab === 0 && <TorisetsuTab nav={nav} goChallenge={() => setTab(2)} />}
-          {tab === 2 && <div style={{ height: "0px" }}></div>}
+      {tab === 0 && StepInd && <StepInd step={step} onJump={goStep} />}
+      <div ref={scrollRef} style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden', WebkitOverflowScrolling: 'touch' }}>
+        <div style={{ padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 14, paddingBottom: 24 }}>
+          {tab === 0 && (
+            <div key={step} className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {step === 1 && <TorisetsuTab nav={nav} goChallenge={() => goStep(4)} />}
+              {step === 2 && StepHead && <><StepHead n={2} title="キミの強み TOP3" sub="まずはここから。キミのいちばんの武器" /><Top3 /></>}
+              {step === 3 && StepHead && <><StepHead n={3} title="みんなの発見" sub="まわりの人が見つけたキミの良さ" /><Voices /></>}
+              {(step === 4 || step === 5) && Future && <Future nav={nav} step={step} goBack={() => goStep(4)} goChallenge={() => nav && nav.go('challenge')} />}
+              {StepNav && <StepNav step={step} goStep={goStep} onShare={() => setShowShare(true)} />}
+            </div>
+          )}
           {tab === 1 && <EvolutionTab onOpenTree={() => setShowTree(true)} />}
-          {tab === 2 && <FutureHintsTab nav={nav} goChallenge={() => nav && nav.go('challenge')} />}
-          <div style={{ height: 80 }}></div>
         </div>
       </div>
       {showShare && <ShareModal onClose={() => setShowShare(false)} />}
-      {/* フロートボタン — トリセツタブのみ表示 */}
-      {tab === 0 &&
-      <div style={{ position: 'absolute', bottom: 16, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 10, pointerEvents: 'none', zIndex: 50, padding: '0 20px' }}>
-          <button
-          onClick={() => setTab(2)}
-          style={{ pointerEvents: 'auto', background: TC.orangeGrad, border: 'none', borderRadius: 30, padding: '14px 28px', fontFamily: TC.fontRound, fontWeight: 800, fontSize: 15, color: '#fff', cursor: 'pointer', boxShadow: '0 8px 24px rgba(252,133,36,.45)', display: 'flex', alignItems: 'center', gap: 7, flex: 1, justifyContent: 'center' }}>
-            💡 強みを活かして未来を見る！
-          </button>
-          <button
-          onClick={() => setShowShare(true)}
-          style={{ pointerEvents: 'auto', background: 'rgba(255,255,255,.92)', border: 'none', borderRadius: 30, padding: '14px 16px', fontFamily: TC.fontRound, fontWeight: 800, fontSize: 13, color: TC.blue, cursor: 'pointer', boxShadow: '0 8px 20px rgba(0,0,0,.14)', display: 'flex', alignItems: 'center', gap: 6, backdropFilter: 'blur(8px)', flexShrink: 0 }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg>
-            シェア
-          </button>
-        </div>
-      }
-    </div>);
-
+    </div>
+  );
 }
 
-Object.assign(window, { TorisetsuCombined });
+
+Object.assign(window, { TorisetsuCombined, ChallengeTab, EvolutionTreePage });
