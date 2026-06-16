@@ -13,7 +13,7 @@ function homeSteps(state) {
 function nextAction(state, comp) {
   if (!state.diag.done)  return { title: '気質診断をやってみよう', desc: 'ゲーム感覚で、キミのタイプをチェック！', cta: '気質診断をはじめる', go: 'start-diag', color: 'var(--blue)' };
   if (!state.self.done)  return { title: 'STEP 2：自己評価をやってみよう', desc: '5つの質問に答えるだけ。自分の強みが見えてくるよ。', cta: '自己評価をはじめる', go: 'self-eval', color: 'var(--blue)' };
-  if (!state.other.done) return { title: 'STEP 3：他者評価をやってみよう', desc: 'クラスメートのことを評価しよう。みんなからの見方も集まってくるよ。', cta: '他者評価をはじめる', go: 'other-eval', color: 'var(--orange)' };
+  if (!state.other.done) return { title: 'STEP 3：相互評価をやってみよう', desc: 'クラスメートのことを評価しよう。みんなからの見方も集まってくるよ。', cta: 'あおいさんの相互評価を始める', go: 'other-eval', color: 'var(--orange)' };
   if (!state.seenAnnounce) return { title: 'トリセツが完成したよ！', desc: '新しい機能が解放されました。さっそくホームで見てみよう。', cta: '解放された機能を見る', go: 'announce', color: 'var(--orange)' };
   return { title: 'トリセツが完成したよ！', desc: 'キミだけの取扱説明書ができあがりました。', cta: 'ホームで見る', go: 'home', color: 'var(--green)' };
 }
@@ -192,6 +192,7 @@ function HomeScreen() {
   const nav = useNav();
   const comp = completion(nav.state);
   const VAR = HomeVarB;
+  const Pause = window.InterviewPause;
   return (
     <div className="screen">
       <StatusBar />
@@ -200,6 +201,7 @@ function HomeScreen() {
         <HomeGreeting />
         <VAR state={nav.state} comp={comp} />
       </div>
+      {(comp === 30 || comp === 100) && Pause && <Pause />}
     </div>
   );
 }

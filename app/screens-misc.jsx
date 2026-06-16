@@ -65,6 +65,7 @@ const TC_TRAITS = [
 
 function TaskCompleteScreen() {
   const nav = useNav();
+  const Pause = window.InterviewPause;
   return (
     <div className="screen">
       <StatusBar />
@@ -74,13 +75,19 @@ function TaskCompleteScreen() {
         <div className="fade-in" style={{ background: 'linear-gradient(135deg,#1aa6ff,#0069b5)', borderRadius: 'var(--r-lg)', padding: '24px 20px', textAlign: 'center', color: '#fff', boxShadow: 'var(--shadow-blue)' }}>
           <div style={{ marginBottom: 8, display:'flex', justifyContent:'center', color:'#fff' }}><FIcon name="party" size={40} /></div>
           <div style={{ fontFamily: 'var(--font-round)', fontSize: 19, fontWeight: 900, lineHeight: 1.4 }}>キミのタスクが<br/>全て完了したよ！</div>
-          <div style={{ fontSize: 12, opacity: .9, lineHeight: 1.7, marginTop: 8 }}>気質診断・自己評価・他者評価、<br/>お疲れさまでした！</div>
+          <div style={{ fontSize: 12, opacity: .9, lineHeight: 1.7, marginTop: 8 }}>気質診断・自己評価・相互評価、<br/>お疲れさまでした！</div>
+        </div>
+
+        {/* トリセツ完成まであと一歩！（強調メッセージ） */}
+        <div style={{ background: 'linear-gradient(135deg,#fff3e0,#ffe7cf)', borderRadius: 'var(--r-md)', padding: '13px 16px', display: 'flex', alignItems: 'center', gap: 11 }}>
+          <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--orange)', flexShrink: 0 }}><FIcon name="sprout" size={19} color="var(--orange)" /></div>
+          <div style={{ fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 15, color: 'var(--orange-dark)', lineHeight: 1.4 }}>トリセツ完成まであと一歩！</div>
         </div>
 
         {/* 注意：トリセツ完成まであと一歩 */}
         <div style={{ background: '#fff8e1', borderRadius: 'var(--r-md)', padding: '14px 16px', borderLeft: '4px solid var(--orange)' }}>
-          <div style={{ fontSize: 12, fontWeight: 800, color: '#E65100', marginBottom: 6 }}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="book" size={13} color="#E65100" /> トリセツ完成まであと一歩！</span></div>
-          <p style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.7, fontWeight: 500 }}>みんなが他者評価の回答を送ると、キミだけの「トリセツ」が完成します。クラスメートに声をかけてみよう！</p>
+          <div style={{ fontSize: 12.5, fontWeight: 800, color: '#E65100', marginBottom: 6, lineHeight: 1.6 }}><span style={{display:'inline-flex',alignItems:'flex-start',gap:5}}><FIcon name="book" size={14} color="#E65100" /> <span>みんなの相互評価が完了すると「トリセツ」が完成するよ</span></span></div>
+          <p style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.7, fontWeight: 500 }}>トリセツが完成するまで、キミ自身が認識している性格と潜在的な気質の結果を確認してみよう</p>
         </div>
 
         {/* キミの性格・傾向コメント */}

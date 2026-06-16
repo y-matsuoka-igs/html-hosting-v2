@@ -16,6 +16,7 @@ const BLANK = {
   self:  { answers: {}, done: false },
   other: { answers: {}, done: false },
   exp: 0, tasks: [], seenAnnounce: false,
+  journal: (typeof window !== 'undefined' && window.journalSeed) ? window.journalSeed() : [],
 };
 function loadState() {
   try { return { ...BLANK, ...JSON.parse(localStorage.getItem('aigrow_state') || '{}') }; }
@@ -119,6 +120,8 @@ function App() {
       case 'contents': return <ContentsScreen />;
       case 'fortune':  return <FortuneScreen />;
       case 'monthly':  return <MonthlyScreen />;
+      case 'journal':       return <JournalScreen />;
+      case 'journal-write': return <JournalWriteScreen />;
       default: return <LoginScreen />;
     }
   };
@@ -163,6 +166,8 @@ function App() {
         <TweakButton label="チャレンジへ" onClick={() => nav.go('challenge', { tab: 'challenge' })} />
         <TweakButton label="完了の木(EXP)へ" onClick={() => nav.go('tree', { tab: 'tree' })} />
         <TweakButton label="コンテンツへ" onClick={() => nav.go('contents')} />
+        <TweakButton label="成長ジャーナルへ" onClick={() => nav.go('journal')} />
+        <TweakButton label="ふり返りを書くへ" onClick={() => nav.go('journal-write')} />
         <TweakButton label="ログイン画面へ戻る" onClick={() => { setScreen('login'); setParams({}); }} />
         <TweakButton label="進捗をリセット" onClick={() => { reset(); setScreen('login'); setParams({}); }} />
       </TweaksPanel>

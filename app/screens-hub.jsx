@@ -146,6 +146,20 @@ function ContentsScreen() {
           </div>
         )}
 
+        {/* 成長ジャーナル（いつでも書ける核機能） */}
+        <button onClick={() => nav.go('journal')} style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', background: 'linear-gradient(135deg,#ff9d3f,#ef6f0a)', borderRadius: 'var(--r-lg)', padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 14, boxShadow: 'var(--shadow-orange)', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: -22, right: -16, width: 96, height: 96, borderRadius: '50%', background: 'rgba(255,255,255,.1)' }}></div>
+          <div style={{ width: 46, height: 46, borderRadius: 14, background: 'rgba(255,255,255,.22)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', position: 'relative' }}><FIcon name="pencil" size={24} /></div>
+          <div style={{ flex: 1, position: 'relative', color: '#fff' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <span style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 15 }}>成長ジャーナル</span>
+              <span className="pill" style={{ background: 'rgba(255,255,255,.25)', color: '#fff', fontSize: 9, padding: '2px 8px' }}>毎日</span>
+            </div>
+            <div style={{ fontSize: 11, opacity: .92, marginTop: 2, fontWeight: 600 }}>今日のふり返りを書いて、トリセツを育てよう</div>
+          </div>
+          <span style={{ position: 'relative', color: '#fff', display: 'flex' }}><Icon name="chevR" size={18} /></span>
+        </button>
+
         {/* 成長バッジ */}
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 2 }}>
           <h3 style={{ fontSize: 14, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 7 }}><FIcon name="leaf" size={18} color="var(--green)" /> 成長バッジ</h3>

@@ -150,7 +150,7 @@ function SelfEvalScreen() {
 }
 function OtherEvalScreen() {
   const nav = useNav();
-  return <EvalQuestion store="other" qList={OTHER_Q} accent="#FC8524" label="他者評価" nameSub={PEER_NAME}
+  return <EvalQuestion store="other" qList={OTHER_Q} accent="#FC8524" label="相互評価" nameSub={PEER_NAME}
     onComplete={() => nav.go('task-complete')} />;
 }
 
