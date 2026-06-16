@@ -103,23 +103,24 @@ function Character({ size = 60 }) {
 }
 
 // ── Shell Components ──────────────────────────────────────
-function StickyHero() {
+function StickyHero({ collapsed }) {
   return (
-    <div style={{ background: TC.blueGrad, padding: '14px 18px 16px', flexShrink: 0 }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+    <div style={{ background: TC.blueGrad, padding: collapsed ? '9px 18px' : '14px 18px 16px', flexShrink: 0, transition: 'padding .25s ease' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 10, color: 'rgba(255,255,255,.7)', fontWeight: 700, letterSpacing: .8, marginBottom: 3 }}>キミのトリセツ　総合タイプ</div>
-          <div style={{ fontFamily: TC.fontRound, fontSize: 20, fontWeight: 900, color: '#fff', lineHeight: 1.2, marginBottom: 8 }}>「{TORI.typeTitle}」</div>
-          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-            {TORI.strengths.map((s) =>
-            <span key={s} style={{ background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.3)', color: '#fff', fontFamily: TC.fontRound, fontWeight: 700, fontSize: 10, padding: '4px 10px', borderRadius: 999, whiteSpace: 'nowrap' }}>{s}</span>
-            )}
+          {!collapsed &&
+          <div style={{ fontSize: 10, color: 'rgba(255,255,255,.7)', fontWeight: 700, letterSpacing: .8, marginBottom: 3 }}>キミのトリセツ　総合タイプ</div>}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+            <div style={{ fontFamily: TC.fontRound, fontSize: collapsed ? 15 : 20, fontWeight: 900, color: '#fff', lineHeight: 1.2, transition: 'font-size .25s ease', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>「{TORI.typeTitle}」</div>
+            {collapsed &&
+            <div style={{ background: TC.gold, color: '#5a3a00', borderRadius: 999, padding: '2px 9px', fontSize: 10, fontWeight: 700, fontFamily: TC.fontRound, flexShrink: 0 }}>Lv.3</div>}
           </div>
         </div>
+        {!collapsed &&
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
           <Character size={58} />
           <div style={{ background: TC.gold, color: '#5a3a00', borderRadius: 999, padding: '2px 9px', fontSize: 10, fontWeight: 700, fontFamily: TC.fontRound, marginTop: -2 }}>Lv.3</div>
-        </div>
+        </div>}
       </div>
     </div>);
 
@@ -216,13 +217,58 @@ function TorisetsuTab({ nav, goChallenge }) {
         </div>
       </Card>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingTop: 4 }}>
-        <div style={{ fontSize: 11, color: TC.textSub, fontWeight: 700, padding: '0 2px' }}>もっと深く見る</div>
-        
-      </div>
+      <StepReaction nav={nav} step={1} />
 
     </>);
 
+}
+
+// ── Step Reaction (steps 1-3 の軽いリアクション) ──────────
+const STEP_REACTIONS = [
+  { key: 'me',    label: 'これ自分っぽい', icon: 'check',   color: '#00b463', soft: 'rgba(0,180,99,.12)' },
+  { key: 'wow',   label: '意外だった',     icon: 'sparkle', color: '#0096fa', soft: 'rgba(0,150,250,.12)' },
+  { key: 'grow',  label: '伸ばしてみたい', icon: 'fire',    color: '#FC8524', soft: 'rgba(252,133,36,.14)' },
+];
+const REACT_THANKS = {
+  me:   'いいね！キミらしさ、しっかり伝わってるね。',
+  wow:  '新しい発見だね。意外な一面もキミの魅力だよ。',
+  grow: 'その意気！「つぎのチャレンジ」で伸ばしていこう。',
+};
+function StepReaction({ nav, step }) {
+  const saved = (nav.state && nav.state.toriReactions) || {};
+  const picked = saved[step];
+  const set = (key) => nav.update && nav.update((s) => ({ toriReactions: { ...(s.toriReactions || {}), [step]: key } }));
+  const sel = STEP_REACTIONS.find((r) => r.key === picked);
+  return (
+    <div style={{ background: '#fff', borderRadius: 16, padding: '12px 14px', boxShadow: TC.shadow, border: '1px solid #eef1f4' }}>
+      {!picked ? (
+        <>
+          <div style={{ fontFamily: TC.fontRound, fontWeight: 800, fontSize: 12.5, color: TC.text, marginBottom: 9, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ width: 3.5, height: 13, borderRadius: 2, background: TC.orange }}></span>読んでみて、どう感じた？
+          </div>
+          <div style={{ display: 'flex', gap: 7 }}>
+            {STEP_REACTIONS.map((r) => (
+              <button key={r.key} onClick={() => set(r.key)} style={{ flex: 1, cursor: 'pointer', border: '1.5px solid #e8ebee', background: '#fff', borderRadius: 999, padding: '7px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, WebkitTapHighlightColor: 'transparent' }}>
+                <FIcon name={r.icon} size={13} color={r.color} />
+                <span style={{ fontSize: 10.5, fontWeight: 800, fontFamily: TC.fontRound, color: TC.text, whiteSpace: 'nowrap' }}>{r.label}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="fade-in" style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+          <span style={{ width: 28, height: 28, borderRadius: '50%', background: sel.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <FIcon name={sel.icon} size={14} color="#fff" />
+          </span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: TC.fontRound, fontWeight: 800, fontSize: 12.5, color: sel.color, lineHeight: 1.2 }}>{sel.label}</div>
+            <div style={{ fontSize: 10.5, color: TC.textSub, fontWeight: 600, lineHeight: 1.4, marginTop: 1 }}>{REACT_THANKS[picked]}</div>
+          </div>
+          <button onClick={() => set(null)} style={{ flexShrink: 0, border: 'none', background: 'none', color: TC.textSub, fontSize: 10.5, fontWeight: 700, fontFamily: TC.fontRound, cursor: 'pointer', padding: '4px 2px' }}>変更</button>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ── Tab 2: 進化ツリー ─────────────────────────────────────
@@ -688,12 +734,14 @@ function TorisetsuCombined({ initialTab = 0 }) {
   const [showShare, setShowShare] = useTc(false);
   const savedStep = nav.state && nav.state.torisetsuStep || 1;
   const [step, setStep] = useTc(savedStep);
+  const [collapsed, setCollapsed] = useTc(false);
   const scrollRef = React.useRef(null);
   const goStep = (n) => {
     const next = Math.min(5, Math.max(1, n));
     setStep(next);
-    nav.update && nav.update({ torisetsuStep: next });
+    nav.update && nav.update((s) => ({ torisetsuStep: next, torisetsuDone: s.torisetsuDone || next >= 5 }));
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
+    setCollapsed(false);
   };
   const StepInd = window.ToriStepIndicator,StepNav = window.ToriStepNav,StepHead = window.JStepHead;
   const Top3 = window.Top3Section,Voices = window.VoicesSection,Future = window.TorisetsuFuture;
@@ -701,14 +749,14 @@ function TorisetsuCombined({ initialTab = 0 }) {
   return (
     <div className="screen" style={{ background: TC.bg, fontFamily: TC.font, position: 'relative' }}>
       <StatusBar />
-      <StickyHero />
-      {StepInd && <StepInd step={step} onJump={goStep} />}
-      <div ref={scrollRef} style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden', WebkitOverflowScrolling: 'touch' }}>
+      <StickyHero collapsed={collapsed} />
+      {StepInd && <StepInd step={step} onJump={goStep} freeJump={!!(nav.state && nav.state.torisetsuDone)} />}
+      <div ref={scrollRef} onScroll={(e) => { const t = e.target.scrollTop; setCollapsed((c) => (c ? t > 12 : t > 40)); }} style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden', WebkitOverflowScrolling: 'touch' }}>
         <div style={{ padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 14, paddingBottom: 24 }}>
           <div key={step} className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {step === 1 && <TorisetsuTab nav={nav} goChallenge={() => goStep(4)} />}
-              {step === 2 && StepHead && <><StepHead n={2} title="キミの強み TOP3" sub="まずはここから。キミのいちばんの武器" /><Top3 /></>}
-              {step === 3 && StepHead && <><StepHead n={3} title="みんなの発見" sub="まわりの人が見つけたキミの良さ" /><Voices /></>}
+              {step === 2 && StepHead && <><StepHead n={2} title="キミの強み TOP3" sub="まずはここから。キミのいちばんの武器" /><Top3 /><StepReaction nav={nav} step={2} /></>}
+              {step === 3 && StepHead && <><StepHead n={3} title="みんなの発見" sub="まわりの人が見つけたキミの良さ" /><Voices /><StepReaction nav={nav} step={3} /></>}
               {(step === 4 || step === 5) && Future && <Future nav={nav} step={step} goBack={() => goStep(4)} goChallenge={() => nav && nav.go('challenge')} />}
               {StepNav && <StepNav step={step} goStep={goStep} onShare={() => setShowShare(true)} />}
             </div>
