@@ -23,9 +23,10 @@ function StepHead({ n, title, sub }) {
   );
 }
 
-function JCard({ children, style }) {
-  return <div style={{ background:TJ.surface, borderRadius:14, padding:16, boxShadow:TJ.shadow, ...style }}>{children}</div>;
+function JCard({ children, style }, ref) {
+  return <div ref={ref} style={{ background:TJ.surface, borderRadius:14, padding:16, boxShadow:TJ.shadow, ...style }}>{children}</div>;
 }
+JCard = React.forwardRef(JCard);
 
 /* ════════ STEP 2: 強みTOP3 ════════ */
 const TOP3 = [
@@ -40,7 +41,7 @@ function Top3Section() {
       <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
         {TOP3.map(s => (
           <div key={s.rank} style={{ display:'flex', alignItems:'center', gap:12, background:s.rank===1?'#fffaf0':TJ.bg, borderRadius:12, padding:'12px 14px', border:s.rank===1?'1.5px solid #ffd9a8':'1.5px solid transparent' }}>
-            <span style={{ fontSize:26, flexShrink:0 }}>{s.medal}</span>
+            <span style={{ flexShrink:0, color: s.rank===1?'#E0A92E':s.rank===2?'#9aa3aa':'#c08552', display:'flex' }}><FIcon name="medal" size={26} /></span>
             <div style={{ flex:1 }}>
               <div style={{ display:'flex', alignItems:'baseline', gap:8 }}>
                 <span style={{ fontFamily:TJ.round, fontWeight:900, fontSize:15, color:TJ.text }}>{s.name}</span>
@@ -98,39 +99,98 @@ function Bubble({ text }) {
 }
 
 function VoicesSection() {
+  const [selfOpen, setSelfOpen] = React.useState(false);
   return (
-    <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-      <JCard style={{ padding:'12px 15px', background:TJ.blueSoft, boxShadow:'none' }}>
-        <div style={{ fontSize:12, color:TJ.blueDark, fontWeight:700, lineHeight:1.7 }}>まわりのみんなが見つけたキミの姿。4つの視点で見てみよう 🔍</div>
-      </JCard>
+    <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
 
+      {/* イントロ */}
+      <div style={{ background:`linear-gradient(135deg,${TJ.blue},#0069b5)`, borderRadius:14, padding:'14px 16px', color:'#fff' }}>
+        <div style={{ fontFamily:TJ.round, fontWeight:900, fontSize:14, marginBottom:4 }}>まわりの人が見つけたキミの姿</div>
+        <div style={{ fontSize:11, opacity:.9, lineHeight:1.7, fontWeight:600 }}>毎日の中で積み重ねてきた証拠だよ。自信を持っていい！</div>
+      </div>
+
+      {/* みんなの発見（4カテゴリ） メイン */}
       {DISCOVER_CATS.map((cat, ci) => (
         <JCard key={ci} style={{ padding:0, overflow:'hidden' }}>
-          {/* カテゴリヘッダー */}
-          <div style={{ background:cat.color, color:'#fff', padding:'9px 15px', fontSize:12, fontWeight:800, fontFamily:TJ.round }}>{cat.title}</div>
-          <div style={{ padding:'13px 15px', display:'flex', flexDirection:'column', gap:10 }}>
-            {/* タグ */}
+          <div style={{ background:cat.color, color:'#fff', padding:'9px 15px', fontSize:12, fontWeight:800, fontFamily:TJ.round }}>
+            {cat.title}
+          </div>
+          <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column', gap:8 }}>
             <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
-              {cat.tags.map(t => (
-                <span key={t} style={{ background:cat.bg, color:cat.tagColor, fontSize:11, fontWeight:800, padding:'4px 11px', borderRadius:4, fontFamily:TJ.round }}>{t}</span>
+              {cat.tags.map(c => (
+                <span key={c} style={{ background:cat.bg, color:cat.tagColor, borderRadius:999, padding:'4px 10px', fontSize:11, fontWeight:800, fontFamily:TJ.round }}>{c}</span>
               ))}
             </div>
-            {/* 吹き出し */}
-            <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
-              {cat.voices.map((v, vi) => <Bubble key={vi} text={v} />)}
+            <div style={{ display:'flex', flexDirection:'column', gap:6, marginTop:2 }}>
+              {cat.voices.map((v, vi) => (
+                <div key={vi} style={{ background:'#f7f9fb', borderRadius:'4px 12px 12px 12px', padding:'9px 12px', fontSize:11.5, color:TJ.text, lineHeight:1.65, fontWeight:500, borderLeft:'3px solid '+cat.color }}>
+                  「{v}」
+                </div>
+              ))}
             </div>
-            {/* 補足メモ */}
             {cat.note && (
-              <div style={{ fontSize:10.5, color:cat.tagColor, fontWeight:700, background:cat.bg, borderRadius:8, padding:'7px 10px', lineHeight:1.6 }}>{cat.note}</div>
+              <div style={{ fontSize:10.5, color:cat.tagColor, fontWeight:700, lineHeight:1.6, background:cat.bg, borderRadius:8, padding:'8px 11px', marginTop:2 }}><span style={{display:'inline-flex',alignItems:'flex-start',gap:5}}><FIcon name="bulb" size={13} color={cat.tagColor} /> {cat.note}</span></div>
             )}
           </div>
         </JCard>
       ))}
 
-      <div style={{ background:TJ.blueGrad, borderRadius:14, padding:'14px 17px', color:'#fff' }}>
-        <div style={{ fontFamily:TJ.round, fontWeight:900, fontSize:13, marginBottom:4 }}>✨ これ、ぜんぶ本当にあったことだよ</div>
-        <div style={{ fontSize:11, lineHeight:1.75, opacity:.92, fontWeight:500 }}>まわりの人が実際に感じたキミの姿。毎日の中で積み重ねてきた証拠だよ。自信を持っていい！</div>
+      {/* 自己評価との比較（開閉式） */}
+      <div style={{ borderRadius:14, border:'1.5px solid '+TJ.border, overflow:'hidden', background:'#fff' }}>
+        <button onClick={() => setSelfOpen(o => !o)}
+          style={{ width:'100%', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'13px 15px', border:'none', background:'none', cursor:'pointer', WebkitTapHighlightColor:'transparent' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:9 }}>
+            <span style={{ display:'flex', color:TJ.blue }}><FIcon name="chart" size={18} /></span>
+            <div style={{ textAlign:'left' }}>
+              <div style={{ fontFamily:TJ.round, fontWeight:800, fontSize:13, color:TJ.text }}>自己評価との比較</div>
+              <div style={{ fontSize:10, color:TJ.sub, fontWeight:600, marginTop:1 }}>自分の認識とみんなの評価のギャップを見てみよう</div>
+            </div>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={TJ.sub} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+            style={{ transform: selfOpen?'rotate(180deg)':'rotate(0deg)', transition:'transform .25s' }}>
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        {selfOpen && (
+          <div style={{ padding:'0 15px 15px', display:'flex', flexDirection:'column', gap:12 }}>
+            <div style={{ fontSize:11, color:TJ.sub, fontWeight:600, lineHeight:1.65, padding:'4px 0 8px', borderTop:'1px solid '+TJ.border }}>
+              棒グラフ：上＝自己評価　下＝みんなの評価。ギャップが大きいほど、自分が気づいていない強みかも。
+            </div>
+            {[
+              { name:'外交性',       self:72, peer:90, note:'みんなはキミをもっと外向きに見てるよ！' },
+              { name:'共感・傾聴力',  self:68, peer:82, note:'話を聞いてくれる、とよく思われてる' },
+              { name:'創造性',       self:80, peer:78, note:'自己認識とほぼ一致' },
+              { name:'個人的実行力',  self:60, peer:85, note:'行動力をもっと自覚してみよう！' },
+              { name:'影響力の行使',  self:55, peer:74, note:'周りへの影響、意外と大きい' },
+            ].map(({ name, self, peer, note }) => (
+              <div key={name}>
+                <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
+                  <span style={{ fontSize:11.5, fontWeight:700, color:TJ.text }}>{name}</span>
+                  {Math.abs(peer - self) >= 12 && (
+                    <span style={{ fontSize:10, fontWeight:800, color:TJ.orange, background:TJ.orangeSoft, borderRadius:999, padding:'2px 8px' }}>ギャップ大</span>
+                  )}
+                </div>
+                <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:4 }}>
+                  <span style={{ fontSize:9.5, color:TJ.sub, fontWeight:700, width:48, flexShrink:0 }}>自己</span>
+                  <div style={{ flex:1, height:8, background:'#eef0f3', borderRadius:4, overflow:'hidden' }}>
+                    <div style={{ width:self+'%', height:'100%', background:'#b0c8e8', borderRadius:4 }}></div>
+                  </div>
+                  <span style={{ fontSize:10, color:TJ.sub, width:24, textAlign:'right' }}>{self}</span>
+                </div>
+                <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:4 }}>
+                  <span style={{ fontSize:9.5, color:TJ.blue, fontWeight:700, width:48, flexShrink:0 }}>みんな</span>
+                  <div style={{ flex:1, height:8, background:'#eef0f3', borderRadius:4, overflow:'hidden' }}>
+                    <div style={{ width:peer+'%', height:'100%', background:TJ.blue, borderRadius:4 }}></div>
+                  </div>
+                  <span style={{ fontSize:10, color:TJ.blue, fontWeight:700, width:24, textAlign:'right' }}>{peer}</span>
+                </div>
+                <div style={{ fontSize:10, color:TJ.sub, lineHeight:1.6, padding:'4px 0 2px', fontStyle:'italic' }}>{note}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+
     </div>
   );
 }
@@ -164,16 +224,18 @@ const INTERESTS = [
 const ALL_CAREERS = [...CAREERS_PURE, ...INTERESTS.map(i => i.career)];
 
 function GapBar({ name, now, target }) {
+  // 数値は出さず、now をもとに「強み / のびしろ」だけを示す
+  const isStrength = now >= 75;
   return (
-    <div style={{ marginBottom:10 }}>
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:4 }}>
-        <span style={{ fontSize:11.5, fontWeight:700, color:TJ.text }}>{name}</span>
-        <span style={{ fontSize:10.5, fontWeight:800, color:TJ.orange }}>いま {now} → 目標 {target}（あと +{target-now}）</span>
-      </div>
-      <div style={{ position:'relative', height:10, background:'#e8ecef', borderRadius:5 }}>
-        <div style={{ position:'absolute', left:0, top:0, bottom:0, width:`${now}%`, background:TJ.blueGrad, borderRadius:5 }}></div>
-        <div style={{ position:'absolute', left:`${target}%`, top:-3, bottom:-3, width:3, background:TJ.orange, borderRadius:2 }}></div>
-      </div>
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:10,
+      background: isStrength ? TJ.blueSoft : '#f5f6f7', borderRadius:10, padding:'10px 13px', marginBottom:8,
+      border:`1.5px solid ${isStrength ? 'rgba(0,150,250,.25)' : TJ.border}` }}>
+      <span style={{ fontSize:12.5, fontWeight:800, color:TJ.text, fontFamily:TJ.round }}>{name}</span>
+      {isStrength ? (
+        <span style={{ display:'inline-flex', alignItems:'center', gap:4, fontSize:11, fontWeight:800, color:'#fff', background:TJ.blue, borderRadius:999, padding:'4px 10px', flexShrink:0 }}><FIcon name="sparkle" size={12} color="#fff" /> キミの強み</span>
+      ) : (
+        <span style={{ display:'inline-flex', alignItems:'center', gap:4, fontSize:11, fontWeight:800, color:'#9a6a2e', background:TJ.orangeSoft, borderRadius:999, padding:'4px 10px', flexShrink:0 }}><FIcon name="sprout" size={12} color="#9a6a2e" /> のびしろ</span>
+      )}
     </div>
   );
 }
@@ -183,7 +245,7 @@ function CareerCard({ c, selected, onSelect }) {
     <button onClick={() => onSelect(c.id)}
       style={{ textAlign:'left', width:'100%', cursor:'pointer', background:selected?TJ.blueSoft:TJ.surface, border:`2px solid ${selected?TJ.blue:TJ.border}`, borderRadius:14, padding:'14px 15px', transition:'all .15s', boxShadow:selected?'0 4px 14px rgba(0,150,250,.18)':TJ.shadow }}>
       <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:6 }}>
-        <span style={{ fontSize:24, flexShrink:0 }}>{c.icon}</span>
+        <span style={{ flexShrink:0, width:38, height:38, borderRadius:11, background:selected?'#fff':TJ.blueSoft, display:'flex', alignItems:'center', justifyContent:'center', color:TJ.blue }}><Emo e={c.icon} size={20} /></span>
         <div style={{ flex:1 }}>
           <div style={{ fontFamily:TJ.round, fontWeight:900, fontSize:14, color:TJ.text }}>{c.title}</div>
           <div style={{ fontSize:10, color:TJ.blue, fontWeight:700, marginTop:1 }}>{c.why}</div>
@@ -193,6 +255,30 @@ function CareerCard({ c, selected, onSelect }) {
         </div>
       </div>
       <div style={{ fontSize:11.5, color:TJ.sub, lineHeight:1.65, fontWeight:500 }}>{c.desc}</div>
+
+      {/* 選択時：この仕事で必要な能力をカード内に表示（チャレンジUIに合わせた行リスト） */}
+      {selected && c.comps && (
+        <div style={{ marginTop:12, paddingTop:12, borderTop:`1px dashed ${TJ.blue}55` }}>
+          <div style={{ fontSize:10.5, fontWeight:800, color:TJ.blueDark, marginBottom:8, fontFamily:TJ.round, display:'flex', alignItems:'center', gap:5 }}><FIcon name="target" size={14} color={TJ.blue} /> この仕事で活きる力</div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {c.comps.map(([name, now]) => {
+              const isStrength = now >= 75;
+              return (
+                <div key={name}
+                  style={{ display:'flex', alignItems:'center', gap:11, background:isStrength?TJ.blueSoft:TJ.bg, border:`2px solid ${isStrength?TJ.blue:'transparent'}`, borderRadius:12, padding:'12px 13px' }}>
+                  <div style={{ width:26, height:26, borderRadius:8, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center',
+                    background:isStrength?TJ.blue:'#fff', border:`2px solid ${isStrength?TJ.blue:'#e0c6a8'}`, color:isStrength?'#fff':'#c98f52' }}>
+                    {isStrength ? <FIcon name="sparkle" size={14} /> : <FIcon name="sprout" size={14} />}
+                  </div>
+                  <span style={{ flex:1, fontSize:12.5, color:TJ.text, fontWeight:700, lineHeight:1.4 }}>{name}</span>
+                  <span style={{ fontSize:10.5, fontWeight:800, fontFamily:TJ.round, flexShrink:0,
+                    color:isStrength?TJ.blue:'#9a6a2e' }}>{isStrength ? 'キミの強み' : 'のびしろ'}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </button>
   );
 }
@@ -244,14 +330,14 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
 
       {/* ── STEP 4 ── */}
       <StepHead n={4} title="キミの強みが活きる未来のヒント" sub="この強み、こんな仕事で活きるかも" />
-      <div style={{ fontSize:11, color:TJ.sub, fontWeight:700, padding:'0 2px' }}>📖 トリセツからの提案</div>
+      <div style={{ fontSize:11, color:TJ.sub, fontWeight:700, padding:'0 2px' }}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="book" size={13} /> トリセツからの提案</span></div>
       <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
         {CAREERS_PURE.map(c => <CareerCard key={c.id} c={c} selected={goalId===c.id} onSelect={selectGoal} />)}
       </div>
 
       {/* 興味・得意の入力 */}
       <JCard>
-        <div style={{ fontFamily:TJ.round, fontWeight:800, fontSize:13, color:TJ.text, marginBottom:4 }}>🔎 キミの興味・得意をえらぶ</div>
+        <div style={{ fontFamily:TJ.round, fontWeight:800, fontSize:13, color:TJ.text, marginBottom:4 }}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="search" size={13} /> キミの興味・得意をえらぶ</span></div>
         <div style={{ fontSize:11, color:TJ.sub, fontWeight:600, marginBottom:12, lineHeight:1.6 }}>興味をえらぶと、トリセツ × 興味 のかけ算で提案が変わるよ</div>
         <div style={{ display:'flex', flexWrap:'wrap', gap:8, marginBottom:12 }}>
           {INTERESTS.map(i => {
@@ -259,7 +345,7 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
             return (
               <button key={i.key} onClick={() => toggleInterest(i.key)}
                 style={{ border:`1.5px solid ${on?TJ.blue:'#d6d6d6'}`, background:on?TJ.blueSoft:'#fff', color:on?TJ.blueDark:TJ.sub, borderRadius:999, padding:'8px 14px', fontFamily:TJ.round, fontWeight:700, fontSize:12, cursor:'pointer', display:'flex', alignItems:'center', gap:5 }}>
-                <span>{i.icon}</span>{i.key}
+                <span style={{display:'flex'}}><Emo e={i.icon} size={14} /></span>{i.key}
               </button>
             );
           })}
@@ -278,7 +364,7 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
       {/* 興味 × 強み の提案 */}
       {showMix && mixCareers.length > 0 && (
         <>
-          <div style={{ fontSize:11, color:TJ.sub, fontWeight:700, padding:'0 2px' }}>✨ キミの興味 × 強み からの提案</div>
+          <div style={{ fontSize:11, color:TJ.sub, fontWeight:700, padding:'0 2px' }}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="sparkle" size={13} /> キミの興味 × 強み からの提案</span></div>
           <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
             {mixCareers.map(c => <CareerCard key={c.id} c={c} selected={goalId===c.id} onSelect={selectGoal} />)}
           </div>
@@ -288,7 +374,7 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
       {/* 目標までの現在地（ギャップ） */}
       {goal && (
         <>
-          <JCard style={{ border:`2px solid ${TJ.blue}`, boxShadow:'0 6px 20px rgba(0,150,250,.14)' }}>
+          <JCard ref={gapRef} style={{ border:`2px solid ${TJ.blue}`, boxShadow:'0 6px 20px rgba(0,150,250,.14)' }}>
             <div style={{ display:'flex', alignItems:'center', gap:9, marginBottom:4 }}>
               <span style={{ fontSize:20 }}>{goal.icon}</span>
               <div style={{ fontFamily:TJ.round, fontWeight:900, fontSize:14, color:TJ.text }}>「{goal.title}」までの現在地</div>
@@ -318,11 +404,11 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
               })}
             </div>
             {registered ? (
-              <div style={{ textAlign:'center', background:TJ.greenSoft, borderRadius:12, padding:'13px', fontFamily:TJ.round, fontWeight:800, fontSize:13, color:'#2E7D32' }}>🎉 チャレンジに登録したよ！</div>
+              <div style={{ textAlign:'center', background:TJ.greenSoft, borderRadius:12, padding:'13px', fontFamily:TJ.round, fontWeight:800, fontSize:13, color:'#2E7D32' }}><FIcon name="party" size={14} color="#2E7D32" style={{verticalAlign:'-2px',marginRight:4}} /> チャレンジに登録したよ！</div>
             ) : (
               <button onClick={registerChallenge} disabled={!pickedActions.length}
                 style={{ width:'100%', background:pickedActions.length?TJ.orangeGrad:'#d6d6d6', color:'#fff', border:'none', borderRadius:999, padding:'14px', fontFamily:TJ.round, fontWeight:800, fontSize:14, cursor:pickedActions.length?'pointer':'default', boxShadow:pickedActions.length?'0 8px 20px rgba(252,133,36,.34)':'none' }}>
-                👣 チャレンジに登録する{pickedActions.length ? `（${pickedActions.length}件）` : ''}
+                チャレンジに登録する{pickedActions.length ? `（${pickedActions.length}件）` : ''}
               </button>
             )}
           </JCard>
@@ -330,7 +416,7 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
       )}
       {!goal && (
         <div style={{ fontSize:11.5, color:TJ.sub, fontWeight:600, textAlign:'center', padding:'2px 0 6px', lineHeight:1.7 }}>
-          ☝️ 気になる仕事をえらぶと、目標までの現在地と<br/>「つぎのチャレンジ」が見られるよ
+          気になる仕事をえらぶと、活きる強みと<br/>「つぎのチャレンジ」が見られるよ
         </div>
       )}
     </>
@@ -361,7 +447,18 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
 
   const persist = (patch) => nav.update && nav.update({ career: { interests, custom, goalId, ...patch } });
   const toggleInterest = (k) => { const next = interests.includes(k) ? interests.filter(x=>x!==k) : [...interests,k]; setInterests(next); persist({interests:next}); };
-  const selectGoal = (id) => { const next = goalId===id?null:id; setGoalId(next); setPickedActions([]); setRegistered(false); persist({goalId:next}); };
+  const gapRef = React.useRef(null);
+  const selectGoal = (id) => {
+    const next = goalId===id?null:id;
+    setGoalId(next); setPickedActions([]); setRegistered(false); persist({goalId:next});
+    if (next) setTimeout(() => {
+      const el = gapRef.current;
+      if (!el) return;
+      let parent = el.parentElement;
+      while (parent && getComputedStyle(parent).overflowY === 'visible') parent = parent.parentElement;
+      if (parent) parent.scrollTop = el.offsetTop - 16;
+    }, 0);
+  };
   const toggleAction = (a) => setPickedActions(p=>p.includes(a)?p.filter(x=>x!==a):[...p,a]);
   const registerChallenge = () => {
     if(!pickedActions.length) return;
@@ -377,11 +474,11 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
     <JCard style={{border:`2px solid ${TJ.blue}`,boxShadow:'0 6px 20px rgba(0,150,250,.14)'}}>
       <div style={{display:'flex',alignItems:'center',gap:9,marginBottom:4}}>
         <span style={{fontSize:20}}>{goal.icon}</span>
-        <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:14,color:TJ.text}}>「{goal.title}」までの現在地</div>
+        <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:14,color:TJ.text}}>「{goal.title}」で活きるコンピテンシー</div>
       </div>
-      <div style={{fontSize:11,color:TJ.sub,fontWeight:600,marginBottom:14,lineHeight:1.6}}>この仕事で活きるコンピテンシーと、いまのキミの数値だよ</div>
+      <div style={{fontSize:11,color:TJ.sub,fontWeight:600,marginBottom:14,lineHeight:1.6}}>この仕事で活きる力と、キミの強みが活かせるところだよ</div>
       {goal.comps.map(([name,now,target])=><GapBar key={name} name={name} now={now} target={target}/>)}
-      <div style={{marginTop:4,background:TJ.orangeSoft,borderRadius:10,padding:'10px 12px',fontSize:11,color:'#9a6a2e',fontWeight:700,lineHeight:1.65}}>💡 足りない分は「のびしろ」。アクションで少しずつ近づけるよ</div>
+      <div style={{marginTop:4,background:TJ.orangeSoft,borderRadius:10,padding:'10px 12px',fontSize:11,color:'#9a6a2e',fontWeight:700,lineHeight:1.65}}><span style={{display:'inline-flex',alignItems:'flex-start',gap:5}}><FIcon name="bulb" size={13} color="#9a6a2e" /> 「のびしろ」は伸ばすチャンス。下のアクションで近づけるよ</span></div>
     </JCard>
   ) : null;
 
@@ -389,7 +486,7 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
   if (step === 5) {
     if (!goal) return (
       <JCard style={{textAlign:'center',padding:'28px 18px'}}>
-        <div style={{fontSize:36,marginBottom:8}}>🎯</div>
+        <div style={{marginBottom:8,display:'flex',justifyContent:'center',color:TJ.blue}}><FIcon name="target" size={40} /></div>
         <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:14.5,color:TJ.text,marginBottom:6}}>まだ目標がえらばれていないよ</div>
         <p style={{fontSize:11.5,color:TJ.sub,lineHeight:1.7,margin:'0 0 16px'}}>ひとつ前のSTEPにもどって、<br/>気になる仕事をえらんでみよう</p>
         <button onClick={()=>goBack&&goBack()}
@@ -415,11 +512,11 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
             );})}
           </div>
           {registered?(
-            <div style={{textAlign:'center',background:TJ.greenSoft,borderRadius:12,padding:'13px',fontFamily:TJ.round,fontWeight:800,fontSize:13,color:'#2E7D32'}}>🎉 チャレンジに登録したよ！</div>
+            <div style={{textAlign:'center',background:TJ.greenSoft,borderRadius:12,padding:'13px',fontFamily:TJ.round,fontWeight:800,fontSize:13,color:'#2E7D32'}}><FIcon name="party" size={14} color="#2E7D32" style={{verticalAlign:'-2px',marginRight:4}} /> チャレンジに登録したよ！</div>
           ):(
             <button onClick={registerChallenge} disabled={!pickedActions.length}
               style={{width:'100%',background:pickedActions.length?TJ.orangeGrad:'#d6d6d6',color:'#fff',border:'none',borderRadius:999,padding:'14px',fontFamily:TJ.round,fontWeight:800,fontSize:14,cursor:pickedActions.length?'pointer':'default',boxShadow:pickedActions.length?'0 8px 20px rgba(252,133,36,.34)':'none'}}>
-              👣 チャレンジに登録する{pickedActions.length?`（${pickedActions.length}件）`:''}
+              チャレンジに登録する{pickedActions.length?`（${pickedActions.length}件）`:''}
             </button>
           )}
         </JCard>
@@ -431,18 +528,18 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
   return (
     <>
       <StepHead n={4} title="キミの強みが活きる未来のヒント" sub="この強み、こんな仕事で活きるかも" />
-      <div style={{fontSize:11,color:TJ.sub,fontWeight:700,padding:'0 2px'}}>📖 トリセツからの提案</div>
+      <div style={{fontSize:11,color:TJ.sub,fontWeight:700,padding:'0 2px'}}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="book" size={13} /> トリセツからの提案</span></div>
       <div style={{display:'flex',flexDirection:'column',gap:10}}>
         {CAREERS_PURE.map(c=><CareerCard key={c.id} c={c} selected={goalId===c.id} onSelect={selectGoal}/>)}
       </div>
       <JCard>
-        <div style={{fontFamily:TJ.round,fontWeight:800,fontSize:13,color:TJ.text,marginBottom:4}}>🔎 キミの興味・得意をえらぶ</div>
+        <div style={{fontFamily:TJ.round,fontWeight:800,fontSize:13,color:TJ.text,marginBottom:4}}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="search" size={13} /> キミの興味・得意をえらぶ</span></div>
         <div style={{fontSize:11,color:TJ.sub,fontWeight:600,marginBottom:12,lineHeight:1.6}}>興味をえらぶと、トリセツ × 興味 のかけ算で提案が変わるよ</div>
         <div style={{display:'flex',flexWrap:'wrap',gap:8,marginBottom:12}}>
           {INTERESTS.map(i=>{const on=interests.includes(i.key);return(
             <button key={i.key} onClick={()=>toggleInterest(i.key)}
               style={{border:`1.5px solid ${on?TJ.blue:'#d6d6d6'}`,background:on?TJ.blueSoft:'#fff',color:on?TJ.blueDark:TJ.sub,borderRadius:999,padding:'8px 14px',fontFamily:TJ.round,fontWeight:700,fontSize:12,cursor:'pointer',display:'flex',alignItems:'center',gap:5}}>
-              <span>{i.icon}</span>{i.key}
+              <span style={{display:'flex'}}><Emo e={i.icon} size={14} /></span>{i.key}
             </button>
           );})}
         </div>
@@ -458,17 +555,16 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
       </JCard>
       {showMix&&mixCareers.length>0&&(
         <>
-          <div style={{fontSize:11,color:TJ.sub,fontWeight:700,padding:'0 2px'}}>✨ キミの興味 × 強み からの提案</div>
+          <div style={{fontSize:11,color:TJ.sub,fontWeight:700,padding:'0 2px'}}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="sparkle" size={13} /> キミの興味 × 強み からの提案</span></div>
           <div style={{display:'flex',flexDirection:'column',gap:10}}>
             {mixCareers.map(c=><CareerCard key={c.id} c={c} selected={goalId===c.id} onSelect={selectGoal}/>)}
           </div>
         </>
       )}
-      {goal&&gapCard}
-      {goal&&<div style={{fontSize:11.5,color:TJ.sub,fontWeight:700,textAlign:'center',padding:'2px 0 4px'}}>下の「つぎへ →」で、つぎのチャレンジをえらぼう ✨</div>}
+      {goal&&<div style={{fontSize:11.5,color:TJ.sub,fontWeight:700,textAlign:'center',padding:'2px 0 4px'}}>下の「つぎへ →」で、つぎのチャレンジをえらぼう</div>}
       {!goal&&(
         <div style={{fontSize:11.5,color:TJ.sub,fontWeight:600,textAlign:'center',padding:'2px 0 6px',lineHeight:1.7}}>
-          ☝️ 気になる仕事をえらぶと、目標までの現在地と<br/>「つぎのチャレンジ」が見られるよ
+          気になる仕事をえらぶと、活きる強みと<br/>「つぎのチャレンジ」が見られるよ
         </div>
       )}
     </>
@@ -478,7 +574,7 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
 /* ── ステップインジケーター＆フッターナビ（トリセツ統合UI） ── */
 const TORI_STEPS = ['トリセツ','強みTOP3','みんなの発見','未来のヒント','つぎのチャレンジ'];
 
-const TORI_STEP_CHIPS = [['📖','トリセツ'],['🏆','強みTOP3'],['💬','みんなの発見'],['💡','未来のヒント'],['👣','つぎのチャレンジ']];
+const TORI_STEP_CHIPS = [['📖','今のキミ'],['🏆','強みTOP3'],['💬','みんなの発見'],['💡','未来のヒント'],['👣','つぎのチャレンジ']];
 
 function ToriStepIndicator({ step, onJump }) {
   const railRef = React.useRef(null);
@@ -500,7 +596,7 @@ function ToriStepIndicator({ step, onJump }) {
                 background: active ? TJ.blueGrad : done ? TJ.blueSoft : '#f1f3f5',
                 color: active ? '#fff' : done ? TJ.blueDark : '#9aa1a7',
                 boxShadow: active ? '0 5px 14px rgba(0,150,250,.35)' : 'none' }}>
-              <span style={{ fontSize:13 }}>{done ? '✓' : icon}</span>{label}
+              <span style={{ display:'flex', alignItems:'center' }}>{done ? <span style={{ fontSize:13, fontWeight:900 }}>✓</span> : <Emo e={icon} size={14} />}</span>{label}
             </button>
           );
         })}

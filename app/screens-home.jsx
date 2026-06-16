@@ -4,18 +4,18 @@ const { useState: useSh } = React;
 // 3ステップ定義
 function homeSteps(state) {
   return [
-    { key: 'diag',  label: '気質診断',  emoji: '🔍', done: state.diag.done,  pct: 30 },
-    { key: 'self',  label: '自己評価',  emoji: '✏️', done: state.self.done,  pct: 40 },
-    { key: 'other', label: '相互評価',  emoji: '💌', done: state.other.done, pct: 30, note: 'みんなが評価を送ると完了' },
+    { key: 'diag',  label: '気質診断',  emoji: 'search', done: state.diag.done,  pct: 30 },
+    { key: 'self',  label: '自己評価',  emoji: 'pencil', done: state.self.done,  pct: 40 },
+    { key: 'other', label: '相互評価',  emoji: 'mail', done: state.other.done, pct: 30, note: 'みんなが評価を送ると完了' },
   ];
 }
 // 状態に応じたチャレンジ
 function nextAction(state, comp) {
-  if (!state.diag.done)  return { title: '気質診断をやってみよう', desc: 'ゲーム感覚で、キミのタイプをチェック！', cta: '気質診断をはじめる 🔍', go: 'start-diag', color: 'var(--blue)' };
-  if (!state.self.done)  return { title: 'STEP 2：自己評価をやってみよう', desc: '5つの質問に答えるだけ。自分の強みが見えてくるよ。', cta: '自己評価をはじめる ✏️', go: 'self-eval', color: 'var(--blue)' };
-  if (!state.other.done) return { title: 'STEP 3：他者評価をやってみよう', desc: 'クラスメートのことを評価しよう。みんなからの見方も集まってくるよ。', cta: '他者評価をはじめる 💌', go: 'other-eval', color: 'var(--orange)' };
-  if (!state.seenAnnounce) return { title: 'トリセツが完成したよ！🎉', desc: '新しい機能が解放されました。さっそくホームで見てみよう。', cta: '解放された機能を見る ✨', go: 'announce', color: 'var(--orange)' };
-  return { title: 'トリセツが完成したよ！🎉', desc: 'キミだけの取扱説明書ができあがりました。', cta: 'ホームで見る 📖', go: 'home', color: 'var(--green)' };
+  if (!state.diag.done)  return { title: '気質診断をやってみよう', desc: 'ゲーム感覚で、キミのタイプをチェック！', cta: '気質診断をはじめる', go: 'start-diag', color: 'var(--blue)' };
+  if (!state.self.done)  return { title: 'STEP 2：自己評価をやってみよう', desc: '5つの質問に答えるだけ。自分の強みが見えてくるよ。', cta: '自己評価をはじめる', go: 'self-eval', color: 'var(--blue)' };
+  if (!state.other.done) return { title: 'STEP 3：他者評価をやってみよう', desc: 'クラスメートのことを評価しよう。みんなからの見方も集まってくるよ。', cta: '他者評価をはじめる', go: 'other-eval', color: 'var(--orange)' };
+  if (!state.seenAnnounce) return { title: 'トリセツが完成したよ！', desc: '新しい機能が解放されました。さっそくホームで見てみよう。', cta: '解放された機能を見る', go: 'announce', color: 'var(--orange)' };
+  return { title: 'トリセツが完成したよ！', desc: 'キミだけの取扱説明書ができあがりました。', cta: 'ホームで見る', go: 'home', color: 'var(--green)' };
 }
 
 /* ───── 共通：あいさつヘッダー ───── */
@@ -25,7 +25,7 @@ function HomeGreeting() {
       <Mascot size={46} />
       <div>
         <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 16, color: 'var(--text)' }}>こんにちは、たろう！</div>
-        <div style={{ fontSize: 11.5, color: 'var(--text-sub)', fontWeight: 600 }}>今日も一歩、自分を知ろう ✨</div>
+        <div style={{ fontSize: 11.5, color: 'var(--text-sub)', fontWeight: 600 }}>今日も一歩、自分を知ろう</div>
       </div>
     </div>
   );
@@ -36,7 +36,7 @@ function ContentTeaser({ unlocked, onOpen }) {
   if (unlocked) {
     return (
       <button onClick={onOpen} style={{ width: '100%', border: 'none', cursor: 'pointer', textAlign: 'left', background: 'linear-gradient(135deg,#fff3e6,#ffe7cf)', borderRadius: 'var(--r-lg)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{ fontSize: 26 }}>🎁</div>
+        <div style={{ color:'var(--orange)', display:'flex' }}><FIcon name="gift" size={26} /></div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--orange-dark)' }}>コンテンツが解放されたよ！</div>
           <div style={{ fontSize: 10.5, color: '#b5732f' }}>占い・バッジ・今月の診断をチェック</div>
@@ -47,7 +47,7 @@ function ContentTeaser({ unlocked, onOpen }) {
   }
   return (
     <div style={{ background: '#f0edea', borderRadius: 'var(--r-lg)', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
-      <div style={{ fontSize: 22 }}>🔒</div>
+      <div style={{ color:'#9a8f82', display:'flex' }}><FIcon name="lock" size={20} /></div>
       <div>
         <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-sub)' }}>占い・バッジ・今月の診断</div>
         <div style={{ fontSize: 10, color: 'var(--text-sub)' }}>トリセツが完成すると様々なコンテンツが解放されます</div>
@@ -132,7 +132,7 @@ function HomeVarB({ state, comp }) {
             <div key={s.key} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flex: 1 }}>
               <div style={{ width: 38, height: 38, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17,
                 background: s.done ? 'var(--green-soft)' : 'var(--bg)', border: s.done ? '2px solid var(--green)' : '2px solid var(--border-soft)' }}>
-                {s.done ? '✓' : s.emoji}
+                {s.done ? <span style={{fontWeight:900}}>✓</span> : <FIcon name={s.emoji} size={17} />}
               </div>
               <span style={{ fontSize: 10, fontWeight: 700, color: s.done ? 'var(--text)' : 'var(--text-sub)' }}>{s.label}</span>
             </div>
@@ -169,12 +169,12 @@ function HomeVarC({ state, comp }) {
                   background: s.done ? 'var(--green)' : isCurrent ? 'var(--orange)' : 'var(--bg)',
                   border: s.done || isCurrent ? 'none' : '2px solid var(--border)',
                   boxShadow: isCurrent ? '0 0 0 5px rgba(252,133,36,.18)' : 'none', color: s.done ? '#fff' : 'inherit' }}>
-                  {s.done ? '✓' : s.emoji}
+                  {s.done ? <span style={{fontWeight:900}}>✓</span> : <FIcon name={s.emoji} size={17} />}
                 </div>
                 <div style={{ flex: 1, paddingTop: 2 }}>
                   <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 14, color: s.done || isCurrent ? 'var(--text)' : 'var(--text-sub)' }}>{s.label}</div>
                   <div style={{ fontSize: 11, color: s.done ? 'var(--green)' : isCurrent ? 'var(--orange-dark)' : 'var(--text-sub)', fontWeight: 600 }}>
-                    {s.done ? '完了！' : isCurrent ? '今ここ 👈' : 'これから'}
+                    {s.done ? '完了！' : isCurrent ? '今ここ' : 'これから'}
                   </div>
                 </div>
               </div>

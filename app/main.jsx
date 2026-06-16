@@ -114,8 +114,8 @@ function App() {
       case 'torisetsu': return <TorisetsuScreen />;   // エイリアス
       case 'ai-chat':  return <AiChatScreen />;
       case 'next-step':
-      case 'challenge': return <NextStepScreen />;
-      case 'tree':     return <TreeScreen />;
+      case 'challenge':
+      case 'tree':     return <ChallengeScreen />;
       case 'contents': return <ContentsScreen />;
       case 'fortune':  return <FortuneScreen />;
       case 'monthly':  return <MonthlyScreen />;
@@ -153,17 +153,18 @@ function App() {
         <TweakButton label="受検 100%（完成）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true } }); setScreen('exam'); }} />
         <TweakButton label="ホーム（トリセツ）を見る" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true }, seenAnnounce: true }); setScreen('home'); }} />
         <TweakSection label="画面ジャンプ（デモ）" />
-        <TweakButton label="気質診断へ" onClick={() => setScreen('start-diag')} />
-        <TweakButton label="自己評価へ" onClick={() => setScreen('self-eval')} />
-        <TweakButton label="他者評価へ" onClick={() => setScreen('other-eval')} />
-        <TweakButton label="完了サマリーへ" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true } }); setScreen('task-complete'); }} />
-        <TweakButton label="機能解放通知へ" onClick={() => setScreen('announce')} />
-        <TweakButton label="トリセツへ" onClick={() => setScreen('torisetsu')} />
-        <TweakButton label="AI相談チャットへ" onClick={() => setScreen('ai-chat')} />
-        <TweakButton label="チャレンジへ" onClick={() => setScreen('challenge')} />
-        <TweakButton label="完了の木(EXP)へ" onClick={() => setScreen('tree')} />
-        <TweakButton label="ログイン画面へ戻る" onClick={() => setScreen('login')} />
-        <TweakButton label="進捗をリセット" onClick={() => { reset(); setScreen('login'); }} />
+        <TweakButton label="気質診断へ" onClick={() => nav.go('start-diag')} />
+        <TweakButton label="自己評価へ" onClick={() => nav.go('self-eval')} />
+        <TweakButton label="他者評価へ" onClick={() => nav.go('other-eval')} />
+        <TweakButton label="完了サマリーへ" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true } }); nav.go('task-complete'); }} />
+        <TweakButton label="機能解放通知へ" onClick={() => nav.go('announce')} />
+        <TweakButton label="トリセツ(ホーム)へ" onClick={() => nav.go('home')} />
+        <TweakButton label="AI相談チャットへ" onClick={() => nav.go('ai-chat')} />
+        <TweakButton label="チャレンジへ" onClick={() => nav.go('challenge', { tab: 'challenge' })} />
+        <TweakButton label="完了の木(EXP)へ" onClick={() => nav.go('tree', { tab: 'tree' })} />
+        <TweakButton label="コンテンツへ" onClick={() => nav.go('contents')} />
+        <TweakButton label="ログイン画面へ戻る" onClick={() => { setScreen('login'); setParams({}); }} />
+        <TweakButton label="進捗をリセット" onClick={() => { reset(); setScreen('login'); setParams({}); }} />
       </TweaksPanel>
     </NavCtx.Provider>
   );

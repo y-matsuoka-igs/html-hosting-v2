@@ -6,9 +6,9 @@ function ExamHubScreen() {
   const nav = useNav();
   const s = nav.state;
   const items = [
-    { key: 'diag',  title: '気質診断',  emoji: '🔍', desc: 'ゲームでキミのタイプを診断', done: s.diag.done,  go: 'start-diag', color: 'var(--blue)' },
-    { key: 'self',  title: '自己評価',  emoji: '✏️', desc: '5つの質問で自分を評価', done: s.self.done,  go: 'self-eval', locked: !s.diag.done, color: '#00ACC1' },
-    { key: 'other', title: '相互評価',  emoji: '💌', desc: 'みんなのことを評価しよう', done: s.other.done, go: 'other-eval', locked: !s.self.done, color: 'var(--orange)' },
+    { key: 'diag',  title: '気質診断',  emoji: 'search', desc: 'ゲームでキミのタイプを診断', done: s.diag.done,  go: 'start-diag', color: 'var(--blue)' },
+    { key: 'self',  title: '自己評価',  emoji: 'pencil', desc: '5つの質問で自分を評価', done: s.self.done,  go: 'self-eval', locked: !s.diag.done, color: '#00ACC1' },
+    { key: 'other', title: '相互評価',  emoji: 'mail', desc: 'みんなのことを評価しよう', done: s.other.done, go: 'other-eval', locked: !s.self.done, color: 'var(--orange)' },
   ];
   return (
     <div className="screen">
@@ -17,13 +17,13 @@ function ExamHubScreen() {
       <div className="scroll pad stack">
         <div>
           <h2 style={{ fontSize: 17, fontWeight: 900 }}>受検メニュー</h2>
-          <p style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4, fontWeight: 500 }}>3つのステップでトリセツが完成するよ 📖</p>
+          <p style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4, fontWeight: 500 }}>3つのステップでトリセツが完成するよ</p>
         </div>
         {items.map((it, i) => (
           <button key={it.key} onClick={() => !it.locked && nav.go(it.go)} disabled={it.locked}
             className="card" style={{ display: 'flex', alignItems: 'center', gap: 14, textAlign: 'left', border: 'none', cursor: it.locked ? 'default' : 'pointer', width: '100%', opacity: it.locked ? .55 : 1 }}>
             <div style={{ width: 50, height: 50, borderRadius: 15, flexShrink: 0, background: it.done ? 'var(--green-soft)' : `${it.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>
-              {it.locked ? '🔒' : it.emoji}
+              <span style={{display:'flex', color: it.done ? 'var(--green)' : it.color}}>{it.locked ? <FIcon name="lock" size={22} color="#b3b9be" /> : <FIcon name={it.emoji} size={24} />}</span>
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
@@ -49,11 +49,87 @@ const BADGES = [
   { e: '👣', l: '初めの一歩', need: 'step' },
   { e: '🌳', l: '成長の証', need: 'tree' },
 ];
+
+/* ── レア度 ── */
+const RARITY = {
+  N:  { label: 'N',  name: 'ノーマル',     color: '#9aa3aa', bg: '#eef0f2', glow: 'none' },
+  R:  { label: 'R',  name: 'レア',         color: '#0096fa', bg: '#e3f3ff', glow: '0 4px 14px rgba(0,150,250,.28)' },
+  SR: { label: 'SR', name: 'スーパーレア', color: '#8a6cf0', bg: '#efeaff', glow: '0 4px 16px rgba(138,108,240,.34)' },
+  UR: { label: 'UR', name: 'ウルトラレア', color: '#FC8524', bg: '#fff1e0', glow: '0 5px 20px rgba(252,133,36,.40)' },
+};
+
+/* ── 成長バッジ（カテゴリ分け＋レア度） ── */
+const BADGE_GROUPS = [
+  {
+    key: 'comp', label: 'コンピテンシーの証', icon: '💎',
+    desc: '強みや能力に関するバッジ',
+    badges: [
+      { e: '🧭', l: '自己発見',     rar: 'N',  got: true },
+      { e: '💡', l: '創造の芽',     rar: 'R',  got: true },
+      { e: '🤝', l: '共感マスター', rar: 'SR', got: true },
+      { e: '🔥', l: '実行力の鬼',   rar: 'SR', got: false },
+      { e: '👑', l: '五冠達成',     rar: 'UR', got: false },
+    ],
+  },
+  {
+    key: 'challenge', label: '挑戦の記録', icon: '🚩',
+    desc: 'チャレンジの達成に関するバッジ',
+    badges: [
+      { e: '👣', l: '初めの一歩', rar: 'N',  got: true },
+      { e: '✅', l: '3つ達成',    rar: 'R',  got: true },
+      { e: '🏅', l: '10コンプ',   rar: 'SR', got: false },
+      { e: '🌟', l: '挑戦王',     rar: 'UR', got: false },
+    ],
+  },
+  {
+    key: 'action', label: '継続の習慣', icon: '🔥',
+    desc: '毎日のアクセスなど行動に関するバッジ',
+    badges: [
+      { e: '🌅', l: '初ログイン', rar: 'N',  got: true },
+      { e: '📅', l: '7日連続',    rar: 'R',  got: true },
+      { e: '⚡', l: '30日連続',   rar: 'SR', got: false },
+      { e: '💯', l: '皆勤の証',   rar: 'UR', got: false },
+    ],
+  },
+  {
+    key: 'special', label: 'スペシャル', icon: '🎁',
+    desc: 'イベントや特別な行動でもらえるバッジ',
+    badges: [
+      { e: '🎉', l: 'はじめまして', rar: 'N',  got: true },
+      { e: '🔮', l: '占い好き',     rar: 'R',  got: false },
+      { e: '🦄', l: '隠しバッジ',   rar: 'UR', got: false },
+    ],
+  },
+];
+
+function GrowthBadge({ b }) {
+  const r = RARITY[b.rar];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, opacity: b.got ? 1 : .5 }}>
+      <div style={{ position: 'relative' }}>
+        <div style={{ width: 58, height: 58, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 27,
+          background: b.got ? r.bg : 'var(--bg)',
+          border: `2px solid ${b.got ? r.color : 'var(--border)'}`,
+          boxShadow: b.got ? r.glow : 'none' }}>
+          {b.got ? <Emo e={b.e} size={26} color={r.color} /> : <FIcon name="lock" size={22} color="#b3b9be" />}
+        </div>
+        {/* レア度バッジ */}
+        <span style={{ position: 'absolute', top: -6, right: -6, minWidth: 20, height: 20, padding: '0 5px', borderRadius: 999,
+          background: b.got ? r.color : '#c2c8cd', color: '#fff', fontSize: 9.5, fontWeight: 900, fontFamily: 'var(--font-round)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 1px 3px rgba(0,0,0,.2)' }}>{r.label}</span>
+      </div>
+      <span style={{ fontSize: 10, fontWeight: 700, color: b.got ? 'var(--text)' : 'var(--text-sub)', textAlign: 'center', lineHeight: 1.2 }}>{b.l}</span>
+    </div>
+  );
+}
+
 function ContentsScreen() {
   const nav = useNav();
   const comp = completion(nav.state);
   const unlocked = comp >= 100;
-  const got = (b) => b.need === 'diag' ? nav.state.diag.done : b.need === 'self' ? nav.state.self.done : b.need === 'other' ? nav.state.other.done : b.need === 'all' ? unlocked : false;
+
+  const totalGot = BADGE_GROUPS.reduce((s, g) => s + g.badges.filter(b => b.got).length, 0);
+  const totalAll = BADGE_GROUPS.reduce((s, g) => s + g.badges.length, 0);
 
   return (
     <div className="screen">
@@ -62,13 +138,48 @@ function ContentsScreen() {
       <div className="scroll pad stack">
         {!unlocked && (
           <div style={{ background: '#f0edea', borderRadius: 'var(--r-lg)', padding: '16px', display: 'flex', gap: 12, alignItems: 'center' }}>
-            <div style={{ fontSize: 28 }}>🔒</div>
+            <div style={{ width: 38, height: 38, borderRadius: 11, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9a8f82', flexShrink: 0 }}><FIcon name="lock" size={20} /></div>
             <div>
               <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)' }}>もう少しで解放！</div>
               <div style={{ fontSize: 11, color: 'var(--text-sub)', marginTop: 2, lineHeight: 1.5 }}>トリセツが完成すると、占い・診断などが楽しめるよ（現在 {comp}%）</div>
             </div>
           </div>
         )}
+
+        {/* 成長バッジ */}
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 2 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 7 }}><FIcon name="leaf" size={18} color="var(--green)" /> 成長バッジ</h3>
+          <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--blue)' }}>{totalGot} / {totalAll} 獲得</span>
+        </div>
+
+        {BADGE_GROUPS.map(g => {
+          const gGot = g.badges.filter(b => b.got).length;
+          return (
+            <div key={g.key} className="card" style={{ padding: '14px 14px 16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 3 }}>
+                <span style={{ display: 'flex', color: 'var(--text)' }}><Emo e={g.icon} size={18} /></span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 13.5, color: 'var(--text)' }}>{g.label}</div>
+                  <div style={{ fontSize: 10, color: 'var(--text-sub)', fontWeight: 600, marginTop: 1 }}>{g.desc}</div>
+                </div>
+                <span style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--text-sub)' }}>{gGot}/{g.badges.length}</span>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginTop: 12 }}>
+                {g.badges.map((b, i) => <GrowthBadge key={i} b={b} />)}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* レア度の凡例 */}
+        <div className="card card--flat" style={{ display: 'flex', justifyContent: 'space-around', padding: '11px 10px' }}>
+          {Object.values(RARITY).map(r => (
+            <div key={r.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+              <span style={{ minWidth: 22, height: 20, padding: '0 6px', borderRadius: 999, background: r.color, color: '#fff', fontSize: 10, fontWeight: 900, fontFamily: 'var(--font-round)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{r.label}</span>
+              <span style={{ fontSize: 9, color: 'var(--text-sub)', fontWeight: 700 }}>{r.name}</span>
+            </div>
+          ))}
+        </div>
 
         {/* お楽しみメニュー */}
         <h3 style={{ fontSize: 14, fontWeight: 800 }}>お楽しみコンテンツ</h3>
@@ -81,30 +192,13 @@ function ContentsScreen() {
           ].map(([e, l, c, bg, screen]) => (
             <div key={l} onClick={() => unlocked && screen && nav.go(screen)}
               style={{ background: '#fff', borderRadius: 'var(--r-lg)', padding: '18px 14px', textAlign: 'center', boxShadow: 'var(--shadow-sm)', opacity: unlocked ? 1 : .5, position: 'relative', cursor: unlocked && screen ? 'pointer' : 'default' }}>
-              {!unlocked && <div style={{ position: 'absolute', top: 8, right: 8, fontSize: 13 }}>🔒</div>}
-              <div style={{ width: 46, height: 46, borderRadius: 14, margin: '0 auto 8px', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>{e}</div>
+              {!unlocked && <div style={{ position: 'absolute', top: 8, right: 8, color: '#b3b9be', display: 'flex' }}><FIcon name="lock" size={13} /></div>}
+              <div style={{ width: 46, height: 46, borderRadius: 14, margin: '0 auto 8px', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: c }}><Emo e={e} size={24} /></div>
               <div style={{ fontFamily: 'var(--font-round)', fontWeight: 700, fontSize: 12.5 }}>{l}</div>
             </div>
           ))}
         </div>
 
-        {/* バッジ */}
-        <h3 style={{ fontSize: 14, fontWeight: 800, marginTop: 2 }}>獲得バッジ</h3>
-        <div className="card">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
-            {BADGES.map((b, i) => {
-              const has = got(b);
-              return (
-                <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, opacity: has ? 1 : .35 }}>
-                  <div style={{ width: 54, height: 54, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, background: has ? 'linear-gradient(135deg,#fff3e0,#ffe0b2)' : 'var(--bg)', border: has ? '2px solid var(--orange)' : '2px dashed var(--border)' }}>
-                    {has ? b.e : '？'}
-                  </div>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: has ? 'var(--text)' : 'var(--text-sub)', textAlign: 'center' }}>{b.l}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -183,10 +277,10 @@ Object.assign(window, { ExamHubScreen, ContentsScreen, ExamWaitingScreen });
 function FortuneScreen() {
   const nav = useNav();
   const items = [
-    { e: '🎨', title: 'ラッキーカラー：イエロー', body: '明るい色を身に着けて気分をあげよう！' },
-    { e: '🍩', title: 'ラッキーフード：ドーナツ', body: '丸い形で人とのつながり運アップ！' },
-    { e: '📖', title: 'ラッキー教科：国語', body: '自分の考えを言葉にするといいことあるかも！' },
-    { e: '💬', title: '今日のひとこと：「それいいね！」', body: '誰かの、何かのいい所を見つけて言葉にしてみよう' },
+    { e: 'palette', title: 'ラッキーカラー：イエロー', body: '明るい色を身に着けて気分をあげよう！' },
+    { e: 'gift', title: 'ラッキーフード：ドーナツ', body: '丸い形で人とのつながり運アップ！' },
+    { e: 'book', title: 'ラッキー教科：国語', body: '自分の考えを言葉にするといいことあるかも！' },
+    { e: 'chat', title: '今日のひとこと：「それいいね！」', body: '誰かの、何かのいい所を見つけて言葉にしてみよう' },
     { e: '✨', title: '今日のおすすめ行動', body: 'あまり話したことがない友だちに話しかけてみよう。新しい視点が得られるかも！' },
   ];
   return (
@@ -204,14 +298,14 @@ function FortuneScreen() {
         <div style={{ background: 'linear-gradient(135deg,#2C1654,#6A3093)', borderRadius: 'var(--r-lg)', padding: '22px 20px', color: '#fff', textAlign: 'center' }}>
           <div style={{ fontSize: 11, letterSpacing: 2, opacity: .75, fontWeight: 700, marginBottom: 8 }}>今日の占い</div>
           <div style={{ fontSize: 13.5, opacity: .9, marginBottom: 10, lineHeight: 1.6 }}>周りを明るくするアイデアメーカータイプの<br/>キミの今日の運勢は…</div>
-          <div style={{ fontSize: 28, letterSpacing: 4, marginBottom: 8 }}>★★★★☆</div>
+          <div style={{ fontSize: 28, letterSpacing: 4, marginBottom: 8, color: '#FFD54F' }}>★★★★☆</div>
           <div style={{ fontSize: 14, fontFamily: 'var(--font-round)', fontWeight: 800, lineHeight: 1.55 }}>アイデアがポンポン出てくる日。<br/>ちょっとしたひとことで、場の空気を変えられそう！</div>
         </div>
         {/* アイテム一覧 */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {items.map((it, i) => (
             <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, background: '#EDE7F6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>{it.e}</div>
+              <div style={{ width: 40, height: 40, borderRadius: 12, background: '#EDE7F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8a6cf0', flexShrink: 0 }}>{it.e && <FIcon name={it.e} size={20} />}</div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>{it.title}</div>
                 <div style={{ fontSize: 12, color: 'var(--text-sub)', lineHeight: 1.6, fontWeight: 500 }}>{it.body}</div>
@@ -268,7 +362,7 @@ function MonthlyScreen() {
             <span>・ここぞというときに前に出られる</span>
             <span>・まわりの空気を動かす力がある</span>
           </div>
-          <div style={{ fontSize: 12.5, color: 'var(--orange)', fontWeight: 700 }}>🎵「場を引っ張るスイッチ」を持っているタイプ</div>
+          <div style={{ fontSize: 12.5, color: 'var(--orange)', fontWeight: 700 }}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="star" size={13} color="var(--orange)" /> 「場を引っ張るスイッチ」を持っているタイプ</span></div>
         </div>
         {/* 他のタイプ */}
         <div>

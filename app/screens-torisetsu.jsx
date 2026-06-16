@@ -14,10 +14,10 @@ const TORI = {
     '変化や新しい環境にワクワクできる',
   ],
   usage: [
-    ['📣', 'アイデアはまず誰かに話してみる'],
-    ['👥', '一人で抱え込まず、チームで動く機会をつくる'],
-    ['🚀', '完璧にしてからより「まずやってみる」を大切に'],
-    ['🎯', '自分が輝けるポジション・役割を積極的に選ぶ'],
+    ['megaphone', 'アイデアはまず誰かに話してみる'],
+    ['users', '一人で抱え込まず、チームで動く機会をつくる'],
+    ['rocket', '完璧にしてからより「まずやってみる」を大切に'],
+    ['target', '自分が輝けるポジション・役割を積極的に選ぶ'],
   ],
   pitfalls: [
     '動き出しは早いが、詰めが甘くなりやすい',
@@ -100,7 +100,7 @@ function ToriBody() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {TORI.usage.map(([e, t], i) => (
             <div key={i} style={{ display: 'flex', gap: 11, alignItems: 'center', background: 'var(--blue-softer)', borderRadius: 12, padding: '10px 12px' }}>
-              <span style={{ fontSize: 18 }}>{e}</span>
+              <span style={{ display:'flex', color:'var(--blue)', flexShrink:0 }}><FIcon name={e} size={18} /></span>
               <span style={{ fontSize: 12.5, color: 'var(--text)', fontWeight: 600, lineHeight: 1.5 }}>{t}</span>
             </div>
           ))}
@@ -111,12 +111,12 @@ function ToriBody() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {TORI.pitfalls.map((p, i) => (
             <div key={i} style={{ display: 'flex', gap: 9, alignItems: 'flex-start', fontSize: 12.5, color: 'var(--text)', lineHeight: 1.6, fontWeight: 500 }}>
-              <span style={{ flexShrink: 0, marginTop: 1 }}>⚠️</span>{p}
+              <span style={{ flexShrink: 0, marginTop: 1, color:'var(--orange)', display:'flex' }}><FIcon name="warning" size={15} /></span>{p}
             </div>
           ))}
         </div>
         <div style={{ marginTop: 10, fontSize: 11, color: '#9a6a2e', background: '#fff6e9', borderRadius: 10, padding: '9px 11px', lineHeight: 1.6, display: 'flex', gap: 7, fontWeight: 600 }}>
-          <span>💡</span>落とし穴は「弱点」じゃなく、知っておけば対処できるポイントだよ。
+          <span style={{ flexShrink: 0, color: '#d98a2b', display: 'flex', marginTop: 1 }}><FIcon name="bulb" size={14} /></span>落とし穴は「弱点」じゃなく、知っておけば対処できるポイントだよ。
         </div>
       </ToriSection>
     </>
@@ -160,9 +160,9 @@ function TorisetsuScreen() {
       <AppHeader />
       {/* sub tabs */}
       <div style={{ display: 'flex', background: '#fff', borderBottom: '1px solid var(--border-soft)', flexShrink: 0 }}>
-        {[['トリセツ', '📖', true], ['自己評価', '📊', false], ['みんなの発見', '👥', false]].map(([l, e, on]) => (
+        {[['トリセツ', 'book', true], ['自己評価', 'chart', false], ['みんなの発見', 'users', false]].map(([l, e, on]) => (
           <div key={l} style={{ flex: 1, textAlign: 'center', padding: '9px 4px 7px', borderBottom: `2.5px solid ${on ? 'var(--blue)' : 'transparent'}`, cursor: on ? 'default' : 'pointer' }}>
-            <div style={{ fontSize: 16, opacity: on ? 1 : .45 }}>{e}</div>
+            <div style={{ opacity: on ? 1 : .45, display:'flex', justifyContent:'center', color: on ? 'var(--blue)' : 'var(--text-sub)' }}><FIcon name={e} size={17} /></div>
             <div style={{ fontSize: 10, fontWeight: 700, color: on ? 'var(--blue)' : 'var(--text-sub)', marginTop: 2 }}>{l}</div>
           </div>
         ))}
@@ -183,8 +183,8 @@ function TorisetsuScreen() {
         <div className="fade-in" key={variant}><Hero /></div>
         <ToriBody />
 
-        <button className="btn btn--primary btn--lg" onClick={() => nav.go('ai-chat')}>次の一歩をAIに相談する 🤖</button>
-        <button className="btn btn--cta" onClick={() => nav.go('next-step')}>次の一歩を決める 👣</button>
+        <button className="btn btn--primary btn--lg" onClick={() => nav.go('ai-chat')}>次の一歩をAIに相談する</button>
+        <button className="btn btn--cta" onClick={() => nav.go('next-step')}>次の一歩を決める</button>
       </div>
     </div>
   );

@@ -3,15 +3,15 @@ const { useState: useSd, useEffect: useEd, useRef: useRd } = React;
 
 /* 5軸（元HTML準拠：Big Five・語句仕分けゲーム） */
 const DIAG_AXES = [
-  { idx: 1, axis: '外向性 / 内向性', result: 'エネルギッシュな挑戦者', color: '#00ACC1', emoji: '🔥',
+  { idx: 1, axis: '外向性 / 内向性', result: 'エネルギッシュな挑戦者', color: '#00ACC1', emoji: 'fire',
     self: '思慮深い', other: '活発な', center: '活動的', dim: ['慎重な', '社交的'] },
-  { idx: 2, axis: '開放性 / 保守性', result: '知的好奇心旺盛な探求者', color: '#43A047', emoji: '🔭',
+  { idx: 2, axis: '開放性 / 保守性', result: '知的好奇心旺盛な探求者', color: '#43A047', emoji: 'search',
     self: '安定志向', other: '革新的', center: '好奇心旺盛', dim: ['伝統的', '柔軟な'] },
-  { idx: 3, axis: '繊細性 / 平穏性', result: 'リスクを察知する慎重な守り手', color: '#FB8C00', emoji: '🛡️',
+  { idx: 3, axis: '繊細性 / 平穏性', result: 'リスクを察知する慎重な守り手', color: '#FB8C00', emoji: 'compass',
     self: '落ち着いた', other: '繊細な', center: '敏感な', dim: ['安定した', '感受性豊か'] },
-  { idx: 4, axis: '協調性 / 独立性', result: '調和を重んじるサポーター', color: '#8E24AA', emoji: '🤝',
+  { idx: 4, axis: '協調性 / 独立性', result: '調和を重んじるサポーター', color: '#8E24AA', emoji: 'handshake',
     self: '自律的', other: '調和的', center: '協力的', dim: ['主体的', '思いやり深い'] },
-  { idx: 5, axis: '自律性 / 自由性', result: '意志の強い努力家', color: '#1E88E5', emoji: '🎯',
+  { idx: 5, axis: '自律性 / 自由性', result: '意志の強い努力家', color: '#1E88E5', emoji: 'target',
     self: '柔軟な', other: '責任感強い', center: '計画的', dim: ['主体的', '臨機応変'] },
 ];
 
@@ -45,14 +45,14 @@ function StartDiagModal({ onStart }) {
           </div>
           {/* 完成すると */}
           <div style={{ background: 'var(--blue-softer)', borderRadius: 12, padding: '14px 16px', marginBottom: 20 }}>
-            <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 13, color: 'var(--blue)', marginBottom: 10 }}>✨ 完成すると...</div>
+            <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 13, color: 'var(--blue)', marginBottom: 10 }}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="sparkle" size={13} color="var(--blue)" /> 完成すると...</span></div>
             {[
-              ['💬', '強みを言語化して自己PRに活用'],
-              ['📝', '成長の変化をグラフで確認'],
-              ['🔮', '自分に合った行動・学びスタイルがわかる'],
+              ['chat', '強みを言語化して自己PRに活用'],
+              ['chart', '成長の変化をグラフで確認'],
+              ['crystal', '自分に合った行動・学びスタイルがわかる'],
             ].map(([e, t]) => (
               <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, fontSize: 13, color: 'var(--text)', fontWeight: 500 }}>
-                <span style={{ fontSize: 16 }}>{e}</span>{t}
+                <span style={{ display:'flex', color:'var(--blue)', flexShrink:0 }}><FIcon name={e} size={16} /></span>{t}
               </div>
             ))}
           </div>
@@ -83,7 +83,7 @@ function StartDiagScreen() {
       <div className="scroll" style={{ display: 'flex', flexDirection: 'column' }}>
         <div style={{ flex: 1, minHeight: 480, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '12px 30px 24px', gap: 6 }}>
           <Pill style={{ background: 'var(--blue-soft)', color: 'var(--blue-dark)' }}>STEP 1 / 3</Pill>
-          <div style={{ fontSize: 72, margin: '14px 0 2px' }}>🔍</div>
+          <div style={{ margin: '18px 0 6px', display:'flex', justifyContent:'center', color:'var(--blue)' }}><FIcon name="search" size={64} sw={1.6} /></div>
           <h1 style={{ fontSize: 22, fontWeight: 900, lineHeight: 1.5 }}>まずは、キミのタイプを<br/>サクッとチェック！</h1>
           <p style={{ fontSize: 13.5, color: 'var(--text-sub)', fontWeight: 600, marginTop: 8, lineHeight: 1.7 }}>
             言葉を「自分」「他人」に仕分けするゲーム。<br/>5つの軸でキミの気質がわかるよ。
@@ -263,12 +263,12 @@ function DiagGameScreen() {
                 {current}
               </div>
               <div style={{ fontSize: 12, color: 'var(--text-sub)', fontWeight: 600, opacity: drag.active ? 0 : 1, transition: 'opacity .15s' }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>☝️ ドラッグして振り分け</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>ドラッグして振り分け</span>
               </div>
             </>
           ) : (
             <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-              <div style={{ fontSize: 44 }}>{ax.emoji}</div>
+              <div style={{ color:'var(--text-sub)', display:'flex' }}><FIcon name={ax.emoji} size={40} /></div>
               <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>仕分け完了！判定してみよう</div>
             </div>
           )}
@@ -317,7 +317,7 @@ function DiagResultScreen() {
         </div>
 
         <div className="fade-in" style={{ background: ax.color, borderRadius: 'var(--r-lg)', padding: '26px 20px', textAlign: 'center', color: '#fff', boxShadow: `0 10px 26px ${ax.color}55` }}>
-          <div style={{ fontSize: 40, marginBottom: 6 }}>{ax.emoji}</div>
+          <div style={{ marginBottom: 6, display:'flex', justifyContent:'center', color:'#fff' }}><FIcon name={ax.emoji} size={38} /></div>
           <div style={{ fontSize: 12, opacity: .85, marginBottom: 6, fontWeight: 600 }}>キミの結果</div>
           <div style={{ fontFamily: 'var(--font-round)', fontSize: 22, fontWeight: 900, lineHeight: 1.35 }}>{ax.result}</div>
           <div style={{ fontSize: 11, opacity: .8, marginTop: 8 }}>この傾向をもとに診断を続けます</div>
@@ -330,7 +330,7 @@ function DiagResultScreen() {
 
         {isLast ? (
           <div style={{ background: 'var(--green-soft)', borderRadius: 'var(--r-lg)', padding: 16, textAlign: 'center' }}>
-            <div style={{ fontFamily: 'var(--font-round)', fontSize: 16, fontWeight: 800, color: '#2E7D32', marginBottom: 4 }}>🎉 気質診断 完了！</div>
+            <div style={{ fontFamily: 'var(--font-round)', fontSize: 16, fontWeight: 800, color: '#2E7D32', marginBottom: 4 }}><span style={{display:'inline-flex',alignItems:'center',gap:6}}><FIcon name="party" size={16} color="#2E7D32" /> 気質診断 完了！</span></div>
             <p style={{ fontSize: 12, color: '#388E3C', fontWeight: 600, lineHeight: 1.7 }}>お疲れさまでした！ホームから次のステップに進もう。</p>
           </div>
         ) : (
@@ -346,7 +346,7 @@ function DiagResultScreen() {
 
         <button className="btn btn--cta btn--lg"
           onClick={() => isLast ? nav.go('exam') : nav.go('diag-game', { round: round + 1 })}>
-          {isLast ? 'ホームへ 🏠' : '次へすすむ'}
+          {isLast ? 'ホームへ' : '次へすすむ'}
         </button>
         <p style={{ fontSize: 11, color: 'var(--text-sub)', textAlign: 'center' }}>1 項目 約 5 分</p>
       </div>

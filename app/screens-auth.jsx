@@ -26,7 +26,7 @@ function LoginScreen() {
             </div>
             <div className="logo" style={{ fontSize: 40 }}><span className="ai">Ai</span><span className="grow">GROW</span></div>
             <p style={{ fontFamily: 'var(--font-round)', fontWeight: 700, fontSize: 15, color: 'var(--text-sub)', textAlign: 'center', lineHeight: 1.6 }}>
-              キミの強みを見つける旅へ 🧭<br/>
+              キミの強みを見つける旅へ<br/>
               <span style={{ fontSize: 13 }}>自分だけの「トリセツ」をつくろう</span>
             </p>
           </div>
@@ -103,7 +103,7 @@ function OnboardScreen() {
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           {!last && <button className="btn btn--ghost" style={{ flex: 1, background: '#f3e3d2', color: '#a76b32' }} onClick={() => nav.go('start-diag')}>スキップ</button>}
-          <button className="btn btn--cta" style={{ flex: 2 }} onClick={next}>{last ? 'はじめる 🚀' : '次へ'}</button>
+          <button className="btn btn--cta" style={{ flex: 2 }} onClick={next}>{last ? 'はじめる' : '次へ'}</button>
         </div>
       </div>
     </div>

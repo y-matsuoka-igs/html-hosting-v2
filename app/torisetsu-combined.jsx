@@ -195,7 +195,7 @@ function TorisetsuTab({ nav, goChallenge }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {TORI.usage.map(([e, t], i) =>
           <div key={i} style={{ display: 'flex', gap: 11, alignItems: 'center', background: '#f8f9fb', borderRadius: 12, padding: '10px 12px' }}>
-              <span style={{ fontSize: 18, flexShrink: 0 }}>{e}</span>
+              <span style={{ flexShrink: 0, color: TC.orange, display: 'flex' }}><Emo e={e} size={18} /></span>
               <span style={{ fontSize: 12.5, color: TC.text, fontWeight: 600, lineHeight: 1.5, fontFamily: TC.font }}>{t}</span>
             </div>
           )}
@@ -207,60 +207,18 @@ function TorisetsuTab({ nav, goChallenge }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {TORI.pitfalls.map((p, i) =>
           <div key={i} style={{ display: 'flex', gap: 9, fontSize: 12.5, color: TC.text, lineHeight: 1.6, fontWeight: 500, fontFamily: TC.font }}>
-              <span style={{ flexShrink: 0 }}>⚠️</span>{p}
+              <span style={{ flexShrink: 0, color: TC.orange, display: 'flex', marginTop: 1 }}><FIcon name="warning" size={15} /></span>{p}
             </div>
           )}
         </div>
         <div style={{ marginTop: 10, fontSize: 11, color: '#9a6a2e', background: '#fff6e9', borderRadius: 10, padding: '9px 11px', lineHeight: 1.6, display: 'flex', gap: 7, fontWeight: 600, fontFamily: TC.font }}>
-          <span>💡</span>落とし穴は「弱点」じゃなく、知っておけば対処できるポイントだよ。
+          <span style={{ flexShrink: 0, color: '#d98a2b', display: 'flex', marginTop: 1 }}><FIcon name="bulb" size={14} /></span>落とし穴は「弱点」じゃなく、知っておけば対処できるポイントだよ。
         </div>
       </Card>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingTop: 4 }}>
         <div style={{ fontSize: 11, color: TC.textSub, fontWeight: 700, padding: '0 2px' }}>もっと深く見る</div>
-        <Accordion icon="📊" label="自己評価">
-          {/* 自己評価詳細 — 元HTML準拠 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {/* 全体像 */}
-            <div style={{ background: 'linear-gradient(135deg,var(--blue),#0069b5)', borderRadius: 10, padding: '14px 16px', color: '#fff' }}>
-              <div style={{ fontSize: 10, opacity: .75, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>自己評価　全体像</div>
-              <div style={{ fontFamily: TC.fontRound, fontSize: 16, fontWeight: 900, marginBottom: 6 }}>キミは臨機応変な<br />ムードメーカータイプ</div>
-              <div style={{ fontSize: 11, opacity: .88, lineHeight: 1.7 }}>人と関わりながらアイデアを出し、場の雰囲気を明るくしながら前に進める力が際立っています。</div>
-            </div>
-            {/* TOP5 */}
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 800, color: TC.text, marginBottom: 10 }}>✨ キミの強み　TOP 5</div>
-              {[['外交性', 90], ['個人的実行力', 88], ['創造性', 82], ['影響力の行使', 80], ['共感・傾聴力', 74]].map(([label, val]) =>
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                  <div style={{ fontSize: 11, color: TC.text, width: 80, flexShrink: 0 }}>{label}</div>
-                  <div style={{ flex: 1, height: 10, background: '#eef0f3', borderRadius: 5, overflow: 'hidden' }}>
-                    <div style={{ width: `${val}%`, height: '100%', background: `${TC.blue}`, borderRadius: 5 }}></div>
-                  </div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: TC.blue, width: 24, textAlign: 'right' }}>{val}</div>
-                </div>
-              )}
-            </div>
-            {/* カテゴリ別 */}
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 800, color: TC.text, marginBottom: 10 }}>カテゴリ別　強みの傾向</div>
-              {[['認知', 64], ['自己', 72], ['他者', 80], ['コミュ', 68]].map(([label, val]) =>
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: TC.blue, width: 44, flexShrink: 0 }}>{label}</div>
-                  <div style={{ flex: 1, height: 8, background: '#eef0f3', borderRadius: 4, overflow: 'hidden' }}>
-                    <div style={{ width: `${val}%`, height: '100%', background: TC.blue, borderRadius: 4, opacity: .75 }}></div>
-                  </div>
-                  <div style={{ fontSize: 10, color: TC.textSub, width: 44, textAlign: 'right' }}>平均 {val}</div>
-                </div>
-              )}
-              <div style={{ marginTop: 8, padding: '10px 12px', background: TC.bg, borderRadius: 8, fontSize: 11, color: TC.textSub, lineHeight: 1.7 }}>「他者」カテゴリのスコアが最も高く、人との関わりで力を発揮するタイプです。</div>
-            </div>
-            {/* AIひとこと */}
-            <div style={{ background: TC.blueSoft, borderRadius: 8, padding: '12px 14px', borderLeft: `3px solid ${TC.blue}` }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: TC.blue, marginBottom: 4 }}>AIからのひとこと</div>
-              <p style={{ fontSize: 12, color: TC.text, lineHeight: 1.7, margin: 0 }}>外交性・個人的実行力・創造性が突出しています。自分から動いて場を作る力が強みの核心。この3つを意識して使う場面を増やすと、さらに評価が高まりそうです。</p>
-            </div>
-          </div>
-        </Accordion>
+        
       </div>
 
     </>);
@@ -706,13 +664,13 @@ function ShareModal({ onClose }) {
         {/* ─── シェア先ボタン ─── */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 9, marginBottom: 10 }}>
           {[
-          { icon: '📗', label: 'LINEで送る', color: '#06C755', bg: '#e8faf0' },
-          { icon: '🔗', label: 'リンクをコピー', color: TC.blue, bg: TC.blueSoft },
-          { icon: '📸', label: '画像を保存', color: '#8a6cf0', bg: '#EDE7F6' },
-          { icon: '✉️', label: 'メールで送る', color: TC.orange, bg: TC.orangeSoft }].
+          { icon: 'chat',   label: 'LINEで送る', color: '#06C755', bg: '#e8faf0' },
+          { icon: 'link',   label: 'リンクをコピー', color: TC.blue, bg: TC.blueSoft },
+          { icon: 'camera', label: '画像を保存', color: '#8a6cf0', bg: '#EDE7F6' },
+          { icon: 'mail',   label: 'メールで送る', color: TC.orange, bg: TC.orangeSoft }].
           map((item) =>
           <button key={item.label} style={{ background: item.bg, border: 'none', borderRadius: 13, padding: '12px 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
-              <span style={{ fontSize: 20 }}>{item.icon}</span>
+              <span style={{ display: 'flex', color: item.color }}><FIcon name={item.icon} size={20} /></span>
               <span style={{ fontSize: 11, fontWeight: 700, color: item.color, fontFamily: TC.font }}>{item.label}</span>
             </button>
           )}
@@ -728,7 +686,7 @@ function TorisetsuCombined({ initialTab = 0 }) {
   const [tab, setTab] = useTc(initialTab);
   const [showTree, setShowTree] = useTc(false);
   const [showShare, setShowShare] = useTc(false);
-  const savedStep = (nav.state && nav.state.torisetsuStep) || 1;
+  const savedStep = nav.state && nav.state.torisetsuStep || 1;
   const [step, setStep] = useTc(savedStep);
   const scrollRef = React.useRef(null);
   const goStep = (n) => {
@@ -737,40 +695,28 @@ function TorisetsuCombined({ initialTab = 0 }) {
     nav.update && nav.update({ torisetsuStep: next });
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
   };
-  const StepInd = window.ToriStepIndicator, StepNav = window.ToriStepNav, StepHead = window.JStepHead;
-  const Top3 = window.Top3Section, Voices = window.VoicesSection, Future = window.TorisetsuFuture;
-
-  if (showTree) {
-    return (
-      <div className="screen" style={{ position: 'relative' }}>
-        <EvolutionTreePage onBack={() => setShowTree(false)} />
-      </div>);
-
-  }
+  const StepInd = window.ToriStepIndicator,StepNav = window.ToriStepNav,StepHead = window.JStepHead;
+  const Top3 = window.Top3Section,Voices = window.VoicesSection,Future = window.TorisetsuFuture;
 
   return (
     <div className="screen" style={{ background: TC.bg, fontFamily: TC.font, position: 'relative' }}>
       <StatusBar />
       <StickyHero />
-      <TabBar tab={tab} setTab={setTab} />
-      {tab === 0 && StepInd && <StepInd step={step} onJump={goStep} />}
+      {StepInd && <StepInd step={step} onJump={goStep} />}
       <div ref={scrollRef} style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden', WebkitOverflowScrolling: 'touch' }}>
         <div style={{ padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 14, paddingBottom: 24 }}>
-          {tab === 0 && (
-            <div key={step} className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div key={step} className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {step === 1 && <TorisetsuTab nav={nav} goChallenge={() => goStep(4)} />}
               {step === 2 && StepHead && <><StepHead n={2} title="キミの強み TOP3" sub="まずはここから。キミのいちばんの武器" /><Top3 /></>}
               {step === 3 && StepHead && <><StepHead n={3} title="みんなの発見" sub="まわりの人が見つけたキミの良さ" /><Voices /></>}
               {(step === 4 || step === 5) && Future && <Future nav={nav} step={step} goBack={() => goStep(4)} goChallenge={() => nav && nav.go('challenge')} />}
               {StepNav && <StepNav step={step} goStep={goStep} onShare={() => setShowShare(true)} />}
             </div>
-          )}
-          {tab === 1 && <EvolutionTab onOpenTree={() => setShowTree(true)} />}
         </div>
       </div>
       {showShare && <ShareModal onClose={() => setShowShare(false)} />}
-    </div>
-  );
+    </div>);
+
 }
 
 
