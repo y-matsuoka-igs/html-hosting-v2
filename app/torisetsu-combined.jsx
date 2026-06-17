@@ -232,7 +232,7 @@ const STEP_REACTIONS = [
 const REACT_THANKS = {
   me:   'いいね！キミらしさ、しっかり伝わってるね。',
   wow:  '新しい発見だね。意外な一面もキミの魅力だよ。',
-  grow: 'その意気！「つぎのチャレンジ」で伸ばしていこう。',
+  grow: 'その意気！「マイチャレンジ」で伸ばしていこう。',
 };
 function StepReaction({ nav, step }) {
   const saved = (nav.state && nav.state.toriReactions) || {};
@@ -768,4 +768,4 @@ function TorisetsuCombined({ initialTab = 0 }) {
 }
 
 
-Object.assign(window, { TorisetsuCombined, ChallengeTab, EvolutionTreePage });
+Object.assign(window, { TorisetsuCombined, ChallengeTab, EvolutionTreePage, Character });

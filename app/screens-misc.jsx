@@ -4,7 +4,7 @@ const { useState: useSm, useEffect: useEm } = React;
 const UNLOCKS = [
   { emoji: 'book', title: 'トリセツが完成しました', desc: 'キミだけの取扱説明書が見られるよ', color: 'var(--green)' },
   { emoji: 'link', title: 'トリセツをシェアできる', desc: '友だちや先生に結果を送れるよ', color: 'var(--blue)' },
-  { emoji: 'footsteps', title: 'チャレンジ機能が解放', desc: 'AIコーチが次の行動を提案するよ', color: 'var(--orange)' },
+  { emoji: 'footsteps', title: 'チャレンジ機能が解放', desc: 'AiGROWが次の行動を提案するよ', color: 'var(--orange)' },
 ];
 
 function AnnounceScreen() {

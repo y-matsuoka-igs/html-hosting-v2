@@ -198,28 +198,28 @@ function VoicesSection() {
 /* ════════ STEP 4: 未来のヒント＋目標設定 ════════ */
 const CAREERS_PURE = [
   { id:'planner', icon:'💡', title:'商品企画・プランナー', why:'創造力 × 個人的実行力',
-    desc:'新しい商品やサービスを考えて形にする仕事。アイデアを出してすぐ動けるキミにぴったり。',
+    desc:'新しい商品やサービスを考えて形にすること。アイデアを出してすぐ動けるキミにぴったり。',
     comps:[['創造力',82,86],['論理的思考',55,70],['課題設定',58,70]],
     actions:['気になる商品が「なぜ人気か」を3つ分析してみる','友だちの困りごとを1つ見つけて解決アイデアを出す'] },
   { id:'producer', icon:'🚀', title:'起業家・プロデューサー', why:'影響力の行使 × 個人的実行力',
-    desc:'人を巻き込みながら新しいことを立ち上げる仕事。「まずやってみる」キミの行動力が核になる。',
+    desc:'人を巻き込みながら新しいことを立ち上げること。「まずやってみる」キミの行動力が核になる。',
     comps:[['影響力の行使',80,90],['組織への働きかけ',70,85],['論理的思考',55,72]],
     actions:['文化祭・行事で企画リーダーに立候補する','やりたい企画を紙1枚にまとめて誰かに見せる'] },
   { id:'marketer', icon:'📣', title:'マーケター・広報', why:'表現力 × 外交性',
-    desc:'モノやサービスの魅力を伝えて、人の心を動かす仕事。伝える力と人懐っこさが武器になる。',
+    desc:'モノやサービスの魅力を伝えて、人の心を動かすこと。伝える力と人懐っこさが武器になる。',
     comps:[['表現力',78,88],['創造力',82,86],['論理的思考',55,68]],
     actions:['好きなものの魅力をSNS風に1投稿書いてみる','クラスのお知らせポスターを作ってみる'] },
 ];
 const INTERESTS = [
-  { key:'スポーツ', icon:'⚽', career:{ id:'i-sports', icon:'🏟️', title:'スポーツイベントプランナー', why:'興味「スポーツ」× 強み「実行力・外交性」', desc:'大会やイベントを企画・運営して、スポーツの楽しさを届ける仕事。', comps:[['組織への働きかけ',70,82],['課題設定',58,70]], actions:['クラスマッチの運営係に立候補する','部活の練習メニューを1つ提案してみる'] } },
-  { key:'音楽', icon:'🎵', career:{ id:'i-music', icon:'🎧', title:'音楽プロデューサー', why:'興味「音楽」× 強み「創造力・表現力」', desc:'アーティストや楽曲の魅力を引き出して世に送り出す仕事。', comps:[['創造力',82,88],['表現力',78,85]], actions:['行事のBGM・選曲係をやってみる','好きな曲の「良さ」を言葉にして友だちに紹介する'] } },
-  { key:'ゲーム', icon:'🎮', career:{ id:'i-game', icon:'🕹️', title:'ゲームプランナー', why:'興味「ゲーム」× 強み「創造力」', desc:'ゲームの企画・ルール・体験を設計する仕事。「面白さ」を作る側に回る。', comps:[['創造力',82,88],['論理的思考',55,72]], actions:['好きなゲームの「面白さの仕組み」を3つ書き出す','かんたんなゲーム企画書を1枚作ってみる'] } },
-  { key:'ものづくり', icon:'🔧', career:{ id:'i-craft', icon:'🛠️', title:'プロダクトデザイナー', why:'興味「ものづくり」× 強み「創造力・実行力」', desc:'使う人のことを考えて、カタチあるものを生み出す仕事。', comps:[['創造力',82,88],['課題設定',58,72]], actions:['身の回りの「使いにくい物」の改善案をスケッチする','文化祭の装飾・制作係に参加する'] } },
-  { key:'アート・デザイン', icon:'🎨', career:{ id:'i-art', icon:'🖌️', title:'UI/UXデザイナー', why:'興味「アート」× 強み「創造力・共感力」', desc:'アプリやサービスの「使いやすさ」と「美しさ」をデザインする仕事。', comps:[['創造力',82,90],['共感・傾聴力',74,80]], actions:['毎日1つ「いいデザイン」を見つけて記録する','学校行事のポスターづくりに挑戦する'] } },
-  { key:'文章を書く', icon:'✍️', career:{ id:'i-write', icon:'📝', title:'編集者・ライター', why:'興味「文章」× 強み「表現力」', desc:'言葉で情報や物語を届ける仕事。伝える力がそのまま武器になる。', comps:[['表現力',78,88],['論理的思考',55,70]], actions:['今日感じたことを3行で書く習慣をつける','学級新聞・部誌の記事を1本書いてみる'] } },
-  { key:'動画・配信', icon:'🎬', career:{ id:'i-video', icon:'📹', title:'映像クリエイター', why:'興味「動画」× 強み「創造力・表現力」', desc:'映像で人を楽しませ、心を動かすコンテンツを作る仕事。', comps:[['創造力',82,86],['表現力',78,88]], actions:['1分の紹介動画を撮って編集してみる','好きな動画の「構成」を分析してみる'] } },
-  { key:'人と話す', icon:'💬', career:{ id:'i-talk', icon:'🤝', title:'キャリアコーチ・営業', why:'興味「人と話す」× 強み「外交性・傾聴力」', desc:'人の話を聞き、その人に合った提案で背中を押す仕事。', comps:[['共感・傾聴力',74,85],['外交性',90,92]], actions:['初対面の人に自分から話しかけてみる','友だちの相談に「聞き役」として乗ってみる'] } },
-  { key:'科学・実験', icon:'🔬', career:{ id:'i-sci', icon:'🧪', title:'研究開発エンジニア', why:'興味「科学」× 強み「実行力」', desc:'「なぜ？」を追いかけて、新しい技術や発見を生む仕事。', comps:[['論理的思考',55,75],['課題設定',58,72]], actions:['身近な「なぜ?」を1つ調べてまとめてみる','自由研究のテーマを3つ考えてみる'] } },
+  { key:'スポーツ', icon:'⚽', career:{ id:'i-sports', icon:'🏟️', title:'スポーツイベントプランナー', why:'興味「スポーツ」× 強み「実行力・外交性」', desc:'大会やイベントを企画・運営して、スポーツの楽しさを届けること。', comps:[['組織への働きかけ',70,82],['課題設定',58,70]], actions:['クラスマッチの運営係に立候補する','部活の練習メニューを1つ提案してみる'] } },
+  { key:'音楽', icon:'🎵', career:{ id:'i-music', icon:'🎧', title:'音楽プロデューサー', why:'興味「音楽」× 強み「創造力・表現力」', desc:'アーティストや楽曲の魅力を引き出して世に送り出すこと。', comps:[['創造力',82,88],['表現力',78,85]], actions:['行事のBGM・選曲係をやってみる','好きな曲の「良さ」を言葉にして友だちに紹介する'] } },
+  { key:'ゲーム', icon:'🎮', career:{ id:'i-game', icon:'🕹️', title:'ゲームプランナー', why:'興味「ゲーム」× 強み「創造力」', desc:'ゲームの企画・ルール・体験を設計すること。「面白さ」を作る側に回る。', comps:[['創造力',82,88],['論理的思考',55,72]], actions:['好きなゲームの「面白さの仕組み」を3つ書き出す','かんたんなゲーム企画書を1枚作ってみる'] } },
+  { key:'ものづくり', icon:'🔧', career:{ id:'i-craft', icon:'🛠️', title:'プロダクトデザイナー', why:'興味「ものづくり」× 強み「創造力・実行力」', desc:'使う人のことを考えて、カタチあるものを生み出すこと。', comps:[['創造力',82,88],['課題設定',58,72]], actions:['身の回りの「使いにくい物」の改善案をスケッチする','文化祭の装飾・制作係に参加する'] } },
+  { key:'アート・デザイン', icon:'🎨', career:{ id:'i-art', icon:'🖌️', title:'UI/UXデザイナー', why:'興味「アート」× 強み「創造力・共感力」', desc:'アプリやサービスの「使いやすさ」と「美しさ」をデザインすること。', comps:[['創造力',82,90],['共感・傾聴力',74,80]], actions:['毎日1つ「いいデザイン」を見つけて記録する','学校行事のポスターづくりに挑戦する'] } },
+  { key:'文章を書く', icon:'✍️', career:{ id:'i-write', icon:'📝', title:'編集者・ライター', why:'興味「文章」× 強み「表現力」', desc:'言葉で情報や物語を届けること。伝える力がそのまま武器になる。', comps:[['表現力',78,88],['論理的思考',55,70]], actions:['今日感じたことを3行で書く習慣をつける','学級新聞・部誌の記事を1本書いてみる'] } },
+  { key:'動画・配信', icon:'🎬', career:{ id:'i-video', icon:'📹', title:'映像クリエイター', why:'興味「動画」× 強み「創造力・表現力」', desc:'映像で人を楽しませ、心を動かすコンテンツを作ること。', comps:[['創造力',82,86],['表現力',78,88]], actions:['1分の紹介動画を撮って編集してみる','好きな動画の「構成」を分析してみる'] } },
+  { key:'人と話す', icon:'💬', career:{ id:'i-talk', icon:'🤝', title:'キャリアコーチ・営業', why:'興味「人と話す」× 強み「外交性・傾聴力」', desc:'人の話を聞き、その人に合った提案で背中を押すこと。', comps:[['共感・傾聴力',74,85],['外交性',90,92]], actions:['初対面の人に自分から話しかけてみる','友だちの相談に「聞き役」として乗ってみる'] } },
+  { key:'科学・実験', icon:'🔬', career:{ id:'i-sci', icon:'🧪', title:'研究開発エンジニア', why:'興味「科学」× 強み「実行力」', desc:'「なぜ？」を追いかけて、新しい技術や発見を生むこと。', comps:[['論理的思考',55,75],['課題設定',58,72]], actions:['身近な「なぜ?」を1つ調べてまとめてみる','自由研究のテーマを3つ考えてみる'] } },
 ];
 const ALL_CAREERS = [...CAREERS_PURE, ...INTERESTS.map(i => i.career)];
 
@@ -256,10 +256,10 @@ function CareerCard({ c, selected, onSelect }) {
       </div>
       <div style={{ fontSize:11.5, color:TJ.sub, lineHeight:1.65, fontWeight:500 }}>{c.desc}</div>
 
-      {/* 選択時：この仕事で必要な能力をカード内に表示（チャレンジUIに合わせた行リスト） */}
+      {/* 選択時：この分野で必要な能力をカード内に表示（チャレンジUIに合わせた行リスト） */}
       {selected && c.comps && (
         <div style={{ marginTop:12, paddingTop:12, borderTop:`1px dashed ${TJ.blue}55` }}>
-          <div style={{ fontSize:10.5, fontWeight:800, color:TJ.blueDark, marginBottom:8, fontFamily:TJ.round, display:'flex', alignItems:'center', gap:5 }}><FIcon name="target" size={14} color={TJ.blue} /> この仕事で活きる力</div>
+          <div style={{ fontSize:10.5, fontWeight:800, color:TJ.blueDark, marginBottom:8, fontFamily:TJ.round, display:'flex', alignItems:'center', gap:5 }}><FIcon name="target" size={14} color={TJ.blue} /> この分野で活きる力</div>
           <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
             {c.comps.map(([name, now]) => {
               const isStrength = now >= 75;
@@ -329,7 +329,7 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
       <VoicesSection />
 
       {/* ── STEP 4 ── */}
-      <StepHead n={4} title="キミの強みが活きる未来のヒント" sub="この強み、こんな仕事で活きるかも" />
+      <StepHead n={4} title="キミの強みが活きる未来のヒント" sub="この強み、こんなところで活きるかも" />
       <div style={{ fontSize:11, color:TJ.sub, fontWeight:700, padding:'0 2px' }}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="book" size={13} /> トリセツからの提案</span></div>
       <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
         {CAREERS_PURE.map(c => <CareerCard key={c.id} c={c} selected={goalId===c.id} onSelect={selectGoal} />)}
@@ -379,7 +379,7 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
               <span style={{ fontSize:20 }}>{goal.icon}</span>
               <div style={{ fontFamily:TJ.round, fontWeight:900, fontSize:14, color:TJ.text }}>「{goal.title}」までの現在地</div>
             </div>
-            <div style={{ fontSize:11, color:TJ.sub, fontWeight:600, marginBottom:14, lineHeight:1.6 }}>この仕事で活きるコンピテンシーと、いまのキミの数値だよ</div>
+            <div style={{ fontSize:11, color:TJ.sub, fontWeight:600, marginBottom:14, lineHeight:1.6 }}>この分野で活きるコンピテンシーと、いまのキミの数値だよ</div>
             {goal.comps.map(([name, now, target]) => <GapBar key={name} name={name} now={now} target={target} />)}
             <div style={{ marginTop:4, background:TJ.orangeSoft, borderRadius:10, padding:'10px 12px', fontSize:11, color:'#9a6a2e', fontWeight:700, lineHeight:1.65 }}>
               💡 足りない分は「のびしろ」。下のアクションで少しずつ近づけるよ
@@ -387,28 +387,34 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
           </JCard>
 
           {/* ── STEP 5 ── */}
-          <StepHead n={5} title="つぎのチャレンジをえらぼう" sub="目標に近づくアクションをチャレンジに登録" />
+          <StepHead n={5} title="マイチャレンジをえらぼう" sub="未来のヒントに近づくアクションをチャレンジに登録" />
           <JCard>
             <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:14 }}>
               {goal.actions.map((a, i) => {
                 const on = pickedActions.includes(a);
+                const comp = ((goal.comps && (goal.comps[i] || goal.comps[0])) || [])[0];
                 return (
                   <button key={i} onClick={() => toggleAction(a)}
                     style={{ textAlign:'left', display:'flex', alignItems:'center', gap:11, cursor:'pointer', background:on?TJ.greenSoft:TJ.bg, border:`2px solid ${on?TJ.green:'transparent'}`, borderRadius:12, padding:'12px 13px', transition:'all .15s' }}>
                     <div style={{ width:22, height:22, borderRadius:7, flexShrink:0, border:`2px solid ${on?TJ.green:'#c8cdd2'}`, background:on?TJ.green:'#fff', display:'flex', alignItems:'center', justifyContent:'center' }}>
                       {on && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                     </div>
-                    <span style={{ fontSize:12.5, color:TJ.text, fontWeight:700, lineHeight:1.55 }}>{a}</span>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <span style={{ fontSize:12.5, color:TJ.text, fontWeight:700, lineHeight:1.55, display:'block' }}>{a}</span>
+                      {comp && <span style={{ display:'inline-flex', alignItems:'center', gap:3, marginTop:5, background:TJ.blueSoft, color:TJ.blueDark, fontSize:9.5, fontWeight:800, padding:'2px 8px', borderRadius:999 }}>
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>{comp}
+                      </span>}
+                    </div>
                   </button>
                 );
               })}
             </div>
             {registered ? (
-              <div style={{ textAlign:'center', background:TJ.greenSoft, borderRadius:12, padding:'13px', fontFamily:TJ.round, fontWeight:800, fontSize:13, color:'#2E7D32' }}><FIcon name="party" size={14} color="#2E7D32" style={{verticalAlign:'-2px',marginRight:4}} /> チャレンジに登録したよ！</div>
+              <div style={{ textAlign:'center', background:TJ.greenSoft, borderRadius:12, padding:'13px', fontFamily:TJ.round, fontWeight:800, fontSize:13, color:'#2E7D32' }}><FIcon name="party" size={14} color="#2E7D32" style={{verticalAlign:'-2px',marginRight:4}} /> チャレンジにチャレンジを決めたよ！</div>
             ) : (
               <button onClick={registerChallenge} disabled={!pickedActions.length}
                 style={{ width:'100%', background:pickedActions.length?TJ.orangeGrad:'#d6d6d6', color:'#fff', border:'none', borderRadius:999, padding:'14px', fontFamily:TJ.round, fontWeight:800, fontSize:14, cursor:pickedActions.length?'pointer':'default', boxShadow:pickedActions.length?'0 8px 20px rgba(252,133,36,.34)':'none' }}>
-                チャレンジに登録する{pickedActions.length ? `（${pickedActions.length}件）` : ''}
+                このチャレンジにする
               </button>
             )}
           </JCard>
@@ -416,7 +422,7 @@ function TorisetsuJourneyExt({ nav, goChallenge }) {
       )}
       {!goal && (
         <div style={{ fontSize:11.5, color:TJ.sub, fontWeight:600, textAlign:'center', padding:'2px 0 6px', lineHeight:1.7 }}>
-          気になる仕事をえらぶと、活きる強みと<br/>「つぎのチャレンジ」が見られるよ
+          気になることをえらぶと、活きる強みと<br/>「マイチャレンジ」が見られるよ
         </div>
       )}
     </>
@@ -464,7 +470,7 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
   const registerChallenge = () => {
     if(!pickedActions.length) return;
     const d=new Date(), date=`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
-    nav.update(s=>({tasks:[...(s.tasks||[]),...pickedActions.map(text=>({text,date,done:false}))]}));
+    nav.update(s=>({tasks:[...pickedActions.map(text=>({text,date,done:false,source:'future',fresh:true,comp:(goal.comps&&goal.comps[0]&&goal.comps[0][0])||''})),...(s.tasks||[])]}));
     setRegCount(pickedActions.length);
     setRegistered(true);
   };
@@ -477,46 +483,51 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
         <span style={{fontSize:20}}>{goal.icon}</span>
         <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:14,color:TJ.text}}>「{goal.title}」で活きるコンピテンシー</div>
       </div>
-      <div style={{fontSize:11,color:TJ.sub,fontWeight:600,marginBottom:14,lineHeight:1.6}}>この仕事で活きる力と、キミの強みが活かせるところだよ</div>
+      <div style={{fontSize:11,color:TJ.sub,fontWeight:600,marginBottom:14,lineHeight:1.6}}>この分野で活きる力と、キミの強みが活かせるところだよ</div>
       {goal.comps.map(([name,now,target])=><GapBar key={name} name={name} now={now} target={target}/>)}
       <div style={{marginTop:4,background:TJ.orangeSoft,borderRadius:10,padding:'10px 12px',fontSize:11,color:'#9a6a2e',fontWeight:700,lineHeight:1.65}}><span style={{display:'inline-flex',alignItems:'flex-start',gap:5}}><FIcon name="bulb" size={13} color="#9a6a2e" /> 「のびしろ」は伸ばすチャンス。下のアクションで近づけるよ</span></div>
     </JCard>
   ) : null;
 
-  /* ── STEP 5: つぎのチャレンジ ── */
+  /* ── STEP 5: マイチャレンジ ── */
   if (step === 5) {
     if (!goal) return (
       <JCard style={{textAlign:'center',padding:'28px 18px'}}>
         <div style={{marginBottom:8,display:'flex',justifyContent:'center',color:TJ.blue}}><FIcon name="target" size={40} /></div>
-        <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:14.5,color:TJ.text,marginBottom:6}}>まだ目標がえらばれていないよ</div>
-        <p style={{fontSize:11.5,color:TJ.sub,lineHeight:1.7,margin:'0 0 16px'}}>ひとつ前のSTEPにもどって、<br/>気になる仕事をえらんでみよう</p>
+        <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:14.5,color:TJ.text,marginBottom:6}}>まだ未来のヒントがえらばれていないよ</div>
+        <p style={{fontSize:11.5,color:TJ.sub,lineHeight:1.7,margin:'0 0 16px'}}>ひとつ前のSTEPにもどって、<br/>気になることをえらんでみよう</p>
         <button onClick={()=>goBack&&goBack()}
           style={{background:TJ.blueGrad,color:'#fff',border:'none',borderRadius:999,padding:'12px 26px',fontFamily:TJ.round,fontWeight:800,fontSize:13,cursor:'pointer',boxShadow:'0 6px 16px rgba(0,150,250,.3)'}}>
-          ← 目標をえらびに行く
+          ← 未来のヒントをえらびに行く
         </button>
       </JCard>
     );
     return (
       <>
         {gapCard}
-        <StepHead n={5} title="つぎのチャレンジをえらぼう" sub="目標に近づくアクションをチャレンジに登録"/>
+        <StepHead n={5} title="マイチャレンジをえらぼう" sub="未来のヒントに近づくアクションをチャレンジに登録"/>
         <JCard>
           <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:14}}>
-            {goal.actions.map((a,i)=>{const on=pickedActions.includes(a);return(
+            {goal.actions.map((a,i)=>{const on=pickedActions.includes(a);const comp=((goal.comps&&(goal.comps[i]||goal.comps[0]))||[])[0];return(
               <button key={i} onClick={()=>toggleAction(a)}
                 style={{textAlign:'left',display:'flex',alignItems:'center',gap:11,cursor:'pointer',background:on?TJ.greenSoft:TJ.bg,border:`2px solid ${on?TJ.green:'transparent'}`,borderRadius:12,padding:'12px 13px',transition:'all .15s'}}>
                 <div style={{width:22,height:22,borderRadius:7,flexShrink:0,border:`2px solid ${on?TJ.green:'#c8cdd2'}`,background:on?TJ.green:'#fff',display:'flex',alignItems:'center',justifyContent:'center'}}>
                   {on&&<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                 </div>
-                <span style={{fontSize:12.5,color:TJ.text,fontWeight:700,lineHeight:1.55}}>{a}</span>
+                <div style={{flex:1,minWidth:0}}>
+                  <span style={{fontSize:12.5,color:TJ.text,fontWeight:700,lineHeight:1.55,display:'block'}}>{a}</span>
+                  {comp&&<span style={{display:'inline-flex',alignItems:'center',gap:3,marginTop:5,background:TJ.blueSoft,color:TJ.blueDark,fontSize:9.5,fontWeight:800,padding:'2px 8px',borderRadius:999}}>
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>{comp}
+                  </span>}
+                </div>
               </button>
             );})}
           </div>
           {registered?(
             <div style={{textAlign:'center',padding:'6px 4px 2px'}}>
               <div style={{width:60,height:60,margin:'0 auto 12px',borderRadius:'50%',background:TJ.greenSoft,display:'flex',alignItems:'center',justifyContent:'center',color:TJ.green}}><FIcon name="party" size={32} /></div>
-              <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:20,color:TJ.text,lineHeight:1.3}}>登録したよ！</div>
-              <p style={{fontSize:12,color:TJ.sub,fontWeight:600,lineHeight:1.7,margin:'8px 0 0'}}>{regCount}件のチャレンジを登録したよ。<br/>ここからスタートしてみよう！</p>
+              <div style={{fontFamily:TJ.round,fontWeight:900,fontSize:20,color:TJ.text,lineHeight:1.3}}>チャレンジを決めたよ！</div>
+              <p style={{fontSize:12,color:TJ.sub,fontWeight:600,lineHeight:1.7,margin:'8px 0 0'}}>えらんだアクションを<br/>ここからスタートしてみよう！</p>
               <button onClick={()=>goChallenge&&goChallenge()}
                 style={{width:'100%',marginTop:18,background:TJ.orangeGrad,color:'#fff',border:'none',borderRadius:999,padding:'14px',fontFamily:TJ.round,fontWeight:800,fontSize:14,cursor:'pointer',boxShadow:'0 8px 20px rgba(252,133,36,.34)',display:'flex',alignItems:'center',justifyContent:'center',gap:7}}>
                 <FIcon name="fire" size={18} color="#fff" /> チャレンジ中を見る
@@ -525,7 +536,7 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
           ):(
             <button onClick={registerChallenge} disabled={!pickedActions.length}
               style={{width:'100%',background:pickedActions.length?TJ.orangeGrad:'#d6d6d6',color:'#fff',border:'none',borderRadius:999,padding:'14px',fontFamily:TJ.round,fontWeight:800,fontSize:14,cursor:pickedActions.length?'pointer':'default',boxShadow:pickedActions.length?'0 8px 20px rgba(252,133,36,.34)':'none'}}>
-              チャレンジに登録する{pickedActions.length?`（${pickedActions.length}件）`:''}
+              このチャレンジにする
             </button>
           )}
         </JCard>
@@ -536,7 +547,11 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
   /* ── STEP 4: 未来のヒント ── */
   return (
     <>
-      <StepHead n={4} title="キミの強みが活きる未来のヒント" sub="この強み、こんな仕事で活きるかも" />
+      <StepHead n={4} title="キミの強みが活きる未来のヒント" />
+      <div style={{display:'flex',alignItems:'center',gap:11,background:'linear-gradient(135deg,#fff8ef,#fff)',border:`1.5px solid #ffe2c2`,borderRadius:14,padding:'13px 15px'}}>
+        <span style={{width:34,height:34,borderRadius:10,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',color:TJ.orange,flexShrink:0,boxShadow:'0 2px 8px rgba(20,40,60,.08)'}}><FIcon name="bulb" size={18} color={TJ.orange} /></span>
+        <p style={{fontSize:13,color:TJ.text,fontWeight:700,lineHeight:1.6,fontFamily:TJ.round}}>気になることをえらぶと、<span style={{color:TJ.orange}}>活きる強み</span>と<span style={{color:TJ.blue}}>「マイチャレンジ」</span>が見られるよ</p>
+      </div>
       <div style={{fontSize:11,color:TJ.sub,fontWeight:700,padding:'0 2px'}}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="book" size={13} /> トリセツからの提案</span></div>
       <div style={{display:'flex',flexDirection:'column',gap:10}}>
         {CAREERS_PURE.map(c=><CareerCard key={c.id} c={c} selected={goalId===c.id} onSelect={selectGoal}/>)}
@@ -570,20 +585,15 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
           </div>
         </>
       )}
-      {goal&&<div style={{fontSize:11.5,color:TJ.sub,fontWeight:700,textAlign:'center',padding:'2px 0 4px'}}>下の「つぎへ →」で、つぎのチャレンジをえらぼう</div>}
-      {!goal&&(
-        <div style={{fontSize:11.5,color:TJ.sub,fontWeight:600,textAlign:'center',padding:'2px 0 6px',lineHeight:1.7}}>
-          気になる仕事をえらぶと、活きる強みと<br/>「つぎのチャレンジ」が見られるよ
-        </div>
-      )}
+      {goal&&<div style={{fontSize:11.5,color:TJ.sub,fontWeight:700,textAlign:'center',padding:'2px 0 4px'}}>下の「つぎへ →」で、マイチャレンジをえらぼう</div>}
     </>
   );
 }
 
 /* ── ステップインジケーター＆フッターナビ（トリセツ統合UI） ── */
-const TORI_STEPS = ['トリセツ','強みTOP3','みんなの発見','未来のヒント','つぎのチャレンジ'];
+const TORI_STEPS = ['トリセツ','強みTOP3','みんなの発見','未来のヒント','マイチャレンジ'];
 
-const TORI_STEP_CHIPS = [['📖','今のキミ'],['🏆','強みTOP3'],['💬','みんなの発見'],['💡','未来のヒント'],['👣','つぎのチャレンジ']];
+const TORI_STEP_CHIPS = [['📖','今のキミ'],['🏆','強みTOP3'],['💬','みんなの発見'],['💡','未来のヒント'],['👣','マイチャレンジ']];
 
 function ToriStepIndicator({ step, onJump, freeJump }) {
   const railRef = React.useRef(null);

@@ -60,10 +60,11 @@ const SCREEN_TAB = {
   home: 'home', exam: 'exam', contents: 'contents',
   torisetsu: 'home',     // トリセツはホームタブ内
   challenge: 'challenge', tree: 'challenge',
+  record: 'record', journal: 'record', 'journal-write': 'record',
   'next-step': null, 'ai-chat': null,
 };
 // screens that show the bottom nav
-const TABBED = new Set(['home', 'exam', 'contents', 'torisetsu', 'next-step', 'tree', 'challenge']);
+const TABBED = new Set(['home', 'exam', 'contents', 'torisetsu', 'next-step', 'tree', 'challenge', 'record']);
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
@@ -118,8 +119,7 @@ function App() {
       case 'challenge':
       case 'tree':     return <ChallengeScreen />;
       case 'contents': return <ContentsScreen />;
-      case 'fortune':  return <FortuneScreen />;
-      case 'monthly':  return <MonthlyScreen />;
+      case 'record':   return <RecordScreen />;
       case 'journal':       return <JournalScreen />;
       case 'journal-write': return <JournalWriteScreen />;
       default: return <LoginScreen />;
@@ -132,7 +132,7 @@ function App() {
     <NavCtx.Provider value={nav}>
       <Device>
         {render()}
-        {showNav && <BottomNav active={SCREEN_TAB[screen]} onTab={nav.tab} badges={badges} locked={comp < 100} />}
+        {showNav && <BottomNav active={SCREEN_TAB[screen]} onTab={nav.tab} badges={badges} locked={!state.torisetsuDone} />}
       </Device>
 
       <TweaksPanel>
@@ -166,6 +166,7 @@ function App() {
         <TweakButton label="チャレンジへ" onClick={() => nav.go('challenge', { tab: 'challenge' })} />
         <TweakButton label="完了の木(EXP)へ" onClick={() => nav.go('tree', { tab: 'tree' })} />
         <TweakButton label="コンテンツへ" onClick={() => nav.go('contents')} />
+        <TweakButton label="成長きろくへ" onClick={() => nav.go('record')} />
         <TweakButton label="成長ジャーナルへ" onClick={() => nav.go('journal')} />
         <TweakButton label="ふり返りを書くへ" onClick={() => nav.go('journal-write')} />
         <TweakButton label="ログイン画面へ戻る" onClick={() => { setScreen('login'); setParams({}); }} />

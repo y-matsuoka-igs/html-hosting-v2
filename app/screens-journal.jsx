@@ -84,7 +84,7 @@ function JournalScreen() {
       <StatusBar />
       {/* 戻る付きヘッダー（占い/今月の診断と同じ作法） */}
       <div className="appbar">
-        <button onClick={() => nav.go('contents')} style={{ border: 'none', background: 'var(--bg)', width: 38, height: 38, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text)' }}>
+        <button onClick={() => nav.go('record')} style={{ border: 'none', background: 'var(--bg)', width: 38, height: 38, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text)' }}>
           <Icon name="back" size={20} />
         </button>
         <div className="logo"><span className="ai">Ai</span><span className="grow">GROW</span><span className="sub">ジャーナル</span></div>
@@ -341,7 +341,7 @@ function JournalSaved({ mood, nav }) {
         <div style={{ marginTop: 18, textAlign: 'left', background: 'var(--blue-softer)', borderRadius: 'var(--r-md)', padding: '14px 15px', display: 'flex', gap: 11 }}>
           <div style={{ flexShrink: 0 }}><Mascot size={42} /></div>
           <div>
-            <div style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--blue)', marginBottom: 3 }}>AIコーチから</div>
+            <div style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--blue)', marginBottom: 3 }}>AiGROWから</div>
             <p style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.75, fontWeight: 500 }}>{J_AI_COMMENT[mood] || J_AI_COMMENT.ok}</p>
           </div>
         </div>

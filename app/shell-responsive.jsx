@@ -64,6 +64,7 @@ const NAV_TABS = [
   { key: 'home',      label: 'ホーム',      icon: 'home' },
   { key: 'exam',      label: '受検',        icon: 'clip' },
   { key: 'challenge', label: 'チャレンジ',  icon: 'flag' },
+  { key: 'record',    label: 'きろく',      icon: 'book' },
   { key: 'contents',  label: 'コンテンツ',  icon: 'grid' },
 ];
 function BottomNav({ active, onTab, badges = {}, locked = false }) {

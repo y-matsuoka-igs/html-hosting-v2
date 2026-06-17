@@ -1,6 +1,18 @@
 // screens-hub.jsx — 受検ハブ(exam) / コンテンツ(contents)
 const { useState: useShub } = React;
 
+/* ════ 共通：タブ画面ヘッダー（ホーム/チャレンジと統一） ════ */
+function TabHeader({ icon, title }) {
+  return (
+    <div style={{ background:'linear-gradient(135deg,#1aa6ff,#0069b5)', padding:'12px 16px 14px', flexShrink:0 }}>
+      <div style={{ display:'flex', alignItems:'center', gap:9 }}>
+        <div style={{ width:34, height:34, borderRadius:11, background:'rgba(255,255,255,.2)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff' }}><FIcon name={icon} size={18} /></div>
+        <div style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:17, color:'#fff' }}>{title}</div>
+      </div>
+    </div>
+  );
+}
+
 /* ════ 受検ハブ ════ */
 function ExamHubScreen() {
   const nav = useNav();
@@ -123,29 +135,223 @@ function GrowthBadge({ b }) {
   );
 }
 
+function FortuneBody() {
+  const items = [
+    { e: 'palette', title: 'ラッキーカラー：イエロー', body: '明るい色を身に着けて気分をあげよう！' },
+    { e: 'gift', title: 'ラッキーフード：ドーナツ', body: '丸い形で人とのつながり運アップ！' },
+    { e: 'book', title: 'ラッキー教科：国語', body: '自分の考えを言葉にするといいことあるかも！' },
+    { e: 'chat', title: '今日のひとこと：「それいいね！」', body: '誰かの、何かのいい所を見つけて言葉にしてみよう' },
+    { e: '✨', title: '今日のおすすめ行動', body: 'あまり話したことがない友だちに話しかけてみよう。新しい視点が得られるかも！' },
+  ];
+  return (
+    <>
+      <div style={{ background: 'linear-gradient(135deg,#2C1654,#6A3093)', borderRadius: 'var(--r-lg)', padding: '22px 20px', color: '#fff', textAlign: 'center' }}>
+        <div style={{ fontSize: 11, letterSpacing: 2, opacity: .75, fontWeight: 700, marginBottom: 8 }}>今日の占い</div>
+        <div style={{ fontSize: 13.5, opacity: .9, marginBottom: 10, lineHeight: 1.6 }}>周りを明るくするアイデアメーカータイプの<br/>キミの今日の運勢は…</div>
+        <div style={{ fontSize: 28, letterSpacing: 4, marginBottom: 8, color: '#FFD54F' }}>★★★★☆</div>
+        <div style={{ fontSize: 14, fontFamily: 'var(--font-round)', fontWeight: 800, lineHeight: 1.55 }}>アイデアがポンポン出てくる日。<br/>ちょっとしたひとことで、場の空気を変えられそう！</div>
+      </div>
+      <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        {items.map((it, i) => (
+          <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: '#EDE7F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8a6cf0', flexShrink: 0 }}>{it.e && <FIcon name={it.e} size={20} />}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>{it.title}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-sub)', lineHeight: 1.6, fontWeight: 500 }}>{it.body}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function MonthlyBody() {
+  const others = ['🎸', '🥁', '🎹', '🎷', '🎻'];
+  return (
+    <>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: '#00838F', marginBottom: 4 }}>今月の診断</div>
+        <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>あなたはどの楽器？楽器診断</div>
+        <div style={{ fontSize: 13, color: 'var(--text-sub)' }}>あなたは…</div>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ width: 110, height: 110, borderRadius: '50%', background: 'linear-gradient(135deg,#E0F7FA,#B2EBF2)', border: '3px solid #00838F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 56, boxShadow: '0 8px 24px rgba(0,131,143,.2)' }}>🎺</div>
+      </div>
+      <div style={{ textAlign: 'center', fontFamily: 'var(--font-round)', fontSize: 19, fontWeight: 900, color: 'var(--text)' }}>トランペットタイプ！</div>
+      <div className="card">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13.5, color: 'var(--text)', marginBottom: 10, fontWeight: 500 }}>
+          <span>・明るくてエネルギーがある</span>
+          <span>・ここぞというときに前に出られる</span>
+          <span>・まわりの空気を動かす力がある</span>
+        </div>
+        <div style={{ fontSize: 12.5, color: 'var(--orange)', fontWeight: 700 }}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="star" size={13} color="var(--orange)" /> 「場を引っ張るスイッチ」を持っているタイプ</span></div>
+      </div>
+      <div>
+        <div style={{ fontSize: 12, color: 'var(--text-sub)', marginBottom: 8, textAlign: 'center' }}>他のタイプを見る</div>
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
+          {others.map((e, i) => (
+            <div key={i} style={{ width: 48, height: 48, borderRadius: '50%', background: '#f5f6f8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, border: '1.5px solid var(--border)', cursor: 'pointer' }}>{e}</div>
+          ))}
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--text-sub)', textAlign: 'center', marginTop: 8, lineHeight: 1.6 }}>毎月替わる：お弁当のおかず・動物・スイーツ・RPGキャラ・偉人 など</div>
+      </div>
+    </>
+  );
+}
+
 function ContentsScreen() {
   const nav = useNav();
   const comp = completion(nav.state);
   const unlocked = comp >= 100;
-
-  const totalGot = BADGE_GROUPS.reduce((s, g) => s + g.badges.filter(b => b.got).length, 0);
-  const totalAll = BADGE_GROUPS.reduce((s, g) => s + g.badges.length, 0);
+  const [view, setView] = useShub('fortune');
 
   return (
     <div className="screen">
       <StatusBar />
-      <AppHeader sub="コンテンツ" />
+      <TabHeader icon="gift" title="コンテンツ" />
       <div className="scroll pad stack">
         {!unlocked && (
           <div style={{ background: '#f0edea', borderRadius: 'var(--r-lg)', padding: '16px', display: 'flex', gap: 12, alignItems: 'center' }}>
             <div style={{ width: 38, height: 38, borderRadius: 11, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9a8f82', flexShrink: 0 }}><FIcon name="lock" size={20} /></div>
             <div>
               <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)' }}>もう少しで解放！</div>
-              <div style={{ fontSize: 11, color: 'var(--text-sub)', marginTop: 2, lineHeight: 1.5 }}>トリセツが完成すると、占い・診断などが楽しめるよ（現在 {comp}%）</div>
+              <div style={{ fontSize: 11, color: 'var(--text-sub)', marginTop: 2, lineHeight: 1.5 }}>トリセツが完成すると、占い・診断が楽しめるよ（現在 {comp}%）</div>
             </div>
           </div>
         )}
 
+        {/* 占い / 今月の診断 切り替え */}
+        <div style={{ display: 'flex', gap: 6, background: 'var(--bg)', borderRadius: 999, padding: 4 }}>
+          {[['fortune', '🔮', '今日の占い'], ['monthly', '🎯', '今月の診断']].map(([key, e, l]) => {
+            const on = view === key;
+            return (
+              <button key={key} onClick={() => setView(key)}
+                style={{ flex: 1, border: 'none', cursor: 'pointer', borderRadius: 999, padding: '9px 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 13,
+                  background: on ? '#fff' : 'transparent', color: on ? 'var(--text)' : 'var(--text-sub)',
+                  boxShadow: on ? 'var(--shadow-sm)' : 'none', transition: 'all .15s' }}>
+                <span style={{ fontSize: 16 }}>{e}</span>{l}
+              </button>
+            );
+          })}
+        </div>
+
+        <div style={{ opacity: unlocked ? 1 : .5, pointerEvents: unlocked ? 'auto' : 'none', display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {view === 'fortune' ? <FortuneBody /> : <MonthlyBody />}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════ 受検準備中 ════ */
+function ExamWaitingScreen() {
+  const nav = useNav();
+  const PAST_REPORTS = [
+    { term: '2025年度 後期', date: '2025.11.20', type: '気質診断 + 自己/相互評価', highlight: '行動する創造者', delta: '創造力 +2 / 表現力 +1', latest: true },
+    { term: '2025年度 前期', date: '2025.06.18', type: '気質診断 + 自己/相互評価', highlight: 'ひらめきの探究者', delta: '創造力 +1', latest: false },
+  ];
+  return (
+    <div className="screen">
+      <StatusBar />
+      <TabHeader icon="clip" title="受検" />
+      <div className="scroll pad stack">
+        {/* 準備中ヒーロー */}
+        <div style={{ background: 'linear-gradient(135deg,#1aa6ff,#0069b5)', borderRadius: 'var(--r-lg)', padding: '22px 22px 24px', textAlign: 'center', color: '#fff', boxShadow: 'var(--shadow-blue)' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+            <svg width="60" height="60" viewBox="0 0 72 72" fill="none">
+              <rect x="12" y="8" width="48" height="56" rx="8" fill="none" stroke="white" strokeWidth="3.5"/>
+              <path d="M24 8v-2a4 4 0 0 1 8 0v2M40 8v-2a4 4 0 0 1 8 0v2" stroke="white" strokeWidth="3"/>
+              <rect x="20" y="6" width="32" height="8" rx="4" fill="white" opacity=".25"/>
+              <line x1="24" y1="30" x2="48" y2="30" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+              <line x1="24" y1="40" x2="40" y2="40" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+              <circle cx="54" cy="54" r="14" fill="#0069b5" stroke="white" strokeWidth="3"/>
+              <path d="M54 48v7l4 3" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, opacity: .8, marginBottom: 8 }}>NEXT SESSION</div>
+          <h1 style={{ fontFamily: 'var(--font-round)', fontSize: 22, fontWeight: 900, lineHeight: 1.4, marginBottom: 10 }}>
+            次のAi GROW受検は<br/>準備中です
+          </h1>
+          <p style={{ fontSize: 13, opacity: .85, lineHeight: 1.7, fontWeight: 500 }}>
+            次回の受検案内が届くまで、<br/>今の強みを活かして前へ進もう！
+          </p>
+        </div>
+
+        {/* それまでにできること */}
+        <div className="card">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+            <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--blue-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="2.2" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2.5"/></svg>
+            </div>
+            <span style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 15 }}>それまでにできること</span>
+          </div>
+          <ul style={{ listStyle: 'disc', paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {[
+              ['チャレンジでコンピテンシーを高める行動をする', () => nav.go('next-step')],
+              ['トリセツを読み返して自分の強みを活かす場面を探す', () => nav.go('home')],
+              ['AIに相談してキミの伸ばし方を深掘りする', () => nav.go('ai-chat')],
+              ['コンテンツで気分転換・自己理解を深める', () => nav.go('contents')],
+            ].map(([text, onClick]) => (
+              <li key={text} style={{ fontSize: 13.5, color: 'var(--text)', fontWeight: 500, lineHeight: 1.6, cursor: 'pointer' }} onClick={onClick}>
+                {text}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* 過去の受検レポート */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h3 style={{ fontSize: 14, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 7 }}><FIcon name="book" size={17} color="var(--blue)" /> 過去の受検レポート</h3>
+          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-sub)' }}>{PAST_REPORTS.length}件</span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {PAST_REPORTS.map((r) => (
+            <button key={r.term} onClick={() => r.latest && nav.go('home')} disabled={!r.latest} style={{ width: '100%', textAlign: 'left', cursor: r.latest ? 'pointer' : 'default', opacity: r.latest ? 1 : .6, border: '1px solid var(--border-soft)', background: '#fff', borderRadius: 'var(--r-md)', padding: '14px 15px', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'center', gap: 13 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 12, background: r.latest ? 'var(--blue)' : 'var(--blue-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: r.latest ? '#fff' : 'var(--blue)' }}><FIcon name="chart" size={20} color={r.latest ? '#fff' : 'var(--blue)'} /></div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 2 }}>
+                  <span style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 13.5, color: 'var(--text)' }}>{r.term}</span>
+                  {r.latest && <span className="pill" style={{ background: 'var(--green-soft)', color: '#1b7a3e', fontSize: 9, padding: '2px 8px' }}>最新</span>}
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 600 }}>{r.date}・{r.type}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
+                  <span style={{ background: 'var(--blue-soft)', color: 'var(--blue-dark)', fontSize: 10.5, fontWeight: 800, padding: '3px 10px', borderRadius: 999 }}>{r.highlight}</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, color: '#1b7a3e', fontSize: 10.5, fontWeight: 700 }}>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1b7a3e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>{r.delta}
+                  </span>
+                </div>
+              </div>
+              {r.latest && <span style={{ flexShrink: 0, color: 'var(--text-sub)', display: 'flex' }}><Icon name="chevR" size={18} /></span>}
+            </button>
+          ))}
+        </div>
+
+        {/* 次回受検の目安 */}
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>次回受検の目安</div>
+          <div style={{ background: 'var(--bg)', borderRadius: 'var(--r-md)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-sub)" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span style={{ fontSize: 13, color: 'var(--text-sub)', fontWeight: 600 }}>学校・担当者からの案内をお待ちください</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════ 成長きろく ════ */
+function RecordScreen() {
+  const nav = useNav();
+  const totalGot = BADGE_GROUPS.reduce((s, g) => s + g.badges.filter(b => b.got).length, 0);
+  const totalAll = BADGE_GROUPS.reduce((s, g) => s + g.badges.length, 0);
+
+  return (
+    <div className="screen">
+      <StatusBar />
+      <TabHeader icon="book" title="成長きろく" />
+      <div className="scroll pad stack">
         {/* 成長ジャーナル（いつでも書ける核機能） */}
         <button onClick={() => nav.go('journal')} style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', background: 'linear-gradient(135deg,#ff9d3f,#ef6f0a)', borderRadius: 'var(--r-lg)', padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 14, boxShadow: 'var(--shadow-orange)', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: -22, right: -16, width: 96, height: 96, borderRadius: '50%', background: 'rgba(255,255,255,.1)' }}></div>
@@ -194,216 +400,9 @@ function ContentsScreen() {
             </div>
           ))}
         </div>
-
-        {/* お楽しみメニュー */}
-        <h3 style={{ fontSize: 14, fontWeight: 800 }}>お楽しみコンテンツ</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-          {[
-            ['🔮', '今日の占い', '#8a6cf0', '#EDE7F6', 'fortune'],
-            ['🎯', '今月の診断', '#0096fa', '#E0F7FA', 'monthly'],
-            ['🎁', 'スペシャル', '#FC8524', '#fff3e0', null],
-            ['📊', '成長レポート', '#00c853', '#e4f9ec', null],
-          ].map(([e, l, c, bg, screen]) => (
-            <div key={l} onClick={() => unlocked && screen && nav.go(screen)}
-              style={{ background: '#fff', borderRadius: 'var(--r-lg)', padding: '18px 14px', textAlign: 'center', boxShadow: 'var(--shadow-sm)', opacity: unlocked ? 1 : .5, position: 'relative', cursor: unlocked && screen ? 'pointer' : 'default' }}>
-              {!unlocked && <div style={{ position: 'absolute', top: 8, right: 8, color: '#b3b9be', display: 'flex' }}><FIcon name="lock" size={13} /></div>}
-              <div style={{ width: 46, height: 46, borderRadius: 14, margin: '0 auto 8px', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: c }}><Emo e={e} size={24} /></div>
-              <div style={{ fontFamily: 'var(--font-round)', fontWeight: 700, fontSize: 12.5 }}>{l}</div>
-            </div>
-          ))}
-        </div>
-
       </div>
     </div>
   );
 }
 
-/* ════ 受検準備中 ════ */
-function ExamWaitingScreen() {
-  const nav = useNav();
-  return (
-    <div className="screen">
-      <StatusBar />
-      {/* 青ヘッダー */}
-      <div style={{ background: 'var(--blue)', flexShrink: 0, padding: '24px 24px 32px', textAlign: 'center', color: '#fff' }}>
-        {/* クリップボード＋時計アイコン */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
-          <div style={{ position: 'relative', width: 72, height: 72 }}>
-            <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
-              <rect x="12" y="8" width="48" height="56" rx="8" fill="none" stroke="white" strokeWidth="3.5"/>
-              <path d="M24 8v-2a4 4 0 0 1 8 0v2M40 8v-2a4 4 0 0 1 8 0v2" stroke="white" strokeWidth="3"/>
-              <rect x="20" y="6" width="32" height="8" rx="4" fill="white" opacity=".25"/>
-              <line x1="24" y1="30" x2="48" y2="30" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-              <line x1="24" y1="40" x2="40" y2="40" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-              <circle cx="54" cy="54" r="14" fill="var(--blue)" stroke="white" strokeWidth="3"/>
-              <path d="M54 48v7l4 3" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-        </div>
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, opacity: .8, marginBottom: 8 }}>NEXT SESSION</div>
-        <h1 style={{ fontFamily: 'var(--font-round)', fontSize: 24, fontWeight: 900, lineHeight: 1.4, marginBottom: 10 }}>
-          次のAi GROW受検は<br/>準備中です
-        </h1>
-        <p style={{ fontSize: 13, opacity: .85, lineHeight: 1.7, fontWeight: 500 }}>
-          次回の受検案内が届くまで、<br/>今の強みを活かして前へ進もう！
-        </p>
-      </div>
-
-      <div className="scroll pad stack">
-        {/* それまでにできること */}
-        <div className="card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-            <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--blue-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="2.2" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2.5"/></svg>
-            </div>
-            <span style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 15 }}>それまでにできること</span>
-          </div>
-          <ul style={{ listStyle: 'disc', paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {[
-              ['チャレンジでコンピテンシーを高める行動をする', () => nav.go('next-step')],
-              ['トリセツを読み返して自分の強みを活かす場面を探す', () => nav.go('home')],
-              ['AIに相談してキミの伸ばし方を深掘りする', () => nav.go('ai-chat')],
-              ['コンテンツで気分転換・自己理解を深める', () => nav.go('contents')],
-            ].map(([text, onClick]) => (
-              <li key={text} style={{ fontSize: 13.5, color: 'var(--text)', fontWeight: 500, lineHeight: 1.6, cursor: 'pointer' }} onClick={onClick}>
-                {text}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* 次回受検の目安 */}
-        <div>
-          <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>次回受検の目安</div>
-          <div style={{ background: 'var(--bg)', borderRadius: 'var(--r-md)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-sub)" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            <span style={{ fontSize: 13, color: 'var(--text-sub)', fontWeight: 600 }}>学校・担当者からの案内をお待ちください</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-Object.assign(window, { ExamHubScreen, ContentsScreen, ExamWaitingScreen });
-
-/* ════ 今日の占い ════ */
-function FortuneScreen() {
-  const nav = useNav();
-  const items = [
-    { e: 'palette', title: 'ラッキーカラー：イエロー', body: '明るい色を身に着けて気分をあげよう！' },
-    { e: 'gift', title: 'ラッキーフード：ドーナツ', body: '丸い形で人とのつながり運アップ！' },
-    { e: 'book', title: 'ラッキー教科：国語', body: '自分の考えを言葉にするといいことあるかも！' },
-    { e: 'chat', title: '今日のひとこと：「それいいね！」', body: '誰かの、何かのいい所を見つけて言葉にしてみよう' },
-    { e: '✨', title: '今日のおすすめ行動', body: 'あまり話したことがない友だちに話しかけてみよう。新しい視点が得られるかも！' },
-  ];
-  return (
-    <div className="screen">
-      <StatusBar />
-      <div className="appbar">
-        <button onClick={() => nav.go('contents')} style={{ border: 'none', background: 'var(--bg)', width: 38, height: 38, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text)' }}>
-          <Icon name="back" size={20} />
-        </button>
-        <div className="logo"><span className="ai">Ai</span><span className="grow">GROW</span></div>
-        <div style={{ width: 38 }}></div>
-      </div>
-      <div className="scroll pad stack">
-        {/* ヒーロー */}
-        <div style={{ background: 'linear-gradient(135deg,#2C1654,#6A3093)', borderRadius: 'var(--r-lg)', padding: '22px 20px', color: '#fff', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, opacity: .75, fontWeight: 700, marginBottom: 8 }}>今日の占い</div>
-          <div style={{ fontSize: 13.5, opacity: .9, marginBottom: 10, lineHeight: 1.6 }}>周りを明るくするアイデアメーカータイプの<br/>キミの今日の運勢は…</div>
-          <div style={{ fontSize: 28, letterSpacing: 4, marginBottom: 8, color: '#FFD54F' }}>★★★★☆</div>
-          <div style={{ fontSize: 14, fontFamily: 'var(--font-round)', fontWeight: 800, lineHeight: 1.55 }}>アイデアがポンポン出てくる日。<br/>ちょっとしたひとことで、場の空気を変えられそう！</div>
-        </div>
-        {/* アイテム一覧 */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {items.map((it, i) => (
-            <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, background: '#EDE7F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8a6cf0', flexShrink: 0 }}>{it.e && <FIcon name={it.e} size={20} />}</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>{it.title}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-sub)', lineHeight: 1.6, fontWeight: 500 }}>{it.body}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        {/* コンテンツナビ */}
-        <div>
-          <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 700, marginBottom: 8 }}>コンテンツを見る</div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            {[['🔮', '今日の占い', '#EDE7F6', null], ['🎯', '今月の診断', '#E0F7FA', 'monthly']].map(([e, l, bg, s]) => (
-              <button key={l} onClick={() => s && nav.go(s)} disabled={!s}
-                style={{ flex: 1, background: bg, border: 'none', borderRadius: 12, padding: '10px 6px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, cursor: s ? 'pointer' : 'default', opacity: s ? 1 : .45 }}>
-                <span style={{ fontSize: 22 }}>{e}</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text)', textAlign: 'center' }}>{l}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ════ 今月の診断 ════ */
-function MonthlyScreen() {
-  const nav = useNav();
-  const others = ['🎸', '🥁', '🎹', '🎷', '🎻'];
-  return (
-    <div className="screen">
-      <StatusBar />
-      <div className="appbar">
-        <button onClick={() => nav.go('contents')} style={{ border: 'none', background: 'var(--bg)', width: 38, height: 38, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text)' }}>
-          <Icon name="back" size={20} />
-        </button>
-        <div className="logo"><span className="ai">Ai</span><span className="grow">GROW</span></div>
-        <div style={{ width: 38 }}></div>
-      </div>
-      <div className="scroll pad stack">
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: '#00838F', marginBottom: 4 }}>今月の診断</div>
-          <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>あなたはどの楽器？楽器診断</div>
-          <div style={{ fontSize: 13, color: 'var(--text-sub)' }}>あなたは…</div>
-        </div>
-        {/* 楽器サークル */}
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div style={{ width: 110, height: 110, borderRadius: '50%', background: 'linear-gradient(135deg,#E0F7FA,#B2EBF2)', border: '3px solid #00838F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 56, boxShadow: '0 8px 24px rgba(0,131,143,.2)' }}>🎺</div>
-        </div>
-        <div style={{ textAlign: 'center', fontFamily: 'var(--font-round)', fontSize: 19, fontWeight: 900, color: 'var(--text)' }}>トランペットタイプ！</div>
-        <div className="card">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13.5, color: 'var(--text)', marginBottom: 10, fontWeight: 500 }}>
-            <span>・明るくてエネルギーがある</span>
-            <span>・ここぞというときに前に出られる</span>
-            <span>・まわりの空気を動かす力がある</span>
-          </div>
-          <div style={{ fontSize: 12.5, color: 'var(--orange)', fontWeight: 700 }}><span style={{display:'inline-flex',alignItems:'center',gap:5}}><FIcon name="star" size={13} color="var(--orange)" /> 「場を引っ張るスイッチ」を持っているタイプ</span></div>
-        </div>
-        {/* 他のタイプ */}
-        <div>
-          <div style={{ fontSize: 12, color: 'var(--text-sub)', marginBottom: 8, textAlign: 'center' }}>他のタイプを見る</div>
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
-            {others.map((e, i) => (
-              <div key={i} style={{ width: 48, height: 48, borderRadius: '50%', background: '#f5f6f8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, border: '1.5px solid var(--border)', cursor: 'pointer' }}>{e}</div>
-            ))}
-          </div>
-          <div style={{ fontSize: 11, color: 'var(--text-sub)', textAlign: 'center', marginTop: 8, lineHeight: 1.6 }}>毎月替わる：お弁当のおかず・動物・スイーツ・RPGキャラ・偉人 など</div>
-        </div>
-        {/* コンテンツナビ */}
-        <div>
-          <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 700, marginBottom: 8 }}>コンテンツを見る</div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            {[['🔮', '今日の占い', '#EDE7F6', 'fortune'], ['🎯', '今月の診断', '#E0F7FA', null]].map(([e, l, bg, s]) => (
-              <button key={l} onClick={() => s && nav.go(s)} disabled={!s}
-                style={{ flex: 1, background: bg, border: 'none', borderRadius: 12, padding: '10px 6px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, cursor: s ? 'pointer' : 'default', opacity: s ? 1 : .45 }}>
-                <span style={{ fontSize: 22 }}>{e}</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text)', textAlign: 'center' }}>{l}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-Object.assign(window, { FortuneScreen, MonthlyScreen });
+Object.assign(window, { ExamHubScreen, ContentsScreen, ExamWaitingScreen, RecordScreen });

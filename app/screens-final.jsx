@@ -58,7 +58,7 @@ function AiChatScreen() {
     <div className="screen screen--white">
       <StatusBar />
       <div className="appbar">
-        <button onClick={() => nav.go('torisetsu')} style={{ border: 'none', background: 'var(--bg)', width: 38, height: 38, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text)' }}>
+        <button onClick={() => nav.go('tree')} style={{ border: 'none', background: 'var(--bg)', width: 38, height: 38, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text)' }}>
           <Icon name="back" size={20} />
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
@@ -105,6 +105,50 @@ function AiChatScreen() {
 }
 
 /* ════════ チャレンジ ════════ */
+const CH_STRENGTHS = ['創造力', '実行力', '表現力'];
+const CH_GROWING = '実行力';
+const CH_RECENT_GROWTH = [
+  { name: '実行力', delta: 2 },
+  { name: '表現力', delta: 1 },
+];
+const CH_STRENGTH_MAP = [
+  { name: '創造力', filled: 2 },
+  { name: '実行力', filled: 1 },
+  { name: '表現力', filled: 0 },
+];
+const CH_WEEK_RECS = [
+  { tag: '5分でできる', icon: 'bolt', color: 'var(--blue)', soft: 'var(--blue-soft)', items: [
+    { text:'好きなことを3つ書き出してみる', comp:'創造力' },
+    { text:'今日できたことを1つメモする', comp:'課題設定' },
+  ] },
+  { tag: '友だちとできる', icon: 'handshake', color: 'var(--green)', soft: 'var(--green-soft)', items: [
+    { text:'友だちに「強み」を聞いてみる', comp:'共感・傾聴力' },
+    { text:'得意なことを1つ友だちに教える', comp:'表現力' },
+  ] },
+  { tag: 'ちょっと挑戦', icon: 'fire', color: 'var(--orange)', soft: 'rgba(252,133,36,.13)', items: [
+    { text:'授業で1回、自分の意見を発言する', comp:'表現力' },
+    { text:'行事で係・リーダーに立候補する', comp:'影響力の行使' },
+  ] },
+];
+
+function CompTag({ name }) {
+  if (!name) return null;
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', gap:3, background:'var(--blue-soft)', color:'var(--blue-dark)', fontSize:9.5, fontWeight:800, padding:'2px 8px', borderRadius:999, whiteSpace:'nowrap' }}>
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>{name}
+    </span>
+  );
+}
+
+function StatusRow({ label, children }) {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:10, minHeight:24 }}>
+      <span style={{ fontSize:11, fontWeight:700, color:'var(--text-sub)', width:64, flexShrink:0 }}>{label}</span>
+      <div style={{ flex:1, minWidth:0, display:'flex', alignItems:'center', gap:6, flexWrap:'wrap' }}>{children}</div>
+    </div>
+  );
+}
+
 function ChallengeScreen() {
   const nav = useNav();
   const initTab = (nav.params && nav.params.tab === 'tree') ? 1 : 0;
@@ -114,19 +158,56 @@ function ChallengeScreen() {
     else if (nav.params && nav.params.tab === 'challenge') setTab(0);
   }, [nav.params && nav.params.tab]);
 
+  const exp = nav.state.exp || 0;
+  const toNext = Math.max(1, 3 - (exp % 3));
+  const Character = window.Character;
+
   return (
     <div className="screen">
       <StatusBar />
-      <div style={{ background:'linear-gradient(135deg,#1aa6ff,#0069b5)', padding:'14px 18px 0', flexShrink:0 }}>
-        <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
-          <div style={{ width:42, height:42, borderRadius:14, background:'rgba(255,255,255,.2)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff' }}><FIcon name="footsteps" size={22} /></div>
-          <div>
-            <div style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:18, color:'#fff' }}>チャレンジ</div>
-            <div style={{ fontSize:11, color:'rgba(255,255,255,.8)', fontWeight:600 }}>小さな一歩を積み重ねよう</div>
+      <div style={{ background:'linear-gradient(135deg,#1aa6ff,#0069b5)', padding:'10px 16px 0', flexShrink:0 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:9, marginBottom:9 }}>
+          <div style={{ width:34, height:34, borderRadius:11, background:'rgba(255,255,255,.2)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff' }}><FIcon name="footsteps" size={18} /></div>
+          <div style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:17, color:'#fff' }}>チャレンジ</div>
+        </div>
+
+        {/* 成長ステータスカード */}
+        <div style={{ background:'#fff', borderRadius:16, padding:'12px 15px 12px', marginBottom:10, boxShadow:'0 8px 20px rgba(0,40,80,.18)' }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:9 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+              <FIcon name="chart" size={15} color="var(--blue)" />
+              <span style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:13.5, color:'var(--text)' }}>キミの成長ステータス</span>
+            </div>
+          </div>
+          <div style={{ display:'flex', alignItems:'flex-start', gap:12 }}>
+            <div style={{ flex:1, minWidth:0, display:'flex', flexDirection:'column', gap:7 }}>
+              <StatusRow label="タイプ">
+                <span style={{ fontSize:13, fontWeight:800, color:'var(--blue-dark)', fontFamily:'var(--font-round)' }}>行動する創造者</span>
+              </StatusRow>
+              <StatusRow label="強み">
+                {CH_STRENGTHS.map((s) => (
+                  <span key={s} style={{ background:'var(--blue-soft)', color:'var(--blue-dark)', fontSize:11, fontWeight:700, padding:'3px 10px', borderRadius:999 }}>{s}</span>
+                ))}
+              </StatusRow>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', flexShrink:0, marginTop:-8, marginBottom:-4 }}>
+              {Character && <Character size={48} />}
+              <div style={{ background:'linear-gradient(135deg,#ffd34d,#f5b417)', color:'#5a3a00', borderRadius:999, padding:'2px 10px', fontSize:11, fontWeight:900, fontFamily:'var(--font-round)', marginTop:-2 }}>Lv.3</div>
+            </div>
+          </div>
+          <div style={{ marginTop:9, paddingTop:9, borderTop:'1px solid var(--border-soft)' }}>
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:5 }}>
+              <span style={{ fontSize:11, fontWeight:700, color:'var(--text-sub)' }}>次のレベルまで</span>
+              <span style={{ fontSize:12, fontWeight:800, color:'var(--orange)', fontFamily:'var(--font-round)' }}>あと {toNext} 歩</span>
+            </div>
+            <div style={{ height:8, background:'var(--bg)', borderRadius:4, overflow:'hidden' }}>
+              <div style={{ width:((3-toNext)/3*100)+'%', height:'100%', background:'linear-gradient(90deg,var(--blue),#5cb8ff)', borderRadius:4, transition:'width .6s cubic-bezier(.2,.8,.2,1)' }}></div>
+            </div>
           </div>
         </div>
+
         <div style={{ display:'flex', gap:4 }}>
-          {['チャレンジ中', '完了の木'].map((t,i) => (
+          {['チャレンジ中', '成長ログ'].map((t,i) => (
             <button key={i} onClick={() => setTab(i)}
               style={{ flex:1, border:'none', cursor:'pointer', padding:'9px 0', fontFamily:'var(--font-round)', fontWeight:800, fontSize:13,
                 background:'transparent', color: tab===i?'#fff':'rgba(255,255,255,.55)',
@@ -137,37 +218,33 @@ function ChallengeScreen() {
         </div>
       </div>
       <div className="scroll" style={{ flex:1, minHeight:0 }}>
-        {tab===0 ? <ChallengeTab nav={nav} /> : <TreeTab nav={nav} />}
+        {tab===0 ? <ChallengeTab nav={nav} /> : <GrowthLogTab nav={nav} />}
       </div>
     </div>
   );
 }
 
-const NS_CHOICES = [
-  { icon:'📚', text:'興味のある分野をもっと調べてみる' },
-  { icon:'💬', text:'得意なことを友だちにシェアしてみる' },
-  { icon:'🚀', text:'気になることにチャレンジしてみる' },
-  { icon:'🤝', text:'苦手なことを一つ克服してみる' },
-  { icon:'✍️', text:'自分の強みを使える場を探してみる' },
-  { icon:'🌱', text:'毎日少しだけ新しいことに触れてみる' },
-];
 const todayStr = () => { const d = new Date(); return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0'); };
 
 function ChallengeTab({ nav }) {
   const defaultTasks = [
-    { text:'得意なことを友だちにシェアしてみる', date:'2025.04.10', done:false },
-    { text:'気になることにチャレンジしてみる', date:'2025.04.15', done:false },
+    { text:'得意なことを友だちにシェアしてみる', date:'2025.04.10', done:false, comp:'表現力' },
+    { text:'気になることにチャレンジしてみる', date:'2025.04.15', done:false, comp:'課題設定' },
   ];
   const tasks = nav.state.tasks && nav.state.tasks.length ? nav.state.tasks : defaultTasks;
   const pending = tasks.filter(t => !t.done);
+  const idxTasks = tasks.map((t, i) => ({ t, i }));
+  const fromTorisetsu = idxTasks.filter(x => !x.t.done && x.t.source === 'future');
+  const otherPending = idxTasks.filter(x => !x.t.done && x.t.source !== 'future');
   const [selected, setSelected] = React.useState(null);
   const [custom, setCustom] = React.useState('');
 
-  const addTask = (text) => {
-    const t = { text, date:todayStr(), done:false };
+  const addTask = (text, comp) => {
+    const t = { text, date:todayStr(), done:false, comp };
     nav.update(s => ({ tasks:[...(s.tasks&&s.tasks.length?s.tasks:defaultTasks), t] }));
     setSelected(null); setCustom('');
   };
+  const selectedComp = (CH_WEEK_RECS.flatMap(g => g.items).find(it => it.text === selected) || {}).comp;
   const completeTask = (idx) => {
     const list = tasks.map((t,i) => i===idx?{...t,done:true,completedDate:todayStr()}:t);
     nav.update(s => ({ tasks:list, exp:(s.exp||0)+1 }));
@@ -175,15 +252,46 @@ function ChallengeTab({ nav }) {
 
   return (
     <div className="pad stack">
-      {pending.length > 0 && (
+      {/* トリセツで決めたチャレンジ（最上部・強調） */}
+      {fromTorisetsu.length > 0 && (
+        <div style={{ background:'linear-gradient(135deg,#fff3e0,#ffe7cf)', borderRadius:'var(--r-lg)', padding:'14px 15px 15px' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:7, marginBottom:11 }}>
+            <span style={{ width:26, height:26, borderRadius:'50%', background:'var(--orange)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', flexShrink:0 }}><FIcon name="sparkle" size={14} color="#fff" /></span>
+            <div style={{ flex:1 }}>
+              <div style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:14, color:'var(--orange-dark)', lineHeight:1.2 }}>トリセツで決めたチャレンジ</div>
+              <div style={{ fontSize:10.5, color:'#b5651a', fontWeight:600, marginTop:1 }}>未来のヒントから、ここに届いたよ</div>
+            </div>
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {fromTorisetsu.map(({ t, i }) => (
+              <div key={i} style={{ display:'flex', alignItems:'center', gap:11, background:'#fff', borderRadius:'var(--r-md)', padding:'12px 13px', boxShadow:'var(--shadow-sm)' }}>
+                <span style={{ flexShrink:0, color:'var(--orange)', display:'flex' }}><FIcon name="flag" size={15} color="var(--orange)" /></span>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ fontSize:13, fontWeight:700, color:'var(--text)', lineHeight:1.45 }}>{t.text}</div>
+                  <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:3 }}>
+                    <span style={{ fontSize:10, color:'var(--text-sub)' }}>登録日: {t.date}</span>
+                    <CompTag name={t.comp || t.tag} />
+                  </div>
+                </div>
+                <button onClick={() => completeTask(i)} className="btn btn--green btn--sm" style={{ width:'auto', padding:'9px 14px', flexShrink:0 }}>できた！✓</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {otherPending.length > 0 && (
         <>
           <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)', display:'flex', alignItems:'center', gap:5 }}>チャレンジ中 <FIcon name="fire" size={14} color="var(--orange)" /></h3>
           <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-            {tasks.map((t,i) => t.done ? null : (
+            {otherPending.map(({ t, i }) => (
               <div key={i} className="card card--flat" style={{ display:'flex', alignItems:'center', gap:12, padding:'13px 14px' }}>
                 <div style={{ flex:1 }}>
                   <div style={{ fontSize:13, fontWeight:700 }}>{t.text}</div>
-                  <div style={{ fontSize:10, color:'var(--text-sub)', marginTop:2 }}>登録日: {t.date}</div>
+                  <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:2 }}>
+                    <span style={{ fontSize:10, color:'var(--text-sub)' }}>登録日: {t.date}</span>
+                    <CompTag name={t.comp || t.tag} />
+                  </div>
                 </div>
                 <button onClick={() => completeTask(i)} className="btn btn--green btn--sm" style={{ width:'auto', padding:'9px 14px', flexShrink:0 }}>できた！✓</button>
               </div>
@@ -191,22 +299,36 @@ function ChallengeTab({ nav }) {
           </div>
         </>
       )}
-      <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)', marginTop:4 }}>つぎのチャレンジを選ぼう</h3>
-      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-        {NS_CHOICES.map((c,i) => {
-          const on = selected===c.text;
-          return (
-            <button key={i} onClick={() => setSelected(on?null:c.text)}
-              style={{ textAlign:'left', cursor:'pointer', borderRadius:'var(--r-md)', padding:'13px 15px', fontSize:13, fontWeight:600, display:'flex', alignItems:'center', gap:10,
-                color:on?'var(--blue-dark)':'var(--text)',
-                border:'2px solid '+(on?'var(--blue)':'var(--border-soft)'),
-                background:on?'var(--blue-soft)':'#fff', transition:'all .15s', WebkitTapHighlightColor:'transparent' }}>
-              <span style={{ display:'flex', color:on?'var(--blue)':'var(--text-sub)', flexShrink:0 }}><Emo e={c.icon} size={17} /></span>{c.text}
-            </button>
-          );
-        })}
+      <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)', marginTop:4, display:'flex', alignItems:'center', gap:5 }}>今週のおすすめ <FIcon name="sparkle" size={14} color="var(--orange)" /></h3>
+      <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+        {CH_WEEK_RECS.map((g) => (
+          <div key={g.tag}>
+            <div style={{ display:'inline-flex', alignItems:'center', gap:6, background:g.soft, color:g.color, borderRadius:999, padding:'5px 12px', marginBottom:8 }}>
+              <FIcon name={g.icon} size={13} color={g.color} />
+              <span style={{ fontSize:11.5, fontWeight:800, fontFamily:'var(--font-round)' }}>{g.tag}</span>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+              {g.items.map((item) => {
+                const on = selected === item.text;
+                return (
+                  <button key={item.text} onClick={() => setSelected(on ? null : item.text)}
+                    style={{ textAlign:'left', cursor:'pointer', borderRadius:'var(--r-md)', padding:'12px 14px', fontSize:13, fontWeight:600, display:'flex', alignItems:'center', gap:10,
+                      color:on?'var(--blue-dark)':'var(--text)',
+                      border:'2px solid '+(on?'var(--blue)':'var(--border-soft)'),
+                      background:on?'var(--blue-soft)':'#fff', transition:'all .15s', WebkitTapHighlightColor:'transparent' }}>
+                    <span style={{ width:20, height:20, borderRadius:7, flexShrink:0, border:'2px solid '+(on?'var(--blue)':'#d0d5da'), background:on?'var(--blue)':'#fff', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                      {on && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                    </span>
+                    <span style={{ flex:1, minWidth:0 }}>{item.text}</span>
+                    <CompTag name={item.comp} />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
-      <button className="btn btn--primary" disabled={!selected} onClick={() => selected && addTask(selected)}>この一歩を登録する</button>
+      <button className="btn btn--primary" disabled={!selected} onClick={() => selected && addTask(selected, selectedComp)}>この一歩を登録する</button>
       <div className="card card--flat">
         <div style={{ fontSize:11, fontWeight:800, color:'var(--text-sub)', marginBottom:8, display:'flex', alignItems:'center', gap:5 }}><FIcon name="pencil" size={13} color="var(--text-sub)" /> 自分で入力する</div>
         <div style={{ display:'flex', gap:8, alignItems:'flex-end' }}>
@@ -220,76 +342,38 @@ function ChallengeTab({ nav }) {
         </div>
       </div>
       <button className="btn btn--ghost" onClick={() => nav.go('ai-chat')} style={{ gap:8 }}>
-        <Icon name="sparkle" size={16} /> AIコーチに相談する
+        <Icon name="sparkle" size={16} /> AiGROWに相談する
       </button>
     </div>
   );
 }
 
-const EVO_STAGES = [
-  { emoji:'sprout', name:'めばえの冒険者',     lv:'Lv.1-2', note:'最初の一歩を踏み出した！' },
-  { emoji:'leaf', name:'成長の探求者',       lv:'Lv.3-5', note:'あと少しでアンロック！' },
-  { emoji:'tree', name:'挑戦のパイオニア',   lv:'Lv.6-9', note:'' },
-  { emoji:'star', name:'伝説の可能性開拓者', lv:'Lv.10+', note:'' },
-];
-
-function TreeTab({ nav }) {
-  const baseExp = 2;
-  const exp = baseExp + (nav.state.exp||0);
-  const level = Math.max(1, Math.floor(exp/3)+1);
-  const inLevel = exp%3;
-  const stageIdx = level<=2?0:level<=5?1:level<=9?2:3;
-  const stage = EVO_STAGES[stageIdx];
+function GrowthLogTab({ nav }) {
   const baseCompleted = [
-    { text:'自己評価を受検する', date:'2025.04.01' },
-    { text:'トリセツを読み返してみる', date:'2025.04.08' },
+    { text:'好きなことを3つ書いた', date:'2025.04.10' },
+    { text:'友だちに強みを聞いた', date:'2025.04.08' },
   ];
   const userCompleted = (nav.state.tasks||[]).filter(t=>t.done).map(t=>({ text:t.text, date:t.completedDate||todayStr() }));
-  const completed = [...baseCompleted, ...userCompleted];
+  const completed = [...userCompleted, ...baseCompleted];
 
   return (
     <div className="pad stack">
-      <div style={{ background:'linear-gradient(135deg,#1aa6ff,#0069b5)', borderRadius:'var(--r-lg)', padding:16, color:'#fff', display:'flex', alignItems:'center', gap:14, boxShadow:'var(--shadow-blue)' }}>
-        <div style={{ width:60, height:60, borderRadius:'50%', background:'rgba(255,255,255,.2)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, color:'#fff' }}><FIcon name={stage.emoji==='tree'?'leaf':stage.emoji} size={30} /></div>
-        <div style={{ flex:1 }}>
-          <div style={{ fontSize:9.5, opacity:.8, fontWeight:700, letterSpacing:1 }}>キミの分身</div>
-          <div style={{ fontFamily:'var(--font-round)', fontSize:17, fontWeight:900, margin:'2px 0' }}>{stage.name}</div>
-          <div style={{ fontSize:11, opacity:.85 }}>Lv.{level}　次のLvまであと {3-inLevel} 歩！</div>
-        </div>
-        <div style={{ textAlign:'center' }}>
-          <div style={{ fontFamily:'var(--font-round)', fontSize:26, fontWeight:900 }}>{level}</div>
-          <div style={{ fontSize:8.5, opacity:.7, letterSpacing:1 }}>LEVEL</div>
-        </div>
-      </div>
+      {/* 最近育った力 */}
       <div className="card">
-        <div style={{ display:'flex', justifyContent:'space-between', fontSize:11, color:'var(--text-sub)', marginBottom:7, fontWeight:600 }}>
-          <span>経験値（EXP）</span><span style={{ fontWeight:800, color:'var(--blue)' }}>{inLevel} / 3</span>
-        </div>
-        <div style={{ height:12, background:'var(--bg)', borderRadius:6, overflow:'hidden' }}>
-          <div style={{ width:(inLevel/3*100)+'%', height:'100%', background:'linear-gradient(90deg,var(--blue),#5cb8ff)', borderRadius:6, transition:'width .6s cubic-bezier(.2,.8,.2,1)' }}></div>
-        </div>
-        <div style={{ fontSize:10, color:'var(--text-sub)', marginTop:6 }}>チャレンジを完了するたびにEXPが増えます</div>
-      </div>
-      <div className="card">
-        <div style={{ fontSize:12.5, fontWeight:800, marginBottom:12 }}>進化ロードマップ</div>
-        {EVO_STAGES.map((s,i) => {
-          const isCur=i===stageIdx, passed=i<stageIdx, last=i===EVO_STAGES.length-1, op=passed||isCur?1:0.4;
-          return (
-            <div key={i} style={{ display:'flex', gap:12, alignItems:'flex-start' }}>
-              <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
-                <div style={{ width:36, height:36, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:18, opacity:op,
-                  background:isCur?'var(--blue-soft)':passed?'var(--green-soft)':'var(--bg)',
-                  border:'2px solid '+(isCur?'var(--blue)':passed?'var(--green)':'var(--border)'), color:isCur?'var(--blue)':passed?'var(--green)':'var(--text-sub)' }}><FIcon name={s.emoji==='tree'?'leaf':s.emoji} size={18} /></div>
-                {!last&&<div style={{ width:2, height:26, background:passed?'var(--green)':isCur?'var(--blue)':'var(--border)' }}></div>}
-              </div>
-              <div style={{ paddingTop:5, opacity:op }}>
-                <div style={{ fontSize:12, fontWeight:800, color:isCur?'var(--blue)':'var(--text)' }}>{s.lv}　{s.name}{isCur&&' ← 現在'}</div>
-                {s.note&&<div style={{ fontSize:10, color:'var(--text-sub)', marginTop:2 }}>{s.note}</div>}
-              </div>
+        <div style={{ fontSize:12.5, fontWeight:800, marginBottom:12, display:'flex', alignItems:'center', gap:6 }}><FIcon name="sprout" size={16} color="var(--green)" /> 最近育った力</div>
+        <div style={{ display:'flex', flexDirection:'column', gap:9 }}>
+          {CH_RECENT_GROWTH.map((g) => (
+            <div key={g.name} style={{ display:'flex', alignItems:'center', gap:10 }}>
+              <span style={{ fontSize:13, fontWeight:700, color:'var(--text)', flex:1 }}>{g.name}</span>
+              <span style={{ display:'inline-flex', alignItems:'center', gap:4, background:'var(--green-soft)', color:'#1b7a3e', fontSize:12.5, fontWeight:900, fontFamily:'var(--font-round)', padding:'4px 12px', borderRadius:999 }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1b7a3e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+{g.delta}
+              </span>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
+
+      {/* 完了したチャレンジ */}
       <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)' }}>完了したチャレンジ</h3>
       {completed.length ? (
         <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
@@ -299,8 +383,8 @@ function TreeTab({ nav }) {
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div style={{ flex:1 }}>
-                <div style={{ fontSize:12, fontWeight:700 }}>{t.text}</div>
-                <div style={{ fontSize:10, color:'var(--text-sub)', marginTop:1 }}>完了日: {t.date}　+1 EXP</div>
+                <div style={{ fontSize:12.5, fontWeight:700 }}>{t.text}</div>
+                <div style={{ fontSize:10, color:'var(--text-sub)', marginTop:1 }}>完了日: {t.date}</div>
               </div>
             </div>
           ))}
@@ -308,6 +392,26 @@ function TreeTab({ nav }) {
       ) : (
         <p style={{ fontSize:12, color:'var(--text-sub)', textAlign:'center', padding:'16px 0' }}>まだ完了したチャレンジがありません。<br/>最初の一歩を踏み出そう！</p>
       )}
+
+      {/* 強みマップ */}
+      <div className="card">
+        <div style={{ fontSize:12.5, fontWeight:800, marginBottom:13, display:'flex', alignItems:'center', gap:6 }}><FIcon name="compass" size={16} color="var(--blue)" /> 強みマップ</div>
+        <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+          {CH_STRENGTH_MAP.map((s) => (
+            <div key={s.name} style={{ display:'flex', alignItems:'center', gap:12 }}>
+              <span style={{ fontSize:13, fontWeight:700, color:'var(--text)', width:56, flexShrink:0 }}>{s.name}</span>
+              <div style={{ display:'flex', gap:8 }}>
+                {[0,1,2].map((d) => (
+                  <span key={d} style={{ width:16, height:16, borderRadius:'50%',
+                    background: d < s.filled ? 'var(--blue)' : '#fff',
+                    border: d < s.filled ? 'none' : '2px solid var(--border)' }}></span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ fontSize:10.5, color:'var(--text-sub)', marginTop:12, lineHeight:1.6 }}>チャレンジを重ねると、●が増えていくよ</div>
+      </div>
     </div>
   );
 }
