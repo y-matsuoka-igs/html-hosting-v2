@@ -279,6 +279,16 @@ function ExamWaitingScreen() {
           </p>
         </div>
 
+        {/* 進学に向けて自分を伝える準備 */}
+        <button onClick={() => nav.go('juken-pr')} style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', background: '#fff', border: '2px solid var(--blue-soft)', borderRadius: 'var(--r-lg)', padding: '15px 16px', display: 'flex', alignItems: 'center', gap: 13, boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ width: 44, height: 44, borderRadius: 13, background: 'linear-gradient(135deg,var(--blue),#00BFA5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff' }}><Icon name="sparkle" size={22} /></div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 14.5, color: 'var(--text)' }}>進学に向けて自分を伝える準備をする</div>
+            <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 600, marginTop: 2, lineHeight: 1.5 }}>AiGROWと壁打ちして、自己PRのベースを作ろう</div>
+          </div>
+          <span style={{ flexShrink: 0, color: 'var(--blue)', display: 'flex' }}><Icon name="chevR" size={18} /></span>
+        </button>
+
         {/* それまでにできること */}
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>

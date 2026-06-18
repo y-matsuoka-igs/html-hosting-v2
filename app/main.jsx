@@ -61,10 +61,10 @@ const SCREEN_TAB = {
   torisetsu: 'home',     // トリセツはホームタブ内
   challenge: 'challenge', tree: 'challenge',
   record: 'record', journal: 'record', 'journal-write': 'record',
-  'next-step': null, 'ai-chat': null,
+  'next-step': null, 'ai-chat': null, 'juken-pr': 'exam',
 };
 // screens that show the bottom nav
-const TABBED = new Set(['home', 'exam', 'contents', 'torisetsu', 'next-step', 'tree', 'challenge', 'record']);
+const TABBED = new Set(['home', 'exam', 'contents', 'torisetsu', 'next-step', 'tree', 'challenge', 'record', 'juken-pr']);
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
@@ -120,6 +120,7 @@ function App() {
       case 'tree':     return <ChallengeScreen />;
       case 'contents': return <ContentsScreen />;
       case 'record':   return <RecordScreen />;
+      case 'juken-pr': return <JukenPRScreen />;
       case 'journal':       return <JournalScreen />;
       case 'journal-write': return <JournalWriteScreen />;
       default: return <LoginScreen />;
