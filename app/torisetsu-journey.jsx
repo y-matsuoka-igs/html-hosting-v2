@@ -644,9 +644,6 @@ function ToriStepNav({ step, goStep, onShare }) {
       <button onClick={() => !first && goStep(step - 1)} disabled={first} aria-label="もどる" style={circ(first)}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
       </button>
-      <button onClick={onShare} aria-label="シェア" style={{ ...circ(false), color:TJ.blue }}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      </button>
       {last ? (
         <button onClick={() => goStep(1)}
           style={{ flex:1, height:50, background:TJ.blueGrad, color:'#fff', border:'none', borderRadius:999, fontFamily:TJ.round, fontWeight:800, fontSize:14, cursor:'pointer', boxShadow:'0 8px 20px rgba(0,150,250,.32)', display:'flex', alignItems:'center', justifyContent:'center', gap:7 }}>

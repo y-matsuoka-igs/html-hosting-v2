@@ -121,6 +121,8 @@ function App() {
       case 'contents': return <ContentsScreen />;
       case 'record':   return <RecordScreen />;
       case 'juken-pr': return <JukenPRScreen />;
+      case 'rpg-result': return <RpgResultScreen />;
+      case 'rpg-reveal': return <RpgRevealScreen />;
       case 'journal':       return <JournalScreen />;
       case 'journal-write': return <JournalWriteScreen />;
       default: return <LoginScreen />;
@@ -169,6 +171,8 @@ function App() {
         <TweakButton label="コンテンツへ" onClick={() => nav.go('contents')} />
         <TweakButton label="成長きろくへ" onClick={() => nav.go('record')} />
         <TweakButton label="成長ジャーナルへ" onClick={() => nav.go('journal')} />
+        <TweakButton label="6月の診断（転生RPG）へ" onClick={() => nav.go('rpg-result')} />
+        <TweakButton label="種明かしへ" onClick={() => nav.go('rpg-reveal')} />
         <TweakButton label="ふり返りを書くへ" onClick={() => nav.go('journal-write')} />
         <TweakButton label="ログイン画面へ戻る" onClick={() => { setScreen('login'); setParams({}); }} />
         <TweakButton label="進捗をリセット" onClick={() => { reset(); setScreen('login'); setParams({}); }} />

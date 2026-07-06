@@ -201,45 +201,12 @@ function MonthlyBody() {
 }
 
 function ContentsScreen() {
-  const nav = useNav();
-  const comp = completion(nav.state);
-  const unlocked = comp >= 100;
-  const [view, setView] = useShub('fortune');
-
   return (
     <div className="screen">
       <StatusBar />
       <TabHeader icon="gift" title="コンテンツ" />
       <div className="scroll pad stack">
-        {!unlocked && (
-          <div style={{ background: '#f0edea', borderRadius: 'var(--r-lg)', padding: '16px', display: 'flex', gap: 12, alignItems: 'center' }}>
-            <div style={{ width: 38, height: 38, borderRadius: 11, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9a8f82', flexShrink: 0 }}><FIcon name="lock" size={20} /></div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)' }}>もう少しで解放！</div>
-              <div style={{ fontSize: 11, color: 'var(--text-sub)', marginTop: 2, lineHeight: 1.5 }}>トリセツが完成すると、占い・診断が楽しめるよ（現在 {comp}%）</div>
-            </div>
-          </div>
-        )}
-
-        {/* 占い / 今月の診断 切り替え */}
-        <div style={{ display: 'flex', gap: 6, background: 'var(--bg)', borderRadius: 999, padding: 4 }}>
-          {[['fortune', '🔮', '今日の占い'], ['monthly', '🎯', '今月の診断']].map(([key, e, l]) => {
-            const on = view === key;
-            return (
-              <button key={key} onClick={() => setView(key)}
-                style={{ flex: 1, border: 'none', cursor: 'pointer', borderRadius: 999, padding: '9px 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                  fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 13,
-                  background: on ? '#fff' : 'transparent', color: on ? 'var(--text)' : 'var(--text-sub)',
-                  boxShadow: on ? 'var(--shadow-sm)' : 'none', transition: 'all .15s' }}>
-                <span style={{ fontSize: 16 }}>{e}</span>{l}
-              </button>
-            );
-          })}
-        </div>
-
-        <div style={{ opacity: unlocked ? 1 : .5, pointerEvents: unlocked ? 'auto' : 'none', display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {view === 'fortune' ? <FortuneBody /> : <MonthlyBody />}
-        </div>
+        <RpgResultBody from="contents" />
       </div>
     </div>
   );
