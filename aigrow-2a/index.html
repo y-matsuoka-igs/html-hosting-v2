@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="ext-resource-dependency" content="assets/onboard-1.png" data-resource-id="ob1" />
+<meta name="ext-resource-dependency" content="assets/onboard-4.png" data-resource-id="ob4" />
+<meta name="ext-resource-dependency" content="assets/onboard-6.png" data-resource-id="ob6" />
+<template id="__bundler_thumbnail" data-bg-color="#315cfa">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#315cfa"/>
+    <circle cx="600" cy="360" r="150" fill="none" stroke="#ffffff" stroke-width="26" stroke-linecap="round" stroke-dasharray="700 300" transform="rotate(-90 600 360)"/>
+    <text x="600" y="392" font-family="Arial, sans-serif" font-size="120" font-weight="900" fill="#ffffff" text-anchor="middle">AI</text>
+    <text x="600" y="600" font-family="Arial, sans-serif" font-size="64" font-weight="700" fill="#ffffff" text-anchor="middle">AiGROW</text>
+  </svg>
+</template>
+<title>AiGROW 生徒画面プロトタイプ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* ── Design tokens (spec-bound) ── */
+    --blue:        #315cfa;   /* Primary Blue */
+    --blue-dark:   #2447c9;   /* Primary Dark */
+    --blue-soft:   #e8edff;   /* tinted surface */
+    --blue-softer: #f3f6ff;
+    --orange:      #ff6b5e;   /* Brand Orange — logo & CTA */
+    --orange-dark: #e8523f;
+    --green:       #18b271;   /* Success */
+    --green-soft:  #e4f9ec;
+    --bg:          #fffbf2;    /* page background */
+    --surface:     #ffffff;   /* cards */
+    --text:        #1f1b16;   /* text primary */
+    --text-sub:    #7a7263;   /* text secondary */
+    --border:      #cfc4ab;
+    --border-soft: #e3d9c4;
+
+    --pink:   #ff5d8f;
+    --purple: #8a6cf0;
+    --yellow: #ffd633;
+
+    --r:    8px;    /* spec radius — small/clean */
+    --r-md: 12px;
+    --r-lg: 14px;
+    --r-xl: 18px;
+
+    --shadow-sm: 0 1px 3px rgba(20,40,60,.08);
+    --shadow:    0 4px 14px rgba(20,40,60,.10);
+    --shadow-lg: 0 12px 34px rgba(20,40,60,.16);
+    --shadow-blue: 0 8px 20px rgba(49,92,250,.30);
+    --shadow-orange: 0 8px 20px rgba(255,107,94,.34);
+
+    --font: 'Noto Sans JP', system-ui, sans-serif;
+    --font-round: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    font-family: var(--font);
+    color: var(--text);
+    /* tablet background — visible around the app card */
+    background: #f1ead9;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: stretch;
+  }
+
+  /* ── Responsive app root (no device frame) ── */
+  #app-root {
+    width: 100%;
+    max-width: 480px;      /* cap on tablet — fills phone width naturally */
+    height: 100%;
+    display: flex; flex-direction: column;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+  /* subtle card shadow on tablet so the app area pops off the bg */
+  @media (min-width: 481px) {
+    #app-root { box-shadow: 0 0 60px rgba(10,30,60,.18); }
+  }
+
+  /* ── Safe area spacer (replaces fake status bar) ── */
+  .safe-area-top {
+    flex-shrink: 0;
+    height: env(safe-area-inset-top, 0px);
+    background: transparent;
+  }
+
+  /* ── App screen container ── */
+  .screen {
+    flex: 1; min-height: 0;
+    display: flex; flex-direction: column;
+    position: relative;
+    background: var(--bg);
+  }
+  .screen--white { background: var(--surface); }
+
+  .scroll {
+    flex: 1; min-height: 0;
+    overflow-y: auto; overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .scroll::-webkit-scrollbar { width: 0; }
+  .pad { padding: 16px; }
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+  /* When a scroll area is itself a flex column, its children must keep natural
+     height and let the container scroll — never shrink/clip. */
+  .scroll.stack > * { flex-shrink: 0; }
+
+  /* ── App header ── */
+  .appbar {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    background: var(--surface);
+    border-bottom: 1.5px solid var(--border-soft);
+    position: relative; z-index: 40;
+  }
+  .logo { font-family: var(--font-round); font-weight: 900; font-size: 21px; letter-spacing: -.5px; display: flex; align-items: baseline; gap: 1px; }
+  .logo .ai   { color: var(--orange); }
+  .logo .grow { color: var(--text); }
+  .logo .sub  { font-size: 11px; color: var(--text-sub); font-weight: 700; margin-left: 5px; }
+
+  /* ── Buttons ── */
+  .btn {
+    font-family: var(--font-round); font-weight: 800;
+    border: none; cursor: pointer; border-radius: 14px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 22px; font-size: 16px; line-height: 1;
+    transition: transform .12s ease, box-shadow .15s ease, background .15s;
+    -webkit-tap-highlight-color: transparent; width: 100%;
+  }
+  .btn:active { transform: scale(.96); }
+  .btn--cta    { background: var(--blue); color: #fff; border: 2px solid #1f1b16; box-shadow: 4px 4px 0 #1f1b16; }
+  .btn--cta:active { box-shadow: 2px 2px 0 #1f1b16; }
+  .btn--primary{ background: var(--blue); color: #fff; border: 2px solid #1f1b16; box-shadow: 4px 4px 0 #1f1b16; }
+  .btn--primary:active { box-shadow: 2px 2px 0 #1f1b16; }
+  .btn--green  { background: var(--green); color: #fff; border: 2px solid #1f1b16; box-shadow: 4px 4px 0 #1f1b16; }
+  .btn--outline{ background: #fff; color: #1f1b16; box-shadow: inset 0 0 0 2px #1f1b16; }
+  .btn--ghost  { background: var(--blue-soft); color: var(--blue-dark); }
+  .btn--lg { padding: 17px 26px; font-size: 17px; }
+  .btn--sm { padding: 10px 16px; font-size: 14px; }
+  .btn:disabled { background: var(--border); color: #b3b3b3; box-shadow: none; cursor: default; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface); border-radius: var(--r-lg);
+    box-shadow: none; border: 1.5px solid var(--border-soft); padding: 16px;
+  }
+  .card--flat { box-shadow: none; border: 1px solid var(--border-soft); }
+
+  /* ── Inputs ── */
+  .field {
+    width: 100%; font-family: var(--font); font-size: 15px; color: var(--text);
+    background: #fff; border: 2px solid var(--border); border-radius: var(--r-md);
+    padding: 14px 16px; transition: border-color .15s, box-shadow .15s;
+  }
+  .field::placeholder { color: #b7bcc0; }
+  .field:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); }
+
+  /* ── Bottom nav ── */
+  .botnav {
+    flex-shrink: 0;
+    min-height: 56px;
+    height: calc(56px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    background: var(--surface);
+    border-top: 2px solid #1f1b16;
+    position: relative; z-index: 40;
+  }
+  .botnav__item {
+    border: none; background: none; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    font-family: var(--font-round); font-weight: 700; font-size: 9.5px; white-space: nowrap;
+    color: #b0b6bb; transition: color .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .botnav__item.active { color: var(--blue); }
+  .botnav__icon { position: relative; display: flex; }
+  .botnav__dot {
+    position: absolute; top: -2px; right: -4px; width: 8px; height: 8px;
+    background: var(--orange); border-radius: 50%; border: 2px solid #fff;
+  }
+
+  /* ── Misc ── */
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-round); font-weight: 700; font-size: 12px;
+    padding: 5px 11px; border-radius: 999px;
+  }
+  .progress { height: 10px; background: #e3e7ea; border-radius: 999px; overflow: hidden; }
+  .progress__fill { height: 100%; border-radius: 999px; background: var(--blue); transition: width .6s cubic-bezier(.2,.8,.2,1); }
+
+  h1,h2,h3 { font-family: var(--font-round); }
+
+  /* ── Onboarding motion ── */
+  @keyframes obPop {
+    0%   { transform: scale(.72) rotate(-4deg); opacity: 0; }
+    60%  { transform: scale(1.05) rotate(1.5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes obFloat {
+    0%, 100% { transform: translateY(0) rotate(-.5deg); }
+    50%      { transform: translateY(-7px) rotate(.5deg); }
+  }
+  @keyframes obTwinkle {
+    0%, 100% { transform: scale(.55) rotate(0deg); opacity: .35; }
+    50%      { transform: scale(1.15) rotate(20deg); opacity: 1; }
+  }
+  @keyframes obRise {
+    from { transform: translateY(16px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+
+  /* Resting state is always fully visible. The entrance animates transform only —
+     opacity never drops, so content can never get stuck invisible in throttled
+     tabs, print, or reduced-motion. */
+  .fade-in { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-in { animation: fadeIn .4s cubic-bezier(.2,.8,.2,1); }
+  }
+  @keyframes fadeIn { from { transform: translateY(10px); } to { transform: none; } }
+  @keyframes floaty { 0%,100% { transform: translateY(0) rotate(20deg); } 50% { transform: translateY(-12px) rotate(-10deg); } }
+  @keyframes typing { 0%,60%,100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-4px); opacity: 1; } }
+  @keyframes chipPop { 0% { opacity:0; transform:scale(.6); } 30% { opacity:1; transform:scale(1.1); } 65% { opacity:1; transform:scale(1); } 100% { opacity:0; transform:scale(.85) translateY(-6px); } }
+
+  /* hide tweak panel injected root cleanly */
+  #tweaks-root { position: fixed; z-index: 9999; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="app/shell-responsive.jsx"></script>
+  <script type="text/babel" src="app/flat-icons.jsx"></script>
+  <script type="text/babel" src="app/screens-auth.jsx"></script>
+  <script type="text/babel" src="app/screens-diag.jsx"></script>
+  <script type="text/babel" src="app/screens-eval.jsx"></script>
+  <script type="text/babel" src="app/screens-home.jsx"></script>
+  <script type="text/babel" src="app/screens-misc.jsx"></script>
+  <script type="text/babel" src="app/screens-torisetsu.jsx"></script>
+  <script type="text/babel" src="app/torisetsu-journey.jsx"></script>
+  <script type="text/babel" src="app/torisetsu-combined.jsx"></script>
+  <script type="text/babel" src="app/screens-final.jsx"></script>
+  <script type="text/babel" src="app/screens-hub.jsx"></script>
+  <script type="text/babel" src="app/main.jsx"></script>
+</body>
+</html>

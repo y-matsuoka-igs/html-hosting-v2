@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; background:#efe8d8; font-family:'Noto Sans JP',system-ui,sans-serif; color:#1f1b16; -webkit-font-smoothing:antialiased; }
+    a { color:#2447c9; } a:hover { color:#e8523f; }
+    ::-webkit-scrollbar { display:none; }
+    .hint-scroll > * { flex-shrink:0; }
+  </style>
+</helmet>
+<section style="padding:44px 48px 0;display:flex;flex-direction:column;gap:18px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:18px">追加案：レーダーチャート型（成分バランス）</span>
+    <span style="font-size:12px;color:#7a7263;font-weight:700">実線＝いまのキミ ／ 点線＝力を足した未来のキミ</span>
+  </div>
+  <div id="4a" style="display:flex;flex-direction:column;gap:10px;width:394px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:9px">
+      <span style="background:#1f1b16;color:#ffffff;font-size:12px;font-weight:800;border-radius:8px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">4a</span>
+      <div>
+        <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:14px">レーダーチャート型</div>
+        <div style="font-size:10.5px;color:#7a7263;font-weight:600">6つの力のバランスで表現。ルートをえらぶと点線でカタチが変わる</div>
+      </div>
+    </div>
+    <div style="width:390px;height:812px;border:2px solid #1f1b16;border-radius:30px;box-shadow:10px 10px 0 rgba(31,27,22,.13);background:#fffbf2;overflow:hidden;display:flex;flex-direction:column" data-screen-label="4a レーダーチャート型">
+      <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:13px 18px 11px;background:#ffffff;border-bottom:1.5px solid #e3d9c4">
+        <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:19px;letter-spacing:-.5px"><span style="color:#ff6b5e">Ai</span><span>GROW</span><span style="font-size:10px;color:#7a7263;font-weight:700;margin-left:6px">キミのトリセツ</span></div>
+        <div style="width:30px;height:30px;border-radius:50%;background:#e8edff;display:flex;align-items:center;justify-content:center">{{ avatarArt }}</div>
+      </div>
+      <div style="flex-shrink:0;background:#ffffff;padding:9px 10px;display:flex;gap:4px;overflow-x:auto">
+        <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="4">
+          <div style="flex-shrink:0;display:flex;align-items:center;gap:4px;border:1.5px solid #1f1b16;border-radius:9px;padding:6px 7px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:9px;background:{{ ch.bg }};color:{{ ch.color }}">{{ ch.mark }}{{ ch.label }}</div>
+        </sc-for>
+      </div>
+      <div style="flex-shrink:0;height:3px;background:#eef1f4"><div style="height:100%;width:100%;background:#315cfa"></div></div>
+      <div class="hint-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px">
+        <div>
+          <span style="background:#1f1b16;color:#ffd633;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:10px;border-radius:6px;padding:3px 9px;letter-spacing:1px">STEP 4</span>
+          <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:17px;margin-top:7px">未来のヒント</div>
+          <div style="font-size:11px;color:#7a7263;font-weight:600;margin-top:2px">キミの成分バランス — 力を足すと、カタチが変わる</div>
+        </div>
+        <div style="background:#ffffff;border:1.5px solid #e3d9c4;border-radius:16px;padding:12px 8px 10px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 8px 2px">
+            <span style="font-size:11px;font-weight:800;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">キミの成分バランス</span>
+            <span style="font-size:8.5px;color:#a89e8a;font-weight:700">6つの力でできている、キミの今</span>
+          </div>
+          <div style="display:flex;justify-content:center;gap:12px;padding:2px 8px 0">
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:14px;height:0;border-top:2.5px solid #1f1b16;display:inline-block"></span>いまのキミ</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:14px;height:0;border-top:2.5px dashed #315cfa;display:inline-block"></span>力を足した未来</span>
+          </div>
+          <svg viewBox="0 0 358 244" style="width:100%;display:block">
+            <sc-for list="{{ radarGrid }}" as="gp" hint-placeholder-count="4">
+              <polygon points="{{ gp }}" fill="none" stroke="#e9e0cc" stroke-width="1"></polygon>
+            </sc-for>
+            <sc-for list="{{ radarSpokes }}" as="sp" hint-placeholder-count="6">
+              <line x1="179" y1="122" x2="{{ sp.x2 }}" y2="{{ sp.y2 }}" stroke="#e9e0cc" stroke-width="1"></line>
+            </sc-for>
+            <polygon points="{{ radarNow }}" fill="rgba(31,27,22,.09)" stroke="#1f1b16" stroke-width="2.5" stroke-linejoin="round"></polygon>
+            <sc-if value="{{ showFuture }}" hint-placeholder-val="{{ true }}">
+              <polygon points="{{ radarFuture }}" fill="rgba(49,92,250,.10)" stroke="#315cfa" stroke-width="2.5" stroke-dasharray="5 5" stroke-linejoin="round"></polygon>
+              <circle cx="{{ radarDotX }}" cy="{{ radarDotY }}" r="4.5" fill="#315cfa" stroke="#ffffff" stroke-width="2"></circle>
+            </sc-if>
+            <sc-for list="{{ radarLabels }}" as="l" hint-placeholder-count="6">
+              <text x="{{ l.x }}" y="{{ l.y }}" text-anchor="{{ l.anchor }}" font-size="9.5" font-weight="800" fill="{{ l.fill }}" font-family="'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ l.label }}</text>
+            </sc-for>
+          </svg>
+          <sc-if value="{{ selRFull }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:flex-start;gap:7px;background:#e8edff;border-radius:10px;padding:8px 11px;margin:2px 4px 0">
+              <span style="width:5px;height:5px;border-radius:50%;background:#315cfa;flex-shrink:0;margin-top:5px"></span>
+              <span style="font-size:9.5px;color:#2447c9;font-weight:700;line-height:1.6">点線が、「{{ selR.key }}」を足した未来のキミのカタチだよ</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ noSelR }}" hint-placeholder-val="{{ false }}">
+            <div style="text-align:center;font-size:9.5px;color:#a89e8a;font-weight:700;padding:4px 0 2px">下のルートをえらぶと、点線で未来のキミが見えるよ</div>
+          </sc-if>
+        </div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 2px">
+          <span style="font-size:11px;font-weight:800;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">未来の進化ルート</span>
+          <span style="font-size:9px;color:#a89e8a;font-weight:700">今の力に、新しい力を足してみよう</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ routesR }}" as="rt" hint-placeholder-count="5">
+            <div onClick="{{ rt.pick }}" style="position:relative;display:flex;align-items:center;gap:10px;border:{{ rt.bd }};background:{{ rt.bg }};border-radius:14px;padding:10px 12px;cursor:pointer;transition:all .15s">
+              <sc-if value="{{ rt.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-8px;right:10px;background:#ff6b5e;color:#ffffff;font-size:7.5px;font-weight:800;border-radius:999px;padding:2px 7px;border:1px solid #1f1b16;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">おすすめ</span></sc-if>
+              <span style="display:flex;flex-shrink:0">{{ rt.art }}</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="background:{{ rt.kindBg }};color:{{ rt.kindFg }};font-size:8px;font-weight:800;border-radius:999px;padding:2px 8px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ rt.kindLabel }}</span>
+                  <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:12.5px">{{ rt.name }}</span>
+                  <sc-if value="{{ rt.kana }}" hint-placeholder-val="{{ false }}"><span style="font-size:7.5px;color:#7a7263;font-weight:700;letter-spacing:.5px">{{ rt.kana }}</span></sc-if>
+                </div>
+                <span style="font-size:9px;color:#7a7263;font-weight:700">「{{ rt.key }}」を足す</span>
+              </div>
+              <span style="width:22px;height:22px;border-radius:50%;border:{{ rt.rBd }};background:{{ rt.rBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ rt.check }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ selRFull }}" hint-placeholder-val="{{ true }}">
+          <div style="background:#ffffff;border:2px solid #1f1b16;border-radius:16px;padding:15px;box-shadow:4px 4px 0 #1f1b16">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+              <span style="background:{{ selR.kindBg }};color:{{ selR.kindFg }};font-size:9px;font-weight:800;border-radius:999px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selR.kindLabel }}</span>
+              <span style="font-size:10.5px;font-weight:800;color:#2447c9;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">「{{ selR.key }}」をのばすと…</span>
+            </div>
+            <div style="background:#1f1b16;border-radius:14px;padding:14px;position:relative;overflow:hidden">
+              <div style="position:absolute;top:-22px;right:-22px;width:84px;height:84px;border-radius:50%;background:rgba(255,214,51,.12)"></div>
+              <div style="font-size:9px;letter-spacing:2px;color:#ffd633;font-weight:800;margin-bottom:6px">未来のキミ ・ {{ selR.tierLabel }}</div>
+              <div style="display:flex;align-items:center;gap:9px">
+                <span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ selRArt }}</span>
+                <div>
+                  <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:16px;color:#ffffff;line-height:1.25">「{{ selR.name }}」</div>
+                  <sc-if value="{{ selR.kana }}" hint-placeholder-val="{{ false }}"><div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;margin-top:2px">{{ selR.kana }}</div></sc-if>
+                </div>
+              </div>
+              <div style="font-size:11px;color:#ffd633;font-weight:800;margin-top:8px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selR.catch }}</div>
+              <p style="font-size:10.5px;color:rgba(255,255,255,.82);line-height:1.75;font-weight:500;margin:5px 0 0">{{ selR.desc }}</p>
+              <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:11px;padding-top:9px">
+                <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:6px">活やくのイメージ</div>
+                <div style="display:flex;flex-wrap:wrap;gap:5px">
+                  <sc-for list="{{ selR.scenes }}" as="s" hint-placeholder-count="3"><span style="background:rgba(255,255,255,.12);color:#ffffff;border-radius:999px;padding:3px 10px;font-size:9.5px;font-weight:700;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ s }}</span></sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noSelR }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;font-size:11px;color:#7a7263;font-weight:600;line-height:1.8;padding:4px 0">気になるルートをえらぶと、<br>「未来のキミ」とチャレンジへの道が見えるよ</div>
+        </sc-if>
+      </div>
+      <div style="flex-shrink:0;background:#ffffff;border-top:2px solid #1f1b16;padding:10px 14px 14px;display:flex;gap:10px;align-items:center">
+        <div style="width:44px;height:44px;border-radius:50%;background:#ffffff;box-shadow:inset 0 0 0 1.5px #cfc4ab;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+        </div>
+        <div onClick="{{ ctaR.click }}" style="flex:1;height:47px;border-radius:999px;background:{{ ctaR.bg }};color:{{ ctaR.color }};border:{{ ctaR.border }};box-shadow:{{ ctaR.shadow }};display:flex;align-items:center;justify-content:center;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:12.5px;cursor:{{ ctaR.cursor }};transition:all .15s;text-align:center;line-height:1.3">{{ ctaR.label }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+<section style="padding:44px 48px 0;display:flex;flex-direction:column;gap:18px">
+  <div style="display:flex;align-items:baseline;gap:12px">
+    <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:18px">追加案：ハニカム俯瞰 ＋ カード詳細の2レイヤー統合</span>
+    <span style="font-size:12px;color:#7a7263;font-weight:700">マップで俯瞰 → カードで比較 → 詳細でチャレンジへ</span>
+  </div>
+  <div id="3a" style="display:flex;flex-direction:column;gap:10px;width:394px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:9px">
+      <span style="background:#1f1b16;color:#ffffff;font-size:12px;font-weight:800;border-radius:8px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">3a</span>
+      <div>
+        <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:14px">統合型（ハニカム × カード）</div>
+        <div style="font-size:10.5px;color:#7a7263;font-weight:600">マップとカードが連動。どちらから選んでも同じ詳細へ</div>
+      </div>
+    </div>
+    <div style="width:390px;height:812px;border:2px solid #1f1b16;border-radius:30px;box-shadow:10px 10px 0 rgba(31,27,22,.13);background:#fffbf2;overflow:hidden;display:flex;flex-direction:column" data-screen-label="3a 統合型">
+      <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:13px 18px 11px;background:#ffffff;border-bottom:1.5px solid #e3d9c4">
+        <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:19px;letter-spacing:-.5px"><span style="color:#ff6b5e">Ai</span><span>GROW</span><span style="font-size:10px;color:#7a7263;font-weight:700;margin-left:6px">キミのトリセツ</span></div>
+        <div style="width:30px;height:30px;border-radius:50%;background:#e8edff;display:flex;align-items:center;justify-content:center">{{ avatarArt }}</div>
+      </div>
+      <div style="flex-shrink:0;background:#ffffff;padding:9px 10px;display:flex;gap:4px;overflow-x:auto">
+        <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="4">
+          <div style="flex-shrink:0;display:flex;align-items:center;gap:4px;border:1.5px solid #1f1b16;border-radius:9px;padding:6px 7px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:9px;background:{{ ch.bg }};color:{{ ch.color }}">{{ ch.mark }}{{ ch.label }}</div>
+        </sc-for>
+      </div>
+      <div style="flex-shrink:0;height:3px;background:#eef1f4"><div style="height:100%;width:100%;background:#315cfa"></div></div>
+      <div class="hint-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px">
+        <div>
+          <span style="background:#1f1b16;color:#ffd633;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:10px;border-radius:6px;padding:3px 9px;letter-spacing:1px">STEP 4</span>
+          <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:17px;margin-top:7px">未来のヒント</div>
+          <div style="font-size:11px;color:#7a7263;font-weight:600;margin-top:2px">マップでえらんで、カードでくらべる。キミの未来をきめよう</div>
+        </div>
+        <div style="background:#ffffff;border:1.5px solid #e3d9c4;border-radius:16px;padding:10px 0 4px">
+          <div style="display:flex;justify-content:center;gap:11px;padding:0 8px 4px;flex-wrap:wrap">
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:10px;height:10px;border-radius:50%;background:#1f1b16;display:inline-block"></span>いまのキミ</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:10px;height:10px;border-radius:50%;background:#ffffff;border:2px solid #315cfa;display:inline-block"></span>いける未来</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:10px;height:10px;border-radius:50%;background:#ffffff;border:2px solid #e3d9c4;display:inline-block;opacity:.6"></span>この先で見えてくる未来</span>
+          </div>
+          <div style="position:relative;height:284px">
+            <sc-for list="{{ hexNodesG }}" as="h" hint-placeholder-count="12">
+              <div onClick="{{ h.pick }}" style="position:absolute;left:{{ h.left }}px;top:{{ h.top }}px;width:78px;height:68px;cursor:{{ h.cursor }};opacity:{{ h.op }}">
+                <div style="position:relative;width:100%;height:100%;background:{{ h.outerBg }};clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)">
+                  <div style="position:absolute;inset:2.5px;background:{{ h.innerBg }};clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px">
+                    <span style="display:flex">{{ h.art }}</span>
+                    <span style="font-size:8.5px;font-weight:800;color:{{ h.labelColor }};font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;line-height:1.2;text-align:center">{{ h.label }}</span>
+                  </div>
+                </div>
+                <sc-if value="{{ h.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);white-space:nowrap;background:{{ h.badgeBg }};color:{{ h.badgeColor }};font-size:7.5px;font-weight:800;border-radius:999px;padding:2px 6px;border:1px solid #1f1b16;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;z-index:2">{{ h.badge }}</span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="text-align:center;font-size:9px;color:#a89e8a;font-weight:700;padding:2px 0 6px">今のキミと地続きのマスが「いける未来」</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 2px">
+            <span style="font-size:11px;font-weight:800;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">キミの分岐カード</span>
+            <span style="font-size:9px;color:#a89e8a;font-weight:700">マップと連動しているよ</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:6px;background:#fff6e8;border:1px solid #f3e2c4;border-radius:10px;padding:7px 10px">
+            <span style="width:5px;height:5px;border-radius:50%;background:#e0913a;flex-shrink:0;margin-top:5px"></span>
+            <span style="font-size:9.5px;color:#8a6a34;font-weight:600;line-height:1.6">「おすすめ」は、キミの診断結果から見ると近そうな道。<br>でも、えらぶのはキミ。おすすめは参考だよ。</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:9px;overflow-x:auto;padding:8px 2px;margin:-4px 0">
+          <sc-for list="{{ cardsG }}" as="c" hint-placeholder-count="5">
+            <div onClick="{{ c.pick }}" style="width:142px;flex-shrink:0;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;border:{{ c.bd }};background:{{ c.bg }};border-radius:14px;padding:13px 8px 11px;cursor:pointer;transition:all .15s">
+              <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-8px;right:8px;background:#ff6b5e;color:#ffffff;font-size:7.5px;font-weight:800;border-radius:999px;padding:2px 7px;border:1px solid #1f1b16;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">おすすめ</span></sc-if>
+              <span style="background:{{ c.kindBg }};color:{{ c.kindFg }};font-size:8px;font-weight:800;border-radius:999px;padding:2px 8px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ c.kindLabel }}</span>
+              <span style="display:flex;margin-top:2px">{{ c.art }}</span>
+              <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:12.5px">{{ c.name }}</span>
+              <span style="font-size:7.5px;color:#7a7263;font-weight:700;letter-spacing:.5px;min-height:9px">{{ c.kana }}</span>
+              <span style="font-size:8.5px;font-weight:800;color:#2447c9;background:#e8edff;border-radius:999px;padding:2px 8px">＋{{ c.keyShort }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ noSelG }}" hint-placeholder-val="{{ true }}">
+          <div style="text-align:center;font-size:11px;color:#7a7263;font-weight:600;line-height:1.8;padding:4px 0">気になるマスかカードをえらぶと、<br>「未来のキミ」とチャレンジへの道が見えてくるよ</div>
+        </sc-if>
+        <sc-if value="{{ selGFull }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#ffffff;border:2px solid #1f1b16;border-radius:16px;padding:15px;box-shadow:4px 4px 0 #1f1b16">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+              <span style="background:{{ selG.kindBg }};color:{{ selG.kindFg }};font-size:9px;font-weight:800;border-radius:999px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selG.kindLabel }}</span>
+              <span style="font-size:10.5px;font-weight:800;color:#2447c9;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">「{{ selG.key }}」をのばすと…</span>
+            </div>
+            <div style="background:#1f1b16;border-radius:14px;padding:14px;position:relative;overflow:hidden">
+              <div style="position:absolute;top:-22px;right:-22px;width:84px;height:84px;border-radius:50%;background:rgba(255,214,51,.12)"></div>
+              <div style="font-size:9px;letter-spacing:2px;color:#ffd633;font-weight:800;margin-bottom:6px">未来のキミ ・ {{ selG.tierLabel }}</div>
+              <div style="display:flex;align-items:center;gap:9px">
+                <span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ selGArt }}</span>
+                <div>
+                  <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:16px;color:#ffffff;line-height:1.25">「{{ selG.name }}」</div>
+                  <sc-if value="{{ selG.kana }}" hint-placeholder-val="{{ false }}"><div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;margin-top:2px">{{ selG.kana }}</div></sc-if>
+                </div>
+              </div>
+              <div style="font-size:11px;color:#ffd633;font-weight:800;margin-top:8px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selG.catch }}</div>
+              <p style="font-size:10.5px;color:rgba(255,255,255,.82);line-height:1.75;font-weight:500;margin:5px 0 0">{{ selG.desc }}</p>
+              <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:11px;padding-top:9px">
+                <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:6px">活やくのイメージ</div>
+                <div style="display:flex;flex-wrap:wrap;gap:5px">
+                  <sc-for list="{{ selG.scenes }}" as="s" hint-placeholder-count="3"><span style="background:rgba(255,255,255,.12);color:#ffffff;border-radius:999px;padding:3px 10px;font-size:9.5px;font-weight:700;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ s }}</span></sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ selGFar }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#ffffff;border:1.5px dashed #cfc4ab;border-radius:16px;padding:16px;text-align:center">
+            <div style="display:flex;justify-content:center;margin-bottom:4px;opacity:.55">{{ selGArt }}</div>
+            <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:13px">「{{ selG.name }}」</div>
+            <div style="font-size:10.5px;color:#7a7263;font-weight:700;margin-top:3px">{{ selG.catch }}</div>
+            <p style="font-size:10px;color:#a89e8a;line-height:1.7;margin:8px 0 0">ここは、次の成長のあとに見えてくるみたい。<br>まずはとなりのマスに進むと、道がつながっていくかも。</p>
+          </div>
+        </sc-if>
+      </div>
+      <div style="flex-shrink:0;background:#ffffff;border-top:2px solid #1f1b16;padding:10px 14px 14px;display:flex;gap:10px;align-items:center">
+        <div style="width:44px;height:44px;border-radius:50%;background:#ffffff;box-shadow:inset 0 0 0 1.5px #cfc4ab;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+        </div>
+        <div onClick="{{ ctaG.click }}" style="flex:1;height:47px;border-radius:999px;background:{{ ctaG.bg }};color:{{ ctaG.color }};border:{{ ctaG.border }};box-shadow:{{ ctaG.shadow }};display:flex;align-items:center;justify-content:center;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:12.5px;cursor:{{ ctaG.cursor }};transition:all .15s;text-align:center;line-height:1.3">{{ ctaG.label }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+<section style="padding:44px 48px 90px;display:flex;flex-direction:column;gap:24px">
+  <div style="max-width:1080px">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+      <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:22px">「未来のヒント」成長分岐 リデザイン</span>
+      <span style="font-size:12px;color:#7a7263;font-weight:700">4案 ・ タイプ名はすべて仮</span>
+    </div>
+    <div style="font-size:12px;color:#57503f;line-height:1.9;margin-top:8px;font-weight:500;max-width:860px">
+      よこの変化（ベース同士）と上位進化を、どちらも同格の「成長」として可視化。Aiが診断結果からおすすめ分岐を自動提示しつつ、自分でも自由に選べて、選んだ未来がそのままチャレンジにつながる構成です。例として「今のキミ＝創造者」で作っています。
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;margin-top:12px;font-size:11.5px;font-weight:700;color:#57503f">
+      <div>ベース6：探索者 ／ 創造者（今回の「今のキミ」）／ 推進者 ／ 共創者 ／ 支援者 ／ 変革者</div>
+      <div>上位6（仮名）：開拓者（パイオニア）／ 発明家（イノベーター）／ 統率者（リーダー）／ 演出家（プロデューサー）／ 育成者（メンター）／ 革新者（ゲームチェンジャー）</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:40px;align-items:flex-start">
+  <div id="2a" style="display:flex;flex-direction:column;gap:10px;width:394px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:9px">
+      <span style="background:#1f1b16;color:#ffffff;font-size:12px;font-weight:800;border-radius:8px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">2a</span>
+      <div>
+        <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:14px">ハニカムマップ型</div>
+        <div style="font-size:10.5px;color:#7a7263;font-weight:600">六角形の未来マップ。今のキミを中心に、地続きの成長を表現</div>
+      </div>
+    </div>
+    <div style="width:390px;height:812px;border:2px solid #1f1b16;border-radius:30px;box-shadow:10px 10px 0 rgba(31,27,22,.13);background:#fffbf2;overflow:hidden;display:flex;flex-direction:column" data-screen-label="2a ハニカムマップ型">
+      <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:13px 18px 11px;background:#ffffff;border-bottom:1.5px solid #e3d9c4">
+        <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:19px;letter-spacing:-.5px"><span style="color:#ff6b5e">Ai</span><span>GROW</span><span style="font-size:10px;color:#7a7263;font-weight:700;margin-left:6px">キミのトリセツ</span></div>
+        <div style="width:30px;height:30px;border-radius:50%;background:#e8edff;display:flex;align-items:center;justify-content:center">{{ avatarArt }}</div>
+      </div>
+      <div style="flex-shrink:0;background:#ffffff;padding:9px 10px;display:flex;gap:4px;overflow-x:auto">
+        <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="4">
+          <div style="flex-shrink:0;display:flex;align-items:center;gap:4px;border:1.5px solid #1f1b16;border-radius:9px;padding:6px 7px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:9px;background:{{ ch.bg }};color:{{ ch.color }}">{{ ch.mark }}{{ ch.label }}</div>
+        </sc-for>
+      </div>
+      <div style="flex-shrink:0;height:3px;background:#eef1f4"><div style="height:100%;width:100%;background:#315cfa"></div></div>
+      <div class="hint-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px">
+        <div>
+          <span style="background:#1f1b16;color:#ffd633;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:10px;border-radius:6px;padding:3px 9px;letter-spacing:1px">STEP 4</span>
+          <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:17px;margin-top:7px">未来のヒント</div>
+          <div style="font-size:11px;color:#7a7263;font-weight:600;margin-top:2px">キミの未来マップ — 地続きのマスへ、成長でひろがっていく</div>
+        </div>
+        <div style="background:#ffffff;border:1.5px solid #e3d9c4;border-radius:16px;padding:10px 0 4px">
+          <div style="display:flex;justify-content:center;gap:11px;padding:0 8px 4px;flex-wrap:wrap">
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:10px;height:10px;border-radius:50%;background:#1f1b16;display:inline-block"></span>いまのキミ</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:10px;height:10px;border-radius:50%;background:#ffffff;border:2px solid #315cfa;display:inline-block"></span>いける未来</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:10px;height:10px;border-radius:50%;background:#ffffff;border:2px solid #e3d9c4;display:inline-block;opacity:.6"></span>この先で見えてくる未来</span>
+          </div>
+          <div style="position:relative;height:284px">
+            <sc-for list="{{ hexNodes }}" as="h" hint-placeholder-count="12">
+              <div onClick="{{ h.pick }}" style="position:absolute;left:{{ h.left }}px;top:{{ h.top }}px;width:78px;height:68px;cursor:{{ h.cursor }};opacity:{{ h.op }}">
+                <div style="position:relative;width:100%;height:100%;background:{{ h.outerBg }};clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)">
+                  <div style="position:absolute;inset:2.5px;background:{{ h.innerBg }};clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px">
+                    <span style="display:flex">{{ h.art }}</span>
+                    <span style="font-size:8.5px;font-weight:800;color:{{ h.labelColor }};font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;line-height:1.2;text-align:center">{{ h.label }}</span>
+                  </div>
+                </div>
+                <sc-if value="{{ h.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);white-space:nowrap;background:{{ h.badgeBg }};color:{{ h.badgeColor }};font-size:7.5px;font-weight:800;border-radius:999px;padding:2px 6px;border:1px solid #1f1b16;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;z-index:2">{{ h.badge }}</span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="text-align:center;font-size:9px;color:#a89e8a;font-weight:700;padding:2px 0 6px">今のキミと地続きのマスが「いける未来」。マスをタップしてみよう</div>
+        </div>
+        <sc-if value="{{ noSelH }}" hint-placeholder-val="{{ true }}">
+          <div style="text-align:center;font-size:11px;color:#7a7263;font-weight:600;line-height:1.8;padding:4px 0">気になるマスをタップすると、<br>「未来のキミ」とチャレンジへの道が見えるよ</div>
+        </sc-if>
+        <sc-if value="{{ selHFull }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#ffffff;border:2px solid #1f1b16;border-radius:16px;padding:15px;box-shadow:4px 4px 0 #1f1b16">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+              <span style="background:{{ selH.kindBg }};color:{{ selH.kindFg }};font-size:9px;font-weight:800;border-radius:999px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selH.kindLabel }}</span>
+              <span style="font-size:10.5px;font-weight:800;color:#2447c9;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">「{{ selH.key }}」をのばすと…</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;background:#fffbf2;border-radius:10px;padding:8px 12px">
+              <span style="display:flex">{{ nowArtSm }}</span>
+              <span style="font-size:9px;color:#7a7263;font-weight:700">いまのキミ</span>
+              <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:12px">創造者</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding:7px 0;gap:3px">
+              <span style="font-size:9px;font-weight:800;color:#9a6a2e;background:#ffedd6;border-radius:999px;padding:2px 9px">＋ {{ selH.key }} UP</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b5e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"></path></svg>
+            </div>
+            <div style="background:#1f1b16;border-radius:14px;padding:14px;position:relative;overflow:hidden">
+              <div style="position:absolute;top:-22px;right:-22px;width:84px;height:84px;border-radius:50%;background:rgba(255,214,51,.12)"></div>
+              <div style="font-size:9px;letter-spacing:2px;color:#ffd633;font-weight:800;margin-bottom:6px">未来のキミ ・ {{ selH.tierLabel }}</div>
+              <div style="display:flex;align-items:center;gap:9px">
+                <span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ selHArt }}</span>
+                <div>
+                  <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:16px;color:#ffffff;line-height:1.25">「{{ selH.name }}」</div>
+                  <sc-if value="{{ selH.kana }}" hint-placeholder-val="{{ false }}"><div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;margin-top:2px">{{ selH.kana }}</div></sc-if>
+                </div>
+              </div>
+              <div style="font-size:11px;color:#ffd633;font-weight:800;margin-top:8px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selH.catch }}</div>
+              <p style="font-size:10.5px;color:rgba(255,255,255,.82);line-height:1.75;font-weight:500;margin:5px 0 0">{{ selH.desc }}</p>
+              <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:11px;padding-top:9px">
+                <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:6px">活やくのイメージ</div>
+                <div style="display:flex;flex-wrap:wrap;gap:5px">
+                  <sc-for list="{{ selH.scenes }}" as="s" hint-placeholder-count="3"><span style="background:rgba(255,255,255,.12);color:#ffffff;border-radius:999px;padding:3px 10px;font-size:9.5px;font-weight:700;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ s }}</span></sc-for>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </sc-if>
+        <sc-if value="{{ selHFar }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#ffffff;border:1.5px dashed #cfc4ab;border-radius:16px;padding:16px;text-align:center">
+            <div style="display:flex;justify-content:center;margin-bottom:4px;opacity:.55">{{ selHArt }}</div>
+            <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:13px">「{{ selH.name }}」</div>
+            <div style="font-size:10.5px;color:#7a7263;font-weight:700;margin-top:3px">{{ selH.catch }}</div>
+            <p style="font-size:10px;color:#a89e8a;line-height:1.7;margin:8px 0 0">「創造者」のマスとは、まだ地続きじゃない未来。<br>まずはとなりのマスに進むと、道がつながっていくよ。</p>
+          </div>
+        </sc-if>
+      </div>
+      <div style="flex-shrink:0;background:#ffffff;border-top:2px solid #1f1b16;padding:10px 14px 14px;display:flex;gap:10px;align-items:center">
+        <div style="width:44px;height:44px;border-radius:50%;background:#ffffff;box-shadow:inset 0 0 0 1.5px #cfc4ab;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+        </div>
+        <div onClick="{{ ctaH.click }}" style="flex:1;height:47px;border-radius:999px;background:{{ ctaH.bg }};color:{{ ctaH.color }};border:{{ ctaH.border }};box-shadow:{{ ctaH.shadow }};display:flex;align-items:center;justify-content:center;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:12.5px;cursor:{{ ctaH.cursor }};transition:all .15s;text-align:center;line-height:1.3">{{ ctaH.label }}</div>
+      </div>
+    </div>
+  </div>
+
+
+    <div id="1a" style="display:flex;flex-direction:column;gap:10px;width:394px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:9px">
+        <span style="background:#1f1b16;color:#ffffff;font-size:12px;font-weight:800;border-radius:8px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">1a</span>
+        <div>
+          <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:14px">全体マップ型</div>
+          <div style="font-size:10.5px;color:#7a7263;font-weight:600">12タイプを一望。今の位置と分岐ルートを線で示す</div>
+        </div>
+      </div>
+      <div style="width:390px;height:812px;border:2px solid #1f1b16;border-radius:30px;box-shadow:10px 10px 0 rgba(31,27,22,.13);background:#fffbf2;overflow:hidden;display:flex;flex-direction:column" data-screen-label="1a 全体マップ型">
+        <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:13px 18px 11px;background:#ffffff;border-bottom:1.5px solid #e3d9c4">
+          <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:19px;letter-spacing:-.5px"><span style="color:#ff6b5e">Ai</span><span>GROW</span><span style="font-size:10px;color:#7a7263;font-weight:700;margin-left:6px">キミのトリセツ</span></div>
+          <div style="width:30px;height:30px;border-radius:50%;background:#e8edff;display:flex;align-items:center;justify-content:center">{{ avatarArt }}</div>
+        </div>
+        <div style="flex-shrink:0;background:#ffffff;padding:9px 10px;display:flex;gap:4px;overflow-x:auto">
+          <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="4">
+            <div style="flex-shrink:0;display:flex;align-items:center;gap:4px;border:1.5px solid #1f1b16;border-radius:9px;padding:6px 7px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:9px;background:{{ ch.bg }};color:{{ ch.color }}">{{ ch.mark }}{{ ch.label }}</div>
+          </sc-for>
+        </div>
+        <div style="flex-shrink:0;height:3px;background:#eef1f4"><div style="height:100%;width:100%;background:#315cfa"></div></div>
+        <div class="hint-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px">
+          <div>
+            <span style="background:#1f1b16;color:#ffd633;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:10px;border-radius:6px;padding:3px 9px;letter-spacing:1px">STEP 4</span>
+            <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:17px;margin-top:7px">未来のヒント</div>
+            <div style="font-size:11px;color:#7a7263;font-weight:600;margin-top:2px">キミの未来マップ — タップすると「未来のキミ」が見えるよ</div>
+          </div>
+          <div style="background:#ffffff;border:1.5px solid #e3d9c4;border-radius:16px;padding:10px 0 4px">
+            <div style="display:flex;justify-content:center;gap:11px;padding:0 8px 6px;flex-wrap:wrap">
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:10px;height:10px;border-radius:50%;background:#1f1b16;display:inline-block"></span>いまのキミ</span>
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:10px;height:10px;border-radius:50%;background:#ffffff;border:2px solid #315cfa;display:inline-block"></span>いける未来</span>
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#7a7263"><span style="width:10px;height:10px;border-radius:50%;background:#ffffff;border:2px solid #e3d9c4;display:inline-block;opacity:.6"></span>この先で見えてくる未来</span>
+            </div>
+            <div style="position:relative;height:274px">
+              <div style="position:absolute;left:12px;top:2px;font-size:8.5px;font-weight:800;color:#8a6cf0;letter-spacing:1px">上位タイプ</div>
+              <div style="position:absolute;left:12px;top:162px;font-size:8.5px;font-weight:800;color:#a89e8a;letter-spacing:1px">ベースタイプ</div>
+              <svg viewBox="0 0 358 274" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none">
+                <path d="M90,195 L90,82" stroke="#9db1f7" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round" fill="none"></path>
+                <path d="M86,197 C 62,158 30,138 30,84" stroke="#9db1f7" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round" fill="none"></path>
+                <path d="M96,197 C 126,144 210,138 210,84" stroke="#315cfa" stroke-width="3" stroke-linecap="round" fill="none"></path>
+                <path d="M100,196 Q120,168 140,196" stroke="#315cfa" stroke-width="3" stroke-linecap="round" fill="none"></path>
+                <path d="M100,192 Q155,138 200,192" stroke="#9db1f7" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round" fill="none"></path>
+              </svg>
+              <sc-for list="{{ mapNodes }}" as="n" hint-placeholder-count="12">
+                <div onClick="{{ n.pick }}" style="position:absolute;left:{{ n.left }}px;top:{{ n.top }}px;width:64px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:{{ n.cursor }};opacity:{{ n.op }}">
+                  <div style="position:relative;width:46px;height:46px;border-radius:50%;background:{{ n.bg }};border:{{ n.border }};display:flex;align-items:center;justify-content:center;box-shadow:{{ n.shadow }};transition:all .15s"><span style="display:flex">{{ n.art }}</span>
+                    <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);white-space:nowrap;background:{{ n.badgeBg }};color:{{ n.badgeColor }};font-size:7.5px;font-weight:800;border-radius:999px;padding:2px 6px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;border:1px solid #1f1b16">{{ n.badge }}</span></sc-if>
+                  </div>
+                  <div style="font-size:8.5px;font-weight:800;color:{{ n.labelColor }};font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;line-height:1.25;text-align:center">{{ n.name }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="text-align:center;font-size:9px;color:#a89e8a;font-weight:700;padding:2px 0 6px">実線 ＝ Aiのおすすめルート ／ よこの変化も上への進化も、どちらも成長！</div>
+          </div>
+          <sc-if value="{{ noSelA }}" hint-placeholder-val="{{ true }}">
+            <div style="text-align:center;font-size:11px;color:#7a7263;font-weight:600;line-height:1.8;padding:4px 0">気になる未来をタップすると、<br>「未来のキミ」とチャレンジへの道が見えるよ</div>
+          </sc-if>
+          <sc-if value="{{ selAFull }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#ffffff;border:2px solid #1f1b16;border-radius:16px;padding:15px;box-shadow:4px 4px 0 #1f1b16">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+                <span style="background:{{ selA.kindBg }};color:{{ selA.kindFg }};font-size:9px;font-weight:800;border-radius:999px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selA.kindLabel }}</span>
+                <span style="font-size:10.5px;font-weight:800;color:#2447c9;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">「{{ selA.key }}」をのばすと…</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:9px;background:#fffbf2;border-radius:10px;padding:8px 12px">
+                <span style="display:flex">{{ nowArtSm }}</span>
+                <span style="font-size:9px;color:#7a7263;font-weight:700">いまのキミ</span>
+                <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:12px">創造者</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;padding:7px 0;gap:3px">
+                <span style="font-size:9px;font-weight:800;color:#9a6a2e;background:#ffedd6;border-radius:999px;padding:2px 9px">＋ {{ selA.key }} UP</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b5e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"></path></svg>
+              </div>
+              <div style="background:#1f1b16;border-radius:14px;padding:14px;position:relative;overflow:hidden">
+                <div style="position:absolute;top:-22px;right:-22px;width:84px;height:84px;border-radius:50%;background:rgba(255,214,51,.12)"></div>
+                <div style="font-size:9px;letter-spacing:2px;color:#ffd633;font-weight:800;margin-bottom:6px">未来のキミ ・ {{ selA.tierLabel }}</div>
+                <div style="display:flex;align-items:center;gap:9px">
+                  <span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ selAArt }}</span>
+                  <div>
+                    <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:16px;color:#ffffff;line-height:1.25">「{{ selA.name }}」</div>
+                    <sc-if value="{{ selA.kana }}" hint-placeholder-val="{{ false }}"><div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;margin-top:2px">{{ selA.kana }}</div></sc-if>
+                  </div>
+                </div>
+                <div style="font-size:11px;color:#ffd633;font-weight:800;margin-top:8px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selA.catch }}</div>
+                <p style="font-size:10.5px;color:rgba(255,255,255,.82);line-height:1.75;font-weight:500;margin:5px 0 0">{{ selA.desc }}</p>
+                <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:11px;padding-top:9px">
+                  <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:6px">活やくのイメージ</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:5px">
+                    <sc-for list="{{ selA.scenes }}" as="s" hint-placeholder-count="3"><span style="background:rgba(255,255,255,.12);color:#ffffff;border-radius:999px;padding:3px 10px;font-size:9.5px;font-weight:700;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ s }}</span></sc-for>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </sc-if>
+          <sc-if value="{{ selAFar }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#ffffff;border:1.5px dashed #cfc4ab;border-radius:16px;padding:16px;text-align:center">
+              <div style="display:flex;justify-content:center;margin-bottom:4px;opacity:.55">{{ selAArt }}</div>
+              <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:13px">「{{ selA.name }}」</div>
+              <div style="font-size:10.5px;color:#7a7263;font-weight:700;margin-top:3px">{{ selA.catch }}</div>
+              <p style="font-size:10px;color:#a89e8a;line-height:1.7;margin:8px 0 0">「創造者」からは、まだ少しとおい未来。<br>まずは近くの分岐にちかづくと、ここへの道も見えてくるよ。</p>
+            </div>
+          </sc-if>
+        </div>
+        <div style="flex-shrink:0;background:#ffffff;border-top:2px solid #1f1b16;padding:10px 14px 14px;display:flex;gap:10px;align-items:center">
+          <div style="width:44px;height:44px;border-radius:50%;background:#ffffff;box-shadow:inset 0 0 0 1.5px #cfc4ab;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+          </div>
+          <div onClick="{{ ctaA.click }}" style="flex:1;height:47px;border-radius:999px;background:{{ ctaA.bg }};color:{{ ctaA.color }};border:{{ ctaA.border }};box-shadow:{{ ctaA.shadow }};display:flex;align-items:center;justify-content:center;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:12.5px;cursor:{{ ctaA.cursor }};transition:all .15s;text-align:center;line-height:1.3">{{ ctaA.label }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1b" style="display:flex;flex-direction:column;gap:10px;width:394px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:9px">
+        <span style="background:#1f1b16;color:#ffffff;font-size:12px;font-weight:800;border-radius:8px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">1b</span>
+        <div>
+          <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:14px">分岐ツリー型</div>
+          <div style="font-size:10.5px;color:#7a7263;font-weight:600">今のキミを中心に、上と横へ枝がのびる</div>
+        </div>
+      </div>
+      <div style="width:390px;height:812px;border:2px solid #1f1b16;border-radius:30px;box-shadow:10px 10px 0 rgba(31,27,22,.13);background:#fffbf2;overflow:hidden;display:flex;flex-direction:column" data-screen-label="1b 分岐ツリー型">
+        <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:13px 18px 11px;background:#ffffff;border-bottom:1.5px solid #e3d9c4">
+          <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:19px;letter-spacing:-.5px"><span style="color:#ff6b5e">Ai</span><span>GROW</span><span style="font-size:10px;color:#7a7263;font-weight:700;margin-left:6px">キミのトリセツ</span></div>
+          <div style="width:30px;height:30px;border-radius:50%;background:#e8edff;display:flex;align-items:center;justify-content:center">{{ avatarArt }}</div>
+        </div>
+        <div style="flex-shrink:0;background:#ffffff;padding:9px 10px;display:flex;gap:4px;overflow-x:auto">
+          <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="4">
+            <div style="flex-shrink:0;display:flex;align-items:center;gap:4px;border:1.5px solid #1f1b16;border-radius:9px;padding:6px 7px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:9px;background:{{ ch.bg }};color:{{ ch.color }}">{{ ch.mark }}{{ ch.label }}</div>
+          </sc-for>
+        </div>
+        <div style="flex-shrink:0;height:3px;background:#eef1f4"><div style="height:100%;width:100%;background:#315cfa"></div></div>
+        <div class="hint-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px">
+          <div>
+            <span style="background:#1f1b16;color:#ffd633;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:10px;border-radius:6px;padding:3px 9px;letter-spacing:1px">STEP 4</span>
+            <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:17px;margin-top:7px">未来のヒント</div>
+            <div style="font-size:11px;color:#7a7263;font-weight:600;margin-top:2px">キミの成長ツリー — 上にも、よこにも、のびていける</div>
+          </div>
+          <div style="background:#ffffff;border:1.5px solid #e3d9c4;border-radius:16px;padding:12px 8px 10px">
+            <div style="text-align:center;font-size:9px;font-weight:800;color:#8a6cf0;letter-spacing:1px;margin-bottom:8px">のばす力で、上位タイプへ進化</div>
+            <div style="display:flex;gap:8px;padding:8px 4px 0">
+              <sc-for list="{{ treeUp }}" as="t" hint-placeholder-count="3">
+                <div onClick="{{ t.pick }}" style="flex:1;position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;border:{{ t.bd }};background:{{ t.bg }};border-radius:12px;padding:11px 6px 9px;cursor:pointer;transition:all .15s">
+                  <sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-8px;right:6px;background:#ff6b5e;color:#ffffff;font-size:7.5px;font-weight:800;border-radius:999px;padding:2px 6px;border:1px solid #1f1b16;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ t.badge }}</span></sc-if>
+                  <span style="display:flex">{{ t.art }}</span>
+                  <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:11px">{{ t.name }}</span>
+                  <span style="font-size:7.5px;color:#7a7263;font-weight:700;letter-spacing:.5px">{{ t.kana }}</span>
+                  <span style="font-size:8px;font-weight:800;color:#2447c9;background:#e8edff;border-radius:999px;padding:2px 7px">＋{{ t.keyShort }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <svg viewBox="0 0 342 34" style="width:100%;height:34px;display:block">
+              <path d="M171,34 L55,4" stroke="#9db1f7" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round" fill="none"></path>
+              <path d="M171,34 L171,4" stroke="#315cfa" stroke-width="3" stroke-linecap="round" fill="none"></path>
+              <path d="M171,34 L287,4" stroke="#9db1f7" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round" fill="none"></path>
+            </svg>
+            <div style="display:flex;align-items:center;justify-content:center">
+              <div onClick="{{ bLeft.pick }}" style="width:102px;position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;border:{{ bLeft.bd }};background:{{ bLeft.bg }};border-radius:12px;padding:10px 6px 8px;cursor:pointer;transition:all .15s">
+                <sc-if value="{{ bLeft.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-8px;right:6px;background:#ff6b5e;color:#ffffff;font-size:7.5px;font-weight:800;border-radius:999px;padding:2px 6px;border:1px solid #1f1b16;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ bLeft.badge }}</span></sc-if>
+                <span style="display:flex">{{ bLeft.art }}</span>
+                <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:10.5px">{{ bLeft.name }}</span>
+                <span style="font-size:8px;font-weight:800;color:#0f7a4d;background:#e4f9ec;border-radius:999px;padding:2px 7px">＋{{ bLeft.keyShort }}</span>
+              </div>
+              <div style="width:11px;height:0;border-top:2px solid #18b271;flex-shrink:0"></div>
+              <div style="width:116px;background:#1f1b16;border-radius:13px;padding:11px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:3px 3px 0 rgba(31,27,22,.25)">
+                <span style="font-size:8px;color:#ffd633;font-weight:800;letter-spacing:1px">今のキミ</span>
+                <span style="display:flex">{{ nowArtInv }}</span>
+                <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:13px;color:#ffffff">創造者</span>
+                <span style="font-size:8px;color:rgba(255,255,255,.65);font-weight:700">アイデアを形にする</span>
+              </div>
+              <div style="width:11px;height:0;border-top:2px dashed #9dd8bd;flex-shrink:0"></div>
+              <div onClick="{{ bRight.pick }}" style="width:102px;position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;border:{{ bRight.bd }};background:{{ bRight.bg }};border-radius:12px;padding:10px 6px 8px;cursor:pointer;transition:all .15s">
+                <sc-if value="{{ bRight.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-8px;right:6px;background:#ff6b5e;color:#ffffff;font-size:7.5px;font-weight:800;border-radius:999px;padding:2px 6px;border:1px solid #1f1b16;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ bRight.badge }}</span></sc-if>
+                <span style="display:flex">{{ bRight.art }}</span>
+                <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:10.5px">{{ bRight.name }}</span>
+                <span style="font-size:8px;font-weight:800;color:#0f7a4d;background:#e4f9ec;border-radius:999px;padding:2px 7px">＋{{ bRight.keyShort }}</span>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:9px;color:#a89e8a;font-weight:700;margin-top:9px">上への進化も、よこの成長も、どちらも立派なレベルアップ</div>
+          </div>
+          <sc-if value="{{ showDistantRow }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="font-size:9.5px;font-weight:800;color:#a89e8a;margin-bottom:6px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">とおい未来（いまは霧の中）</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                <sc-for list="{{ distantB }}" as="d" hint-placeholder-count="6">
+                  <span onClick="{{ d.pick }}" style="display:inline-flex;align-items:center;gap:4px;border:{{ d.bd }};color:{{ d.color }};border-radius:999px;padding:5px 10px;font-size:9.5px;font-weight:700;cursor:pointer;background:#ffffff;opacity:.75;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ d.art }} {{ d.name }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ noSelB }}" hint-placeholder-val="{{ false }}">
+            <div style="text-align:center;font-size:11px;color:#7a7263;font-weight:600;line-height:1.8;padding:4px 0">枝の先をタップすると、<br>「未来のキミ」とチャレンジへの道が見えるよ</div>
+          </sc-if>
+          <sc-if value="{{ selBFull }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#ffffff;border:2px solid #1f1b16;border-radius:16px;padding:15px;box-shadow:4px 4px 0 #1f1b16">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+                <span style="background:{{ selB.kindBg }};color:{{ selB.kindFg }};font-size:9px;font-weight:800;border-radius:999px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selB.kindLabel }}</span>
+                <span style="font-size:10.5px;font-weight:800;color:#2447c9;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">「{{ selB.key }}」をのばすと…</span>
+              </div>
+              <div style="background:#1f1b16;border-radius:14px;padding:14px;position:relative;overflow:hidden">
+                <div style="position:absolute;top:-22px;right:-22px;width:84px;height:84px;border-radius:50%;background:rgba(255,214,51,.12)"></div>
+                <div style="font-size:9px;letter-spacing:2px;color:#ffd633;font-weight:800;margin-bottom:6px">未来のキミ ・ {{ selB.tierLabel }}</div>
+                <div style="display:flex;align-items:center;gap:9px">
+                  <span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ selBArt }}</span>
+                  <div>
+                    <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:16px;color:#ffffff;line-height:1.25">「{{ selB.name }}」</div>
+                    <sc-if value="{{ selB.kana }}" hint-placeholder-val="{{ false }}"><div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;margin-top:2px">{{ selB.kana }}</div></sc-if>
+                  </div>
+                </div>
+                <div style="font-size:11px;color:#ffd633;font-weight:800;margin-top:8px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selB.catch }}</div>
+                <p style="font-size:10.5px;color:rgba(255,255,255,.82);line-height:1.75;font-weight:500;margin:5px 0 0">{{ selB.desc }}</p>
+                <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:11px;padding-top:9px">
+                  <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:6px">活やくのイメージ</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:5px">
+                    <sc-for list="{{ selB.scenes }}" as="s" hint-placeholder-count="3"><span style="background:rgba(255,255,255,.12);color:#ffffff;border-radius:999px;padding:3px 10px;font-size:9.5px;font-weight:700;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ s }}</span></sc-for>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </sc-if>
+          <sc-if value="{{ selBFar }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#ffffff;border:1.5px dashed #cfc4ab;border-radius:16px;padding:16px;text-align:center">
+              <div style="display:flex;justify-content:center;margin-bottom:4px;opacity:.55">{{ selBArt }}</div>
+              <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:13px">「{{ selB.name }}」</div>
+              <div style="font-size:10.5px;color:#7a7263;font-weight:700;margin-top:3px">{{ selB.catch }}</div>
+              <p style="font-size:10px;color:#a89e8a;line-height:1.7;margin:8px 0 0">「創造者」からは、まだ少しとおい未来。<br>まずは近くの枝にちかづくと、ここへの道も見えてくるよ。</p>
+            </div>
+          </sc-if>
+        </div>
+        <div style="flex-shrink:0;background:#ffffff;border-top:2px solid #1f1b16;padding:10px 14px 14px;display:flex;gap:10px;align-items:center">
+          <div style="width:44px;height:44px;border-radius:50%;background:#ffffff;box-shadow:inset 0 0 0 1.5px #cfc4ab;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+          </div>
+          <div onClick="{{ ctaB.click }}" style="flex:1;height:47px;border-radius:999px;background:{{ ctaB.bg }};color:{{ ctaB.color }};border:{{ ctaB.border }};box-shadow:{{ ctaB.shadow }};display:flex;align-items:center;justify-content:center;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:12.5px;cursor:{{ ctaB.cursor }};transition:all .15s;text-align:center;line-height:1.3">{{ ctaB.label }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1c" style="display:flex;flex-direction:column;gap:10px;width:394px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:9px">
+        <span style="background:#1f1b16;color:#ffffff;font-size:12px;font-weight:800;border-radius:8px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">1c</span>
+        <div>
+          <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:14px">カード切り替え型</div>
+          <div style="font-size:10.5px;color:#7a7263;font-weight:600">分岐カードを横スクロールでくらべてえらぶ</div>
+        </div>
+      </div>
+      <div style="width:390px;height:812px;border:2px solid #1f1b16;border-radius:30px;box-shadow:10px 10px 0 rgba(31,27,22,.13);background:#fffbf2;overflow:hidden;display:flex;flex-direction:column" data-screen-label="1c カード切り替え型">
+        <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:13px 18px 11px;background:#ffffff;border-bottom:1.5px solid #e3d9c4">
+          <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:19px;letter-spacing:-.5px"><span style="color:#ff6b5e">Ai</span><span>GROW</span><span style="font-size:10px;color:#7a7263;font-weight:700;margin-left:6px">キミのトリセツ</span></div>
+          <div style="width:30px;height:30px;border-radius:50%;background:#e8edff;display:flex;align-items:center;justify-content:center">{{ avatarArt }}</div>
+        </div>
+        <div style="flex-shrink:0;background:#ffffff;padding:9px 10px;display:flex;gap:4px;overflow-x:auto">
+          <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="4">
+            <div style="flex-shrink:0;display:flex;align-items:center;gap:4px;border:1.5px solid #1f1b16;border-radius:9px;padding:6px 7px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:9px;background:{{ ch.bg }};color:{{ ch.color }}">{{ ch.mark }}{{ ch.label }}</div>
+          </sc-for>
+        </div>
+        <div style="flex-shrink:0;height:3px;background:#eef1f4"><div style="height:100%;width:100%;background:#315cfa"></div></div>
+        <div class="hint-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px">
+          <div>
+            <span style="background:#1f1b16;color:#ffd633;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:10px;border-radius:6px;padding:3px 9px;letter-spacing:1px">STEP 4</span>
+            <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:17px;margin-top:7px">未来のヒント</div>
+            <div style="font-size:11px;color:#7a7263;font-weight:600;margin-top:2px">のばす力しだいで、キミには5つの未来がある</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:11px;background:#ffffff;border-radius:14px;padding:11px 14px;border:1.5px solid #e3d9c4">
+            <span style="width:38px;height:38px;border-radius:11px;background:#1f1b16;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ nowArtInv }}</span>
+            <div style="flex:1">
+              <div style="font-size:9.5px;color:#7a7263;font-weight:700;letter-spacing:.5px">今のキミ ・ ベースタイプ</div>
+              <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:14.5px;margin-top:1px">「創造者」 <span style="font-size:9.5px;color:#7a7263;font-weight:700">アイデアを形にする</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 2px">
+            <span style="font-size:11px;font-weight:800;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">キミの分岐カード</span>
+            <span style="font-size:9px;color:#a89e8a;font-weight:700">おすすめはAiが診断結果からえらんだよ</span>
+          </div>
+          <div style="display:flex;gap:9px;overflow-x:auto;padding:8px 2px;margin:-4px 0">
+            <sc-for list="{{ cardsC }}" as="c" hint-placeholder-count="5">
+              <div onClick="{{ c.pick }}" style="width:142px;flex-shrink:0;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;border:{{ c.bd }};background:{{ c.bg }};border-radius:14px;padding:13px 8px 11px;cursor:pointer;transition:all .15s">
+                <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-8px;right:8px;background:#ff6b5e;color:#ffffff;font-size:7.5px;font-weight:800;border-radius:999px;padding:2px 7px;border:1px solid #1f1b16;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">おすすめ</span></sc-if>
+                <span style="background:{{ c.kindBg }};color:{{ c.kindFg }};font-size:8px;font-weight:800;border-radius:999px;padding:2px 8px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ c.kindLabel }}</span>
+                <span style="display:flex;margin-top:2px">{{ c.art }}</span>
+                <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:12.5px">{{ c.name }}</span>
+                <span style="font-size:7.5px;color:#7a7263;font-weight:700;letter-spacing:.5px;min-height:9px">{{ c.kana }}</span>
+                <span style="font-size:8.5px;font-weight:800;color:#2447c9;background:#e8edff;border-radius:999px;padding:2px 8px">＋{{ c.keyShort }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ selCFull }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#ffffff;border:2px solid #1f1b16;border-radius:16px;padding:15px;box-shadow:4px 4px 0 #1f1b16">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+                <span style="background:{{ selC.kindBg }};color:{{ selC.kindFg }};font-size:9px;font-weight:800;border-radius:999px;padding:3px 9px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selC.kindLabel }}</span>
+                <span style="font-size:10.5px;font-weight:800;color:#2447c9;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">「{{ selC.key }}」をのばすと…</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:9px;background:#fffbf2;border-radius:10px;padding:8px 12px">
+                <span style="display:flex">{{ nowArtSm }}</span>
+                <span style="font-size:9px;color:#7a7263;font-weight:700">いまのキミ</span>
+                <span style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:12px">創造者</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;padding:7px 0;gap:3px">
+                <span style="font-size:9px;font-weight:800;color:#9a6a2e;background:#ffedd6;border-radius:999px;padding:2px 9px">＋ {{ selC.key }} UP</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b5e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"></path></svg>
+              </div>
+              <div style="background:#1f1b16;border-radius:14px;padding:14px;position:relative;overflow:hidden">
+                <div style="position:absolute;top:-22px;right:-22px;width:84px;height:84px;border-radius:50%;background:rgba(255,214,51,.12)"></div>
+                <div style="font-size:9px;letter-spacing:2px;color:#ffd633;font-weight:800;margin-bottom:6px">未来のキミ ・ {{ selC.tierLabel }}</div>
+                <div style="display:flex;align-items:center;gap:9px">
+                  <span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ selCArt }}</span>
+                  <div>
+                    <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:16px;color:#ffffff;line-height:1.25">「{{ selC.name }}」</div>
+                    <sc-if value="{{ selC.kana }}" hint-placeholder-val="{{ false }}"><div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;margin-top:2px">{{ selC.kana }}</div></sc-if>
+                  </div>
+                </div>
+                <div style="font-size:11px;color:#ffd633;font-weight:800;margin-top:8px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ selC.catch }}</div>
+                <p style="font-size:10.5px;color:rgba(255,255,255,.82);line-height:1.75;font-weight:500;margin:5px 0 0">{{ selC.desc }}</p>
+                <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:11px;padding-top:9px">
+                  <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:6px">活やくのイメージ</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:5px">
+                    <sc-for list="{{ selC.scenes }}" as="s" hint-placeholder-count="3"><span style="background:rgba(255,255,255,.12);color:#ffffff;border-radius:999px;padding:3px 10px;font-size:9.5px;font-weight:700;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ s }}</span></sc-for>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </sc-if>
+          <sc-if value="{{ selCFar }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#ffffff;border:1.5px dashed #cfc4ab;border-radius:16px;padding:16px;text-align:center">
+              <div style="display:flex;justify-content:center;margin-bottom:4px;opacity:.55">{{ selCArt }}</div>
+              <div style="font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:900;font-size:13px">「{{ selC.name }}」</div>
+              <div style="font-size:10.5px;color:#7a7263;font-weight:700;margin-top:3px">{{ selC.catch }}</div>
+              <p style="font-size:10px;color:#a89e8a;line-height:1.7;margin:8px 0 0">「創造者」からは、まだ少しとおい未来。<br>まずは近くの分岐にちかづくと、ここへの道も見えてくるよ。</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ showDistantRow }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="font-size:9.5px;font-weight:800;color:#a89e8a;margin-bottom:6px;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">とおい未来ものぞいてみる</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                <sc-for list="{{ distantC }}" as="d" hint-placeholder-count="6">
+                  <span onClick="{{ d.pick }}" style="display:inline-flex;align-items:center;gap:4px;border:{{ d.bd }};color:{{ d.color }};border-radius:999px;padding:5px 10px;font-size:9.5px;font-weight:700;cursor:pointer;background:#ffffff;opacity:.75;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif">{{ d.art }} {{ d.name }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="flex-shrink:0;background:#ffffff;border-top:2px solid #1f1b16;padding:10px 14px 14px;display:flex;gap:10px;align-items:center">
+          <div style="width:44px;height:44px;border-radius:50%;background:#ffffff;box-shadow:inset 0 0 0 1.5px #cfc4ab;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+          </div>
+          <div onClick="{{ ctaC.click }}" style="flex:1;height:47px;border-radius:999px;background:{{ ctaC.bg }};color:{{ ctaC.color }};border:{{ ctaC.border }};box-shadow:{{ ctaC.shadow }};display:flex;align-items:center;justify-content:center;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;font-weight:800;font-size:12.5px;cursor:{{ ctaC.cursor }};transition:all .15s;text-align:center;line-height:1.3">{{ ctaC.label }}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showReco&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;表示&quot;}, &quot;distantStyle&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;うすく表示&quot;, &quot;かくす&quot;], &quot;default&quot;: &quot;うすく表示&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;表示&quot;}}">
+class Component extends DCLogic {
+  state = { a: null, b: null, c: 'producer', h: null, g: null, r: 'producer', aDone: false, bDone: false, cDone: false, hDone: false, gDone: false, rDone: false };
+
+  static NOW = { icon: '🎨', name: '創造者', sub: 'アイデアを形にする' };
+
+  static AXES = [
+    { id: 'create', label: '創造する' },
+    { id: 'explore', label: '発見する' },
+    { id: 'logic', label: '考え抜く' },
+    { id: 'exec', label: 'やり抜く' },
+    { id: 'influence', label: '巻き込む' },
+    { id: 'empathy', label: '寄りそう' },
+  ];
+  static NOWVALS = { create: 4.8, explore: 3.4, logic: 3.0, exec: 2.4, influence: 2.0, empathy: 2.6 };
+  static AXIS_OF = { producer: 'influence', driver: 'exec', innovator: 'logic', cocreator: 'empathy', pioneer: 'explore' };
+
+  static DEST = [
+    { id: 'producer', tier: 'up', name: '演出家', kana: 'プロデューサー', key: '影響力の行使', keyShort: '影響力', reco: true,
+      catch: 'アイデアに「人を動かす力」が加わっていくみたい',
+      desc: '自分のアイデアにまわりを巻きこんで、チームで大きく形にしていくキミ。ひとりでは作れないものも、作れるようになっていくかも。',
+      scenes: ['文化祭の企画役', 'イベント運営', '映像・番組づくり'] },
+    { id: 'driver', tier: 'side', name: '推進者', kana: '', key: '実行力', keyShort: '実行力', reco: true,
+      catch: '思いついたら、すぐ動けるキミになっていくみたい',
+      desc: 'アイデアをあたためるだけじゃなく、まず動いてためしながら形にしていくキミ。失敗もデータに変えて前に進めていけるかも。',
+      scenes: ['部活の企画係', 'プロトタイプづくり', '学級プロジェクト'] },
+    { id: 'innovator', tier: 'up', name: '発明家', kana: 'イノベーター', key: '論理的思考', keyShort: '論理的思考', reco: false,
+      catch: 'ひらめきが「発明」に変わっていくかも',
+      desc: '思いつきをすじ道立てて設計し、本当に使えるものに仕上げていくキミ。「なんとなく面白い」が「世界を便利にする発明」になっていくみたい。',
+      scenes: ['研究・開発', '商品企画', 'ものづくり'] },
+    { id: 'cocreator', tier: 'side', name: '共創者', kana: '', key: '共感・傾聴力', keyShort: '共感力', reco: false,
+      catch: '「ひとりで作る」から「みんなで作る」へ広がっていくみたい',
+      desc: '仲間の気もちやアイデアを受け取って、いっしょに作品を育てていけるキミ。ひとりではとどかない完成度に近づいていくかも。',
+      scenes: ['班活動・グループ制作', '合唱・演劇', 'チーム開発'] },
+    { id: 'pioneer', tier: 'up', name: '開拓者', kana: 'パイオニア', key: '探究心', keyShort: '探究心', reco: false,
+      catch: '「見つける力」がついて、道なき道へ進んでいくみたい',
+      desc: 'まだだれも気づいていないテーマを見つけて、さいしょの一歩をふみ出していくキミ。「作る人」から「切りひらく人」へ広がっていくかも。',
+      scenes: ['新プロジェクトの立ち上げ', 'フィールドワーク', '冒険的な研究'] },
+  ];
+
+  static DISTANT = [
+    { id: 'explorer', tier: 'side', icon: '🧭', name: '探索者', kana: '', catch: '「気になる」をどこまでも追いかける' },
+    { id: 'supporter', tier: 'side', icon: '🌱', name: '支援者', kana: '', catch: '人の力をしずかに引き出す' },
+    { id: 'changer', tier: 'side', icon: '⚡', name: '変革者', kana: '', catch: 'あたりまえをうたがい、変えていく' },
+    { id: 'leader', tier: 'up', icon: '👑', name: '統率者', kana: 'リーダー', catch: 'みんなを動かしゴールへみちびく' },
+    { id: 'mentor', tier: 'up', icon: '🌟', name: '育成者', kana: 'メンター', catch: '人の成長に火をつける' },
+    { id: 'gamechanger', tier: 'up', icon: '🔥', name: '革新者', kana: 'ゲームチェンジャー', catch: 'しくみごと未来を変える' },
+  ];
+
+  sym(id, c) {
+    const R = React.createElement;
+    const S = { stroke: c, strokeWidth: 2, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' };
+    switch (id) {
+      case 'creator': return [R('path', { key: 's', d: 'M31 .5L33.3 5.2L38 7.5L33.3 9.8L31 14.5L28.7 9.8L24 7.5L28.7 5.2Z', fill: c })];
+      case 'explorer': return [R('circle', { key: 'a', cx: 31, cy: 7.5, r: 5.5, ...S }), R('path', { key: 'b', d: 'M31 4l2.2 3.5L31 11l-2.2-3.5Z', fill: c })];
+      case 'driver': return [R('path', { key: 's', d: 'M31 1L37.5 12.5h-13Z', fill: c })];
+      case 'cocreator': return [R('circle', { key: 'a', cx: 28, cy: 7.5, r: 4.5, ...S }), R('circle', { key: 'b', cx: 34.5, cy: 7.5, r: 4.5, ...S })];
+      case 'supporter': return [R('rect', { key: 'a', x: 29.5, y: 1.5, width: 3, height: 12, rx: 1.5, fill: c }), R('rect', { key: 'b', x: 25, y: 6, width: 12, height: 3, rx: 1.5, fill: c })];
+      case 'changer': return [R('polyline', { key: 's', points: '33.5,0.5 27.5,7.5 31.5,7.5 26.5,15', ...S, strokeWidth: 2.5 })];
+      case 'pioneer': return [R('rect', { key: 'a', x: 26.5, y: 1, width: 2.2, height: 14, rx: 1, fill: c }), R('path', { key: 'b', d: 'M29 2l9 3.5L29 9Z', fill: c })];
+      case 'innovator': return [R('circle', { key: 'a', cx: 31, cy: 6.5, r: 5, ...S }), R('rect', { key: 'b', x: 29, y: 13, width: 4, height: 2.8, rx: 1, fill: c })];
+      case 'leader': return [R('path', { key: 's', d: 'M24.5 13V4.5L28.5 8L31 1.5L33.5 8L37.5 4.5V13Z', fill: c })];
+      case 'producer': return [R('circle', { key: 'a', cx: 31, cy: 7.5, r: 6.5, ...S }), R('path', { key: 'b', d: 'M29 4.5L35 7.5L29 10.5Z', fill: c })];
+      case 'mentor': return [R('circle', { key: 'a', cx: 31, cy: 7.5, r: 3.2, fill: c }), R('path', { key: 'b', d: 'M31 .5v2.5M31 12v2.5M24 7.5h2.5M35.5 7.5H38M26 2.5l1.8 1.8M36 2.5l-1.8 1.8M26 12.5l1.8-1.8M36 12.5l-1.8-1.8', ...S })];
+      case 'gamechanger': return [R('polyline', { key: 'a', points: '26,8.5 31,3.5 36,8.5', ...S, strokeWidth: 2.5 }), R('polyline', { key: 'b', points: '26,14.5 31,9.5 36,14.5', ...S, strokeWidth: 2.5 })];
+      default: return [];
+    }
+  }
+  art(id, size, face = '#1f1b16', eye = '#ffffff') {
+    const R = React.createElement;
+    return R('svg', { width: size, height: size, viewBox: '0 0 40 40', style: { display: 'block' } },
+      R('circle', { cx: 19, cy: 24, r: 13.5, fill: face }),
+      R('ellipse', { cx: 14.8, cy: 22.5, rx: 2.7, ry: 5.2, fill: eye }),
+      R('ellipse', { cx: 23.2, cy: 22.5, rx: 2.7, ry: 5.2, fill: eye }),
+      ...this.sym(id, face));
+  }
+  symArt(id, size, c = '#1f1b16') {
+    const R = React.createElement;
+    return R('svg', { width: size, height: size, viewBox: '0 0 40 40', style: { display: 'block' } },
+      R('g', { transform: 'translate(20,20) scale(2) translate(-31,-7.75)' }, ...this.sym(id, c)));
+  }
+  pick(opt, id) {
+    this.setState({ [opt]: this.state[opt] === id ? null : id, [opt + 'Done']: false });
+  }
+  find(id) {
+    const C = this.constructor;
+    return C.DEST.find(d => d.id === id) || C.DISTANT.find(d => d.id === id) || null;
+  }
+  decorate(d) {
+    if (!d) return null;
+    const up = d.tier === 'up';
+    return { ...d, far: !d.key,
+      kindLabel: up ? 'みがく成長' : 'ひろげる成長',
+      kindBg: up ? '#efe9ff' : '#e4f9ec', kindFg: up ? '#6a4fd8' : '#0f7a4d',
+      tierLabel: up ? 'みがく成長' : 'ひろげる成長' };
+  }
+  cta(opt) {
+    const sel = this.find(this.state[opt]);
+    if (!sel || !sel.key || this.state[opt + 'Done']) return;
+    this.setState({ [opt + 'Done']: true });
+  }
+  ctaFor(opt) {
+    const sel = this.decorate(this.find(this.state[opt]));
+    const dis = { border: '2px solid #ece5d3', shadow: 'none', cursor: 'default', bg: '#ece5d3', color: '#a89e8a', click: () => {} };
+    if (this.state[opt + 'Done']) return { label: '✓ チャレンジにセットしたよ！', bg: '#18b271', color: '#ffffff', border: '2px solid #1f1b16', shadow: '3px 3px 0 #1f1b16', cursor: 'default', click: () => {} };
+    if (!sel) return { ...dis, label: '未来をえらんでみよう' };
+    if (sel.far) return { ...dis, label: 'この未来は、もう少し先のおたのしみ' };
+    return { label: '「' + sel.key + '」をのばすチャレンジへ', bg: '#ff6b5e', color: '#ffffff', border: '2px solid #1f1b16', shadow: '3px 3px 0 #1f1b16', cursor: 'pointer', click: () => this.cta(opt) };
+  }
+  mapNodes(showReco, hideDistant) {
+    const C = this.constructor;
+    const UX = { pioneer: 30, innovator: 90, leader: 150, producer: 210, mentor: 270, gamechanger: 330 };
+    const BX = { explorer: 30, creator: 90, driver: 150, cocreator: 210, supporter: 270, changer: 330 };
+    const nodes = [];
+    const push = (id, x, y) => {
+      const cur = id === 'creator';
+      const d = cur ? null : this.find(id);
+      const near = !!(d && d.key);
+      if (!cur && !near && hideDistant) return;
+      const sel = !cur && this.state.a === id;
+      nodes.push({
+        id, left: x - 32, top: y - 23,
+        art: cur ? this.art('creator', 30, '#ffffff', '#1f1b16') : this.symArt(id, 26, sel ? '#ffffff' : '#1f1b16'),
+        name: cur ? C.NOW.name : (d.kana || d.name),
+        bg: cur ? '#1f1b16' : sel ? '#315cfa' : '#ffffff',
+        border: cur || sel ? '2px solid #1f1b16' : near ? '2px solid #315cfa' : '2px solid #e3d9c4',
+        shadow: cur ? '2px 2px 0 rgba(31,27,22,.28)' : sel ? '3px 3px 0 #1f1b16' : near ? '0 2px 6px rgba(49,92,250,.16)' : 'none',
+        op: !cur && !near ? .38 : 1,
+        labelColor: sel ? '#2447c9' : (near || cur) ? '#1f1b16' : '#7a7263',
+        cursor: cur ? 'default' : 'pointer',
+        badge: cur ? '今のキミ' : (d.reco && showReco) ? 'おすすめ' : '',
+        badgeBg: cur ? '#ffd633' : '#ff6b5e',
+        badgeColor: cur ? '#1f1b16' : '#ffffff',
+        pick: cur ? null : () => this.pick('a', id),
+      });
+    };
+    Object.entries(UX).forEach(([id, x]) => push(id, x, 58));
+    Object.entries(BX).forEach(([id, x]) => push(id, x, 218));
+    return nodes;
+  }
+  hexNodes(showReco, hideDistant) {
+    const pos = { gamechanger: [179, 37], leader: [120.5, 71], mentor: [237.5, 71], producer: [179, 105], pioneer: [120.5, 139], innovator: [237.5, 139], explorer: [62, 173], creator: [179, 173], supporter: [296, 173], driver: [120.5, 207], cocreator: [237.5, 207], changer: [179, 241] };
+    const nodes = [];
+    Object.entries(pos).forEach(([id, [x, y]]) => {
+      const cur = id === 'creator';
+      const d = cur ? null : this.find(id);
+      const near = !!(d && d.key);
+      if (!cur && !near && hideDistant) return;
+      const sel = !cur && this.state[this._hexOpt || 'h'] === id;
+      nodes.push({
+        id, left: x - 39, top: y - 34,
+        label: cur ? '創造者' : d.name,
+        art: cur ? this.art('creator', 26, '#ffffff', '#1f1b16') : this.symArt(id, 22, sel ? '#ffffff' : near ? '#1f1b16' : '#8a8172'),
+        outerBg: cur ? '#1f1b16' : sel ? '#1f1b16' : near ? '#315cfa' : '#d8cfb8',
+        innerBg: cur ? '#1f1b16' : sel ? '#315cfa' : near ? '#ffffff' : '#fdfaf1',
+        labelColor: cur ? '#ffd633' : sel ? '#ffffff' : near ? '#1f1b16' : '#8a8172',
+        op: (!cur && !near) ? .6 : 1,
+        cursor: cur ? 'default' : 'pointer',
+        badge: cur ? '今のキミ' : (d.reco && showReco) ? 'おすすめ' : '',
+        badgeBg: cur ? '#ffd633' : '#ff6b5e',
+        badgeColor: cur ? '#1f1b16' : '#ffffff',
+        pick: cur ? null : (this._hexOpt === 'g' ? (() => this.setState({ g: id, gDone: false })) : (() => this.pick('h', id))),
+      });
+    });
+    return nodes;
+  }
+  candCard(opt, d, showReco) {
+    const sel = this.state[opt] === d.id;
+    return { ...this.decorate(d),
+      art: this.symArt(d.id, opt === 'c' ? 30 : 25),
+      bd: sel ? '2px solid #315cfa' : '2px solid #e3d9c4',
+      bg: sel ? '#e8edff' : '#ffffff',
+      badge: (d.reco && showReco) ? 'おすすめ' : '',
+      pick: () => this.pick(opt, d.id) };
+  }
+  distantChip(opt, d) {
+    const sel = this.state[opt] === d.id;
+    return { ...d,
+      art: this.symArt(d.id, 13),
+      bd: sel ? '1.5px dashed #315cfa' : '1.5px dashed #cfc4ab',
+      color: sel ? '#2447c9' : '#8a8172',
+      pick: () => this.pick(opt, d.id) };
+  }
+  radarGeom() {
+    const C = this.constructor;
+    const cx = 179, cy = 122, R = 80;
+    const pt = (i, r) => { const ang = -Math.PI / 2 + i * Math.PI / 3; return [cx + r * Math.cos(ang), cy + r * Math.sin(ang)]; };
+    const poly = vals => C.AXES.map((a, i) => pt(i, R * (vals[a.id] / 5)).map(v => v.toFixed(1)).join(',')).join(' ');
+    return { cx, cy, R, pt, poly };
+  }
+  radarVals(showReco, selOf, selArt, by) {
+    const C = this.constructor;
+    const R = React.createElement;
+    const g = this.radarGeom();
+    const selR = selOf('r');
+    const boostAxis = selR && !selR.far ? C.AXIS_OF[selR.id] : null;
+    const futVals = boostAxis ? { ...C.NOWVALS, [boostAxis]: Math.min(5, C.NOWVALS[boostAxis] + 2.2) } : null;
+    const dot = boostAxis ? g.pt(C.AXES.findIndex(a => a.id === boostAxis), g.R * (futVals[boostAxis] / 5)) : null;
+    const check = R('svg', { width: 12, height: 12, viewBox: '0 0 24 24' },
+      R('polyline', { points: '4,13 10,19 20,6', stroke: '#ffffff', strokeWidth: 3.5, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' }));
+    return {
+      selR, noSelR: !selR,
+      selRFull: selR && !selR.far ? selR : null,
+      selRFar: selR && selR.far ? selR : null,
+      selRArt: selArt(selR), ctaR: this.ctaFor('r'),
+      radarGrid: [1, .75, .5, .25].map(k => g.poly(Object.fromEntries(C.AXES.map(a => [a.id, 5 * k])))),
+      radarSpokes: C.AXES.map((a, i) => { const [x, y] = g.pt(i, g.R); return { x2: x.toFixed(1), y2: y.toFixed(1) }; }),
+      radarLabels: C.AXES.map((a, i) => {
+        const ang = -Math.PI / 2 + i * Math.PI / 3;
+        const c = Math.cos(ang), s = Math.sin(ang);
+        return { x: (179 + 98 * c).toFixed(1), y: (122 + 98 * s + (s > .5 ? 9 : s < -.5 ? -2 : 3)).toFixed(1),
+          anchor: Math.abs(c) < .3 ? 'middle' : c > 0 ? 'start' : 'end',
+          label: a.label, fill: boostAxis === a.id ? '#2447c9' : '#7a7263' };
+      }),
+      radarNow: g.poly(C.NOWVALS),
+      radarFuture: futVals ? g.poly(futVals) : '',
+      showFuture: !!futVals,
+      radarDotX: dot ? dot[0].toFixed(1) : 0, radarDotY: dot ? dot[1].toFixed(1) : 0,
+      routesR: ['producer', 'driver', 'innovator', 'cocreator', 'pioneer'].map(id => {
+        const d = this.decorate(by(id));
+        const sel = this.state.r === id;
+        return { ...d, art: this.symArt(id, 26),
+          bd: sel ? '2px solid #315cfa' : '2px solid #e3d9c4',
+          bg: sel ? '#e8edff' : '#ffffff',
+          badge: (d.reco && showReco) ? 'おすすめ' : '',
+          rBd: sel ? '2px solid #315cfa' : '2px solid #cfc4ab',
+          rBg: sel ? '#315cfa' : '#ffffff',
+          check: sel ? check : null,
+          pick: () => this.pick('r', id) };
+      }),
+    };
+  }
+  renderVals() {
+    const C = this.constructor;
+    const showReco = this.props.showReco ?? true;
+    const hideDistant = (this.props.distantStyle ?? 'うすく表示') === 'かくす';
+    const by = id => C.DEST.find(d => d.id === id);
+    const selOf = opt => this.decorate(this.find(this.state[opt]));
+    const selA = selOf('a'), selB = selOf('b'), selC = selOf('c'), selH = selOf('h');
+    const chips = ['今のキミ', 'キミのカード', 'みんなの発見', '未来のヒント']
+      .map((label, i) => ({ label, bg: i === 3 ? '#1f1b16' : '#ffd633', color: i === 3 ? '#ffd633' : '#1f1b16', mark: i < 3 ? '✓ ' : '' }));
+    const selArt = s => s ? this.symArt(s.id, s.far ? 26 : 28, s.far ? '#1f1b16' : '#ffffff') : null;
+    return {
+      chips, showDistantRow: !hideDistant,
+      avatarArt: this.art('plain', 22),
+      nowArtSm: this.art('creator', 20),
+      nowArtInv: this.art('creator', 30, '#ffffff', '#1f1b16'),
+      selAArt: selArt(selA), selBArt: selArt(selB), selCArt: selArt(selC),
+      mapNodes: this.mapNodes(showReco, hideDistant),
+      hexNodes: (this._hexOpt = 'h', this.hexNodes(showReco, hideDistant)),
+      hexNodesG: (this._hexOpt = 'g', this.hexNodes(showReco, hideDistant)),
+      selG: selOf('g'), noSelG: !selOf('g'), selGFull: (() => { const s = selOf('g'); return s && !s.far ? s : null; })(), selGFar: (() => { const s = selOf('g'); return s && s.far ? s : null; })(),
+      selGArt: selArt(selOf('g')), ctaG: this.ctaFor('g'),
+      cardsG: ['producer', 'driver', 'innovator', 'cocreator', 'pioneer'].map(id => { const card = this.candCard('g', by(id), showReco); return { ...card, pick: () => this.setState({ g: id, gDone: false }) }; }),
+      selH, selHFull: selH && !selH.far ? selH : null, selHFar: selH && selH.far ? selH : null, noSelH: !selH,
+      selHArt: selArt(selH), ctaH: this.ctaFor('h'),
+      selA, selAFull: selA && !selA.far ? selA : null, selAFar: selA && selA.far ? selA : null, noSelA: !selA,
+      selB, selBFull: selB && !selB.far ? selB : null, selBFar: selB && selB.far ? selB : null, noSelB: !selB,
+      selC, selCFull: selC && !selC.far ? selC : null, selCFar: selC && selC.far ? selC : null,
+      treeUp: ['innovator', 'producer', 'pioneer'].map(id => this.candCard('b', by(id), showReco)),
+      bLeft: this.candCard('b', by('driver'), showReco),
+      bRight: this.candCard('b', by('cocreator'), showReco),
+      distantB: C.DISTANT.map(d => this.distantChip('b', d)),
+      cardsC: ['producer', 'driver', 'innovator', 'cocreator', 'pioneer'].map(id => this.candCard('c', by(id), showReco)),
+      distantC: C.DISTANT.map(d => this.distantChip('c', d)),
+      ctaA: this.ctaFor('a'), ctaB: this.ctaFor('b'), ctaC: this.ctaFor('c'),
+      ...this.radarVals(showReco, selOf, selArt, by),
+    };
+  }
+}
+</script>
+</body>
+</html>

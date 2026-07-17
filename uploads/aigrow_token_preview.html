@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ai GROW デザイントークン プレビュー v0.3</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cat-cognitive:#4A7DBF; --cat-self:#E8A13D; --cat-others:#E06A7E; --cat-community:#4FA872;
+  --b5-left:#7A6FBE; --b5-right:#5FA8A0;
+  --positive:#3E8E5A; --caution:#C97B2D;
+  --r-s:8px; --r-m:14px; --r-l:22px;
+  --font-body:'Zen Kaku Gothic New',sans-serif;
+  --font-maru:'Zen Maru Gothic',sans-serif;
+  --font-data:'Outfit',sans-serif;
+}
+
+/* --- Pattern A: クリーン（#FC8524 = ロゴ色） --- */
+[data-theme="a"]{
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-alt:#F5F7FA; --line:#E2E7EF;
+  --ink:#1F2733; --ink-soft:#5C6675;
+  --accent:#FC8524; --accent-deep:#B4530A; --accent-tint:#FFF1E6; --on-accent:#2A1200;
+  --sub-1:#2B4C7E; --sub-2:#5E93C9; --b5-track:#ECEFF4;
+  --font-display:var(--font-body); --display-weight:700;
+  --card-radius:var(--r-m); --card-border:1px solid var(--line);
+  --tilt:0deg; --card-shadow:0 1px 4px rgba(31,39,51,.06);
+}
+/* --- Pattern B: クラフト（黄 = 固有色） --- */
+[data-theme="b"]{
+  --bg:#FAF6EE; --surface:#FFFFFF; --surface-alt:#F4EDDD; --line:#E3DAC6;
+  --ink:#3A3532; --ink-soft:#6E655C;
+  --accent:#FFD447; --accent-deep:#8A6A00; --accent-tint:#FFF6D6; --on-accent:#2E2600;
+  --sub-1:#7A6FBE; --sub-2:#E06A7E; --b5-track:#ECE5D4;
+  --font-display:var(--font-maru); --display-weight:900;
+  --card-radius:var(--r-l); --card-border:1.5px solid var(--line);
+  --tilt:-1.5deg; --card-shadow:0 2px 8px rgba(58,53,50,.08);
+}
+/* --- Pattern C: クエスト（ライム = 固有色） --- */
+[data-theme="c"]{
+  --bg:#1A2138; --surface:#232C4E; --surface-alt:#2C3660; --line:#39456E;
+  --ink:#EEF1FB; --ink-soft:#A9B2D6;
+  --accent:#C6F432; --accent-deep:#C6F432; --accent-tint:#2A3320; --on-accent:#16200A;
+  --sub-1:#6FE0D2; --sub-2:#8B7FE8; --b5-track:#2A3357;
+  --font-display:var(--font-body); --display-weight:700;
+  --card-radius:var(--r-m); --card-border:1px solid var(--line);
+  --tilt:0deg; --card-shadow:0 0 14px rgba(198,244,50,.12);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-body);background:#EEECE6;color:#26282E;font-size:14px;line-height:1.8}
+.app{max-width:1120px;margin:0 auto;padding:28px 20px 80px}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.top h1{font-family:var(--font-maru);font-size:19px;font-weight:900}
+.top small{display:block;font-family:var(--font-data);font-size:10px;letter-spacing:.2em;color:#8A8779;font-weight:600}
+.switch{display:flex;gap:8px}
+.switch button{font-family:var(--font-body);font-weight:700;font-size:13px;padding:10px 18px;border-radius:99px;border:1.5px solid #D8D5CC;background:#FFF;color:#5A5E6A;cursor:pointer}
+.switch button.on{background:#26282E;color:#FFF;border-color:#26282E}
+.switch button:focus-visible{outline:2px solid #FC8524;outline-offset:2px}
+.brandtag{display:inline-block;font-family:var(--font-data);font-size:9px;font-weight:700;letter-spacing:.08em;padding:1px 6px;border-radius:5px;margin-left:6px;vertical-align:middle}
+.bt-direct{background:#FC8524;color:#2A1200}
+.bt-explore{background:#E4E1D8;color:#7A7568}
+
+.desc{background:#FFF;border:1px solid #D8D5CC;border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:13px}
+.desc b{font-family:var(--font-maru)}
+.desc .scope{display:inline-block;font-family:var(--font-data);font-size:10px;font-weight:600;letter-spacing:.1em;padding:2px 10px;border-radius:99px;margin-left:8px;background:#EFEADF;color:#7A7568}
+
+.stage{border-radius:24px;padding:28px;background:var(--bg);border:1px solid rgba(0,0,0,.08);transition:background .35s}
+.stage-grid{display:grid;grid-template-columns:300px 1fr;gap:24px}
+@media(max-width:860px){.stage-grid{grid-template-columns:1fr}}
+
+.panel{background:var(--surface);border:var(--card-border);border-radius:var(--card-radius);padding:18px;box-shadow:var(--card-shadow)}
+.panel h3{font-family:var(--font-display);font-weight:var(--display-weight);font-size:13px;color:var(--ink);margin-bottom:12px;letter-spacing:.02em}
+.sw{display:flex;align-items:center;gap:10px;padding:5px 0}
+.sw i{width:30px;height:30px;border-radius:9px;flex-shrink:0;border:1px solid rgba(0,0,0,.1)}
+.sw code{font-family:var(--font-data);font-size:10.5px;color:var(--ink-soft)}
+.sw b{font-size:11.5px;color:var(--ink);font-weight:500;margin-left:auto}
+.divider{border-top:1px dashed var(--line);margin:10px 0}
+.a11y{margin-top:12px;font-size:11px;color:var(--ink-soft);background:var(--surface-alt);border-radius:var(--r-s);padding:10px 12px}
+.a11y b{color:var(--accent-deep)}
+
+.col{display:flex;flex-direction:column;gap:18px}
+
+.hero-card{background:var(--surface);border:var(--card-border);border-radius:var(--card-radius);padding:24px;box-shadow:var(--card-shadow)}
+.hero-card .period{font-family:var(--font-data);font-size:11px;font-weight:600;letter-spacing:.15em;color:var(--ink-soft)}
+.hero-card h2{font-family:var(--font-display);font-weight:var(--display-weight);font-size:24px;color:var(--ink);line-height:1.5;margin:8px 0 4px}
+.hero-card h2 mark{background:linear-gradient(transparent 58%,var(--accent) 58%);color:var(--ink);padding:0 2px}
+.hero-card p{font-size:13px;color:var(--ink-soft)}
+.delta{display:inline-flex;align-items:baseline;gap:6px;margin-top:12px;background:var(--accent-tint);border-radius:99px;padding:6px 16px}
+.delta b{font-family:var(--font-data);font-weight:800;font-size:18px;color:var(--accent-deep)}
+.delta span{font-size:11px;color:var(--ink-soft)}
+
+.compass-row{margin-bottom:16px}
+.compass-labels{display:flex;justify-content:space-between;font-family:var(--font-display);font-weight:var(--display-weight);font-size:12.5px;margin-bottom:6px}
+.compass-labels span:first-child{color:var(--b5-left)}
+.compass-labels span:last-child{color:var(--b5-right)}
+[data-theme="c"] .compass-labels span:first-child{color:#A99FE8}
+[data-theme="c"] .compass-labels span:last-child{color:#7BD8CC}
+.track{height:12px;border-radius:99px;background:var(--b5-track);position:relative}
+.track::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1.5px;background:var(--line)}
+.knob{position:absolute;top:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:var(--surface);border:3px solid var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.knob.ghost{opacity:.35;width:16px;height:16px;border-width:2px}
+.cap{font-size:11px;color:var(--ink-soft);margin-top:5px}
+
+.comp{transform:rotate(var(--tilt))}
+.comp .cat{font-family:var(--font-data);font-size:9.5px;font-weight:600;letter-spacing:.15em;color:#FFF;background:var(--cat-self);padding:3px 10px;border-radius:99px}
+.comp h4{font-family:var(--font-display);font-weight:var(--display-weight);font-size:17px;color:var(--ink);margin:10px 0 2px}
+.comp .sub{font-size:12px;color:var(--ink-soft)}
+.growth{display:flex;align-items:center;gap:10px;margin-top:12px}
+.growth .seg{flex:1;height:8px;border-radius:99px;background:var(--b5-track);overflow:hidden;position:relative}
+.growth .seg i{position:absolute;left:0;top:0;bottom:0;width:58%;background:var(--accent);border-radius:99px}
+.growth small{font-family:var(--font-data);font-size:11px;font-weight:600;color:var(--accent-deep)}
+.next{margin-top:14px;font-size:12.5px;color:var(--ink);background:var(--surface-alt);border-radius:var(--r-s);padding:11px 13px;border-left:3px solid var(--accent)}
+.next b{font-family:var(--font-display);font-weight:var(--display-weight);font-size:12px;display:block;margin-bottom:2px;color:var(--accent-deep)}
+.btns{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn{font-family:var(--font-display);font-weight:700;font-size:13px;border-radius:99px;padding:10px 20px;border:1.5px solid transparent;cursor:pointer}
+.btn-p{background:var(--accent);color:var(--on-accent)}
+.btn-s{background:var(--surface);border-color:var(--accent-deep);color:var(--accent-deep)}
+.btn-g{background:transparent;border-color:var(--line);color:var(--ink-soft)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.peer{display:flex;align-items:center;gap:12px}
+.sticker{display:inline-block;background:var(--surface);border:1.5px dashed var(--accent-deep);border-radius:12px;padding:5px 14px;font-family:var(--font-display);font-weight:var(--display-weight);font-size:12px;color:var(--accent-deep);transform:rotate(var(--tilt))}
+.chip{display:inline-block;font-family:var(--font-data);font-size:10px;font-weight:600;background:var(--surface-alt);color:var(--ink-soft);border-radius:6px;padding:3px 10px}
+
+.type-sample div{padding:8px 0;border-bottom:1px dashed var(--line)}
+.type-sample div:last-child{border-bottom:0}
+.type-sample small{font-family:var(--font-data);font-size:9px;letter-spacing:.15em;color:var(--ink-soft);display:block}
+.ts-display{font-family:var(--font-display);font-weight:var(--display-weight);font-size:22px;color:var(--ink)}
+.ts-body{font-size:14px;color:var(--ink)}
+.ts-cap{font-size:11.5px;color:var(--ink-soft)}
+.ts-data{font-family:var(--font-data);font-weight:800;font-size:20px;color:var(--ink)}
+.ts-data em{font-style:normal;color:var(--accent-deep)}
+
+footer{margin-top:20px;font-size:11px;color:#8A8779}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="top">
+    <div>
+      <small>AI GROW — DESIGN TOKEN PREVIEW v0.3</small>
+      <h1>ビジュアルトーン 3パターン比較</h1>
+    </div>
+    <div class="switch" role="tablist" aria-label="パターン切替">
+      <button id="btn-a" class="on" onclick="setTheme('a')">A クリーン<span class="brandtag bt-direct">ロゴ色</span></button>
+      <button id="btn-b" onclick="setTheme('b')">B クラフト<span class="brandtag bt-explore">探索</span></button>
+      <button id="btn-c" onclick="setTheme('c')">C クエスト<span class="brandtag bt-explore">探索</span></button>
+    </div>
+  </div>
+
+  <div class="desc" id="desc"></div>
+
+  <div class="stage" id="stage" data-theme="a">
+    <div class="stage-grid">
+
+      <!-- 左：トークン一覧 -->
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="panel">
+          <h3>カラートークン</h3>
+          <div class="sw"><i style="background:var(--bg)"></i><code>--bg</code><b>背景</b></div>
+          <div class="sw"><i style="background:var(--surface)"></i><code>--surface</code><b>カード</b></div>
+          <div class="sw"><i style="background:var(--surface-alt)"></i><code>--surface-alt</code><b>強調面</b></div>
+          <div class="sw"><i style="background:var(--ink)"></i><code>--ink</code><b>本文</b></div>
+          <div class="divider"></div>
+          <div class="sw"><i style="background:var(--accent)"></i><code>--accent</code><b id="acc-label">—</b></div>
+          <div class="sw"><i style="background:var(--accent-deep)"></i><code>--accent-deep</code><b>文字用</b></div>
+          <div class="sw"><i style="background:var(--accent-tint)"></i><code>--accent-tint</code><b>淡色面</b></div>
+          <div class="divider"></div>
+          <div class="sw"><i style="background:var(--sub-1)"></i><code>--sub-1</code><b>個性色1</b></div>
+          <div class="sw"><i style="background:var(--sub-2)"></i><code>--sub-2</code><b>個性色2</b></div>
+          <div class="a11y" id="a11y-note"></div>
+        </div>
+
+        <div class="panel type-sample">
+          <h3>タイポグラフィ</h3>
+          <div><small>DISPLAY</small><span class="ts-display">あなたの輪郭が変わった</span></div>
+          <div><small>BODY 15px / 1.85</small><span class="ts-body">まわりの3人から評価が届きました。</span></div>
+          <div><small>CAPTION</small><span class="ts-cap">※ 傾向を示すもので、あなたを決めつけるものではありません。</span></div>
+          <div><small>DATA — OUTFIT</small><span class="ts-data"><em>+0.4</em> since APR</span></div>
+        </div>
+
+        <div class="panel">
+          <h3>意味色（全パターン共通）</h3>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="chip" style="background:var(--cat-cognitive);color:#fff">認知</span>
+            <span class="chip" style="background:var(--cat-self);color:#fff">自己 = ロゴ地続き</span>
+            <span class="chip" style="background:var(--cat-others);color:#fff">他者</span>
+            <span class="chip" style="background:var(--cat-community);color:#fff">コミュニティ</span>
+          </div>
+          <div class="a11y" style="margin-top:10px">意味色 <b style="color:var(--cat-self)">--cat-self</b>（#E8A13D）はオレンジ系のため、B・Cでもロゴとの接続が残る。</div>
+        </div>
+      </div>
+
+      <!-- 右：コンポーネント見本 -->
+      <div class="col">
+
+        <div class="hero-card">
+          <span class="period">APR → JUL / 2026</span>
+          <h2>この3ヶ月で、<mark>「共感・傾聴力」</mark>が<br>まわりから見えるようになった</h2>
+          <p>ピア評価3人ぶんの結果から。話を聴く姿勢の変化が届いています。</p>
+          <span class="delta"><b>+0.4</b><span>共感・傾聴力 Δ</span></span>
+        </div>
+
+        <div class="panel">
+          <h3>Big Five 傾向コンパス（署名コンポーネント）</h3>
+          <div class="compass-row">
+            <div class="compass-labels"><span>内向性</span><span>外向性</span></div>
+            <div class="track"><span class="knob ghost" style="left:58%"></span><span class="knob" style="left:68%"></span></div>
+            <div class="cap">人と関わりながら動くとき、力が出やすい傾向（薄い印＝前回のわたし）</div>
+          </div>
+          <div class="compass-row" style="margin-bottom:0">
+            <div class="compass-labels"><span>繊細性</span><span>平穏性</span></div>
+            <div class="track"><span class="knob ghost" style="left:40%"></span><span class="knob" style="left:38%"></span></div>
+            <div class="cap">まわりの変化に気づきやすい傾向 — 課題発見に活きる</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px" class="two">
+          <div class="panel comp">
+            <span class="cat">自己</span>
+            <h4>耐性</h4>
+            <div class="sub">決めたことを最後までやり抜く力</div>
+            <div class="growth"><div class="seg"><i></i></div><small>+0.3</small></div>
+            <div class="next"><b>🔥 次の一歩</b>途中でやめたくなったことを、1つだけ最後まで続けてみる</div>
+            <div class="btns">
+              <button class="btn btn-p">チャレンジする</button>
+              <button class="btn btn-g">あとで</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>ボタン / ピア評価要素</h3>
+            <div class="btns" style="margin-top:0">
+              <button class="btn btn-p">受検をはじめる</button>
+              <button class="btn btn-s">結果をみる</button>
+            </div>
+            <div class="divider"></div>
+            <div class="peer">
+              <span class="sticker">🎁 3人から届いた</span>
+              <span class="chip">匿名・先生も見られます</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>design.md v0.3 準拠。--accent は A=#FC8524（ロゴ色）／B=#FFD447（黄）／C=#C6F432（ライム）。意味色・Big Five両極色はパターン非依存。</footer>
+</div>
+
+<script>
+const DESCS = {
+  a: '<b>A クリーン・ナビゲーター</b>（ブランド直系 / ★★★）— ロゴ色 <b style="color:#B4530A">#FC8524</b> を主アクセントに採用。信頼できる観測装置。オレンジは「今動くべき一点」にだけ灯る。データはネイビー系で精度感を担保。<span class="scope">全画面適用可</span>',
+  b: '<b>B クラフト・ジャーナル</b>（ブランド外探索 / ★☆☆）— アクセントは蛍光マーカー黄 <b style="color:#8A6A00">#FFD447</b>。自分の記録帳。装飾は1カード1つまで、データ表現は水平を保つ。ロゴ色は意味色 --cat-self に残る。<span class="scope">全画面適用可</span>',
+  c: '<b>C クエスト・ワールド</b>（ブランド外探索 / ★☆☆）— アクセントはライムグリーン <b style="color:#7A9B0A">#C6F432</b>。ダーク面で達成のエネルギーとして機能。レベル・ランキング語彙は禁止。<span class="scope">寄り道診断・チャレンジ画面 限定</span>'
+};
+const ACC_LABEL = { a:'#FC8524 ロゴ色', b:'#FFD447 黄', c:'#C6F432 ライム' };
+const A11Y = {
+  a:'⚠ <b>#FC8524</b> は文字色に使わない（白背景比 約2.6:1）。文字は <b>--accent-deep #B4530A</b> を使用。',
+  b:'⚠ <b>#FFD447</b> は文字色に使わない（黄は特に低コントラスト）。文字は <b>--accent-deep #8A6A00</b> を使用。',
+  c:'✓ ダーク背景では <b>#C6F432</b> がそのまま文字に使える（背景比 約13:1）。'
+};
+function setTheme(t){
+  document.getElementById('stage').setAttribute('data-theme', t);
+  ['a','b','c'].forEach(k=>document.getElementById('btn-'+k).classList.toggle('on', k===t));
+  document.getElementById('desc').innerHTML = DESCS[t];
+  document.getElementById('acc-label').textContent = ACC_LABEL[t];
+  document.getElementById('a11y-note').innerHTML = A11Y[t];
+}
+setTheme('a');
+</script>
+</body>
+</html>

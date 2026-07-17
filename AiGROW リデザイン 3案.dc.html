@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&amp;family=M+PLUS+Rounded+1c:wght@500;700;800;900&amp;family=Zen+Maru+Gothic:wght@500;700;900&amp;family=Zen+Kaku+Gothic+New:wght@700;900&amp;family=Shippori+Mincho+B1:wght@700;800&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #eef0f2; font-family: 'Noto Sans JP', sans-serif; }
+  a { color: #4a6b8a; text-decoration: none; }
+  a:hover { color: #2d4a66; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes pop { 0% { opacity: 0; transform: scale(.88); } 60% { transform: scale(1.02); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes chipIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+
+<section style="display:flex; gap:72px; padding:64px; align-items:flex-start;">
+
+  <!-- ════════════════ 2a ポップ・ステッカー ════════════════ -->
+  <div id="2a" style="display:flex; flex-direction:column; gap:24px;">
+    <div style="max-width:640px; display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:#1f1b16; color:#ffd633; border-radius:8px; padding:4px 10px; font-size:13px; font-weight:800;">2a</span>
+        <span style="font-size:20px; font-weight:900; color:#1f1b16; font-family:'Zen Kaku Gothic New',sans-serif;">ポップ・ステッカー</span>
+      </div>
+      <p style="margin:0; font-size:13px; line-height:1.8; color:#6d7a85;">EPOP直系。墨インクの太枠+ずらしたベタ影+レモンイエローのステッカー感で「大胆・クラフト」。角丸は控えめ、色はベタ塗りのみ。いちばんワクワク寄り。</p>
+    </div>
+    <div style="display:flex; gap:32px; align-items:flex-start;">
+
+      <!-- 2a onboarding -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="2a オンボーディング" style="width:390px; height:800px; flex-shrink:0; background:#fffbf2; border-radius:36px; border:1px solid rgba(40,30,10,.10); box-shadow:0 24px 48px rgba(40,30,10,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="flex:1; min-height:0; padding:48px 34px 0; display:flex; align-items:center; justify-content:center;">
+            <img src="assets/onboard-1.png" alt="" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:14px; border:2px solid #1f1b16; box-shadow:8px 8px 0 #ffd633;">
+          </div>
+          <div style="padding:30px 36px 0; text-align:center;">
+            <h2 style="margin:0; font-family:'Zen Kaku Gothic New',sans-serif; font-size:27px; font-weight:900; color:#1f1b16; line-height:1.45;">まだ気づいてない<br><span style="background:#ffd633; padding:1px 6px;">強み</span>がある</h2>
+            <p style="margin:13px 0 0; font-size:14px; color:#7a7263; font-weight:500; line-height:1.8;">学習の成績だけじゃない。<br>キミの「強み」を見つけよう。</p>
+          </div>
+          <div style="display:flex; justify-content:center; gap:8px; padding:24px 0 0;">
+            <span style="width:22px; height:9px; background:#ffd633; border:1.5px solid #1f1b16; border-radius:3px;"></span>
+            <span style="width:9px; height:9px; background:#fffbf2; border:1.5px solid #cfc4ab; border-radius:3px;"></span>
+            <span style="width:9px; height:9px; background:#fffbf2; border:1.5px solid #cfc4ab; border-radius:3px;"></span>
+          </div>
+          <div style="display:flex; gap:12px; padding:22px 26px 34px;">
+            <button style="flex:1; border:none; background:transparent; color:#7a7263; font-family:'Zen Kaku Gothic New',sans-serif; font-weight:700; font-size:15px; cursor:pointer;">スキップ</button>
+            <button style="flex:2; border:2px solid #1f1b16; background:#315cfa; color:#fff; font-family:'Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:16px; padding:16px 0; border-radius:14px; box-shadow:4px 4px 0 #1f1b16; cursor:pointer;">次へ</button>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">オンボーディング</div>
+      </div>
+
+      <!-- 2a diag result -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="2a 診断結果" style="width:390px; height:800px; flex-shrink:0; background:#fffbf2; border-radius:36px; border:1px solid rgba(40,30,10,.10); box-shadow:0 24px 48px rgba(40,30,10,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 24px 12px;">
+            <div style="font-family:'Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:18px;"><span style="color:#ff6b5e;">Ai</span><span style="color:#1f1b16;">GROW</span></div>
+            <div style="font-size:11px; font-weight:700; color:#7a7263;">気質診断</div>
+          </div>
+          <div style="padding:6px 26px 0;">
+            <div style="display:flex; gap:5px;">
+              <span style="flex:1; height:8px; border-radius:4px; background:#315cfa;"></span>
+              <span style="flex:1; height:8px; border-radius:4px; background:#ece4d2;"></span>
+              <span style="flex:1; height:8px; border-radius:4px; background:#ece4d2;"></span>
+              <span style="flex:1; height:8px; border-radius:4px; background:#ece4d2;"></span>
+              <span style="flex:1; height:8px; border-radius:4px; background:#ece4d2;"></span>
+            </div>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:26px 24px 0; display:flex; flex-direction:column; gap:15px;">
+            <div style="text-align:center;">
+              <div style="font-size:11px; letter-spacing:1.5px; color:#7a7263; font-weight:700;">STEP 1 / 5　結果</div>
+              <div style="font-size:17px; font-weight:900; color:#1f1b16; margin-top:6px; font-family:'Zen Kaku Gothic New',sans-serif;">外向性 / 内向性</div>
+            </div>
+            <div style="background:#ffd633; border:2px solid #1f1b16; border-radius:16px; padding:30px 22px 26px; text-align:center; box-shadow:6px 6px 0 #1f1b16; animation:pop .55s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="width:52px; height:52px; border-radius:50%; background:#fffbf2; border:2px solid #1f1b16; margin:0 auto; display:flex; align-items:center; justify-content:center;">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2 L14.4 9.6 L22 12 L14.4 14.4 L12 22 L9.6 14.4 L2 12 L9.6 9.6 Z" fill="#315cfa"></path></svg>
+              </div>
+              <div style="font-size:11px; font-weight:800; color:#5c5340; margin-top:14px; letter-spacing:2px;">キミの結果</div>
+              <div style="font-family:'Zen Kaku Gothic New',sans-serif; font-size:23px; font-weight:900; color:#1f1b16; line-height:1.4; margin-top:6px;">エネルギッシュな挑戦者</div>
+              <div style="font-size:11px; color:#5c5340; margin-top:10px; font-weight:500;">この傾向をもとに診断を続けます</div>
+            </div>
+            <div style="background:#fff; border:1.5px solid #e3d9c4; border-radius:14px; padding:18px 20px; animation:rise .5s .18s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="font-size:12.5px; font-weight:800; color:#1f1b16;">この結果について</div>
+              <p style="margin:8px 0 0; font-size:12.5px; color:#7a7263; line-height:1.85;">スコアは優劣ではなく、キミがどのような場面で力を発揮しやすいかの傾向を示しています。引き続き診断を進めましょう。</p>
+            </div>
+            <div style="background:#e8edff; border-radius:12px; padding:14px 18px; animation:rise .5s .28s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="font-size:11px; color:#2447c9; font-weight:800;">あと 4 STEP</div>
+              <div style="display:flex; gap:4px; margin-top:8px;">
+                <span style="flex:1; height:5px; border-radius:2px; background:#315cfa;"></span>
+                <span style="flex:1; height:5px; border-radius:2px; background:#ccd6f7;"></span>
+                <span style="flex:1; height:5px; border-radius:2px; background:#ccd6f7;"></span>
+                <span style="flex:1; height:5px; border-radius:2px; background:#ccd6f7;"></span>
+                <span style="flex:1; height:5px; border-radius:2px; background:#ccd6f7;"></span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px 26px 30px;">
+            <button style="width:100%; border:2px solid #1f1b16; background:#315cfa; color:#fff; font-family:'Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:16px; padding:16px 0; border-radius:14px; box-shadow:4px 4px 0 #1f1b16; cursor:pointer;">次へすすむ</button>
+            <div style="text-align:center; font-size:11px; color:#a99e87; margin-top:12px;">1 項目 約 5 分</div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">診断結果</div>
+      </div>
+
+      <!-- 2a torisetsu home -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="2a ホーム(トリセツ)" style="width:390px; height:800px; flex-shrink:0; background:#fffbf2; border-radius:36px; border:1px solid rgba(40,30,10,.10); box-shadow:0 24px 48px rgba(40,30,10,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="background:#315cfa; border-bottom:2px solid #1f1b16; padding:22px 24px 18px; position:relative;">
+            <div style="font-size:10px; color:rgba(255,255,255,.75); font-weight:700; letter-spacing:1.5px;">キミのトリセツ　総合タイプ</div>
+            <div style="display:flex; align-items:center; gap:12px; margin-top:7px;">
+              <div style="font-family:'Zen Kaku Gothic New',sans-serif; font-size:24px; font-weight:900; color:#fff;">「行動する創造者」</div>
+              <span style="background:#ffd633; color:#1f1b16; border:1.5px solid #1f1b16; border-radius:6px; padding:3px 10px; font-size:11px; font-weight:900; transform:rotate(3deg); box-shadow:2px 2px 0 #1f1b16;">Lv.3</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; padding:12px 16px; background:#fffbf2; border-bottom:1.5px solid #e3d9c4; overflow:hidden;">
+            <span style="background:#1f1b16; color:#ffd633; border-radius:10px; padding:8px 14px; font-size:12px; font-weight:800; font-family:'Zen Kaku Gothic New',sans-serif; white-space:nowrap;">今のキミ</span>
+            <span style="color:#7a7263; border:1.5px solid #e3d9c4; border-radius:10px; padding:8px 14px; font-size:12px; font-weight:700; white-space:nowrap;">強みTOP3</span>
+            <span style="color:#7a7263; border:1.5px solid #e3d9c4; border-radius:10px; padding:8px 14px; font-size:12px; font-weight:700; white-space:nowrap;">みんなの発見</span>
+            <span style="color:#7a7263; border:1.5px solid #e3d9c4; border-radius:10px; padding:8px 14px; font-size:12px; font-weight:700; white-space:nowrap;">未来のヒント</span>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:20px 18px 0; display:flex; flex-direction:column; gap:15px;">
+            <div>
+              <div style="font-size:10.5px; color:#315cfa; font-weight:900; letter-spacing:2px;">STEP 1 / 5</div>
+              <div style="font-family:'Zen Kaku Gothic New',sans-serif; font-size:20px; font-weight:900; color:#1f1b16; margin-top:4px;">今のキミのトリセツ</div>
+              <div style="font-size:12px; color:#7a7263; margin-top:2px;">まずはじっくり読んでみよう</div>
+            </div>
+            <div style="background:#fff; border-radius:14px; padding:18px 20px; border:1.5px solid #e3d9c4;">
+              <div style="font-size:14px; font-weight:900; color:#1f1b16; font-family:'Zen Kaku Gothic New',sans-serif;">強み</div>
+              <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;">
+                <span style="background:#ffd633; color:#1f1b16; border:1.5px solid #1f1b16; border-radius:8px; padding:6px 13px; font-size:12px; font-weight:800; transform:rotate(-1.5deg); animation:chipIn .4s .05s both;">個人的実行力</span>
+                <span style="background:#ffd633; color:#1f1b16; border:1.5px solid #1f1b16; border-radius:8px; padding:6px 13px; font-size:12px; font-weight:800; transform:rotate(1deg); animation:chipIn .4s .12s both;">創造力</span>
+                <span style="background:#ffd633; color:#1f1b16; border:1.5px solid #1f1b16; border-radius:8px; padding:6px 13px; font-size:12px; font-weight:800; transform:rotate(-1deg); animation:chipIn .4s .19s both;">表現力</span>
+                <span style="background:#ffd633; color:#1f1b16; border:1.5px solid #1f1b16; border-radius:8px; padding:6px 13px; font-size:12px; font-weight:800; transform:rotate(1.5deg); animation:chipIn .4s .26s both;">影響力の行使</span>
+              </div>
+              <p style="margin:13px 0 0; font-size:12.5px; color:#7a7263; line-height:1.85;">アイデアを生み出し、それを自分の力で形にしながら、言葉や行動で周囲に伝え、人を巻き込みながら実現していく力があります。</p>
+            </div>
+            <div style="background:#fff; border-radius:14px; padding:18px 20px; border:1.5px solid #e3d9c4;">
+              <div style="font-size:14px; font-weight:900; color:#1f1b16; font-family:'Zen Kaku Gothic New',sans-serif;">キミの基本パターン</div>
+              <div style="display:flex; flex-direction:column; gap:9px; margin-top:11px;">
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#4a4436; line-height:1.65; font-weight:500;"><span style="color:#ff6b5e; font-weight:900;">›</span>人と話すなかでアイデアがどんどん出てくる</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#4a4436; line-height:1.65; font-weight:500;"><span style="color:#ff6b5e; font-weight:900;">›</span>考えるより先に動き出すことが多い</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#4a4436; line-height:1.65; font-weight:500;"><span style="color:#ff6b5e; font-weight:900;">›</span>周りを巻き込みながら進めるのが得意</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#4a4436; line-height:1.65; font-weight:500;"><span style="color:#ff6b5e; font-weight:900;">›</span>変化や新しい環境にワクワクできる</div>
+              </div>
+            </div>
+            <div style="background:#fff; border-radius:14px; padding:15px 16px; border:1.5px solid #e3d9c4;">
+              <div style="font-size:12.5px; font-weight:900; color:#1f1b16; font-family:'Zen Kaku Gothic New',sans-serif;">読んでみて、どう感じた？</div>
+              <div style="display:flex; gap:7px; margin-top:10px;">
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1.5px solid #1f1b16; border-radius:10px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#1f1b16; background:#fff;"><span style="width:8px; height:8px; border-radius:50%; background:#18b271;"></span>これ自分っぽい</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1.5px solid #1f1b16; border-radius:10px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#1f1b16; background:#fff;"><span style="width:8px; height:8px; border-radius:50%; background:#315cfa;"></span>意外だった</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1.5px solid #1f1b16; border-radius:10px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#1f1b16; background:#fff;"><span style="width:8px; height:8px; border-radius:50%; background:#ff6b5e;"></span>伸ばしてみたい</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); background:#fffbf2; border-top:2px solid #1f1b16; padding:10px 0 14px;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#315cfa;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 11 L12 4.5 L20 11 V19.5 H14.5 V14.5 H9.5 V19.5 H4 Z"></path></svg>
+              <span style="font-size:9.5px; font-weight:900;">ホーム</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#b3a88f;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="15" height="16.5" rx="3"></rect><path d="M8.5 12.5 L11 15 L15.5 9.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">受検</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#b3a88f;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21 V4"></path><path d="M6.5 5 H17.5 L15 8.5 L17.5 12 H6.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">チャレンジ</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#b3a88f;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 H19 V20 H8 A2 2 0 0 1 6 18 Z"></path><path d="M9.5 8.5 H15.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">きろく</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#b3a88f;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="2"></rect><rect x="13" y="4" width="7" height="7" rx="2"></rect><rect x="4" y="13" width="7" height="7" rx="2"></rect><rect x="13" y="13" width="7" height="7" rx="2"></rect></svg>
+              <span style="font-size:9.5px; font-weight:700;">コンテンツ</span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">ホーム(トリセツ)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════ 2b クラフト・アトリエ ════════════════ -->
+  <div id="2b" style="display:flex; flex-direction:column; gap:24px;">
+    <div style="max-width:640px; display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:#FFD447; color:#2E2600; border-radius:8px; padding:4px 10px; font-size:13px; font-weight:800;">2b</span>
+        <span style="font-size:20px; font-weight:900; color:#3A3532; font-family:'Zen Maru Gothic',sans-serif;">クラフト・ジャーナル</span>
+      </div>
+      <p style="margin:0; font-size:13px; line-height:1.8; color:#6d7a85;">生成りの紙×丸ゴシック×蛍光マーカー黄。マスキングテープ・付箋・カードの傾きで"自分の記録帳"の世界観をつくる。装飾は1カード1つまで、データ表現は水平を保つ。</p>
+    </div>
+    <div style="display:flex; gap:32px; align-items:flex-start;">
+
+      <!-- 2b onboarding -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="2b オンボーディング" style="width:390px; height:800px; flex-shrink:0; background:#FAF6EE; border-radius:36px; border:1px solid rgba(58,53,50,.10); box-shadow:0 24px 48px rgba(58,53,50,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="flex:1; min-height:0; padding:52px 42px 8px; display:flex; align-items:center; justify-content:center;">
+            <div style="position:relative; max-width:100%; max-height:100%; display:flex; background:#FFFFFF; padding:10px 10px 28px; border:1.5px solid #E3DAC6; border-radius:6px; box-shadow:0 8px 20px rgba(58,53,50,.12); transform:rotate(-2deg);">
+              <img src="assets/onboard-1.png" alt="" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:3px;">
+              <span style="position:absolute; top:-11px; left:-18px; width:84px; height:22px; background:rgba(255,212,71,.55); box-shadow:0 1px 3px rgba(58,53,50,.10); transform:rotate(-8deg); border-radius:2px;"></span>
+              <span style="position:absolute; bottom:-7px; right:-20px; width:84px; height:22px; background:rgba(206,186,140,.55); box-shadow:0 1px 3px rgba(58,53,50,.10); transform:rotate(-6deg); border-radius:2px;"></span>
+            </div>
+          </div>
+          <div style="padding:30px 36px 0; text-align:center;">
+            <h2 style="margin:0; font-family:'Zen Maru Gothic',sans-serif; font-size:26px; font-weight:900; color:#3A3532; line-height:1.55;">まだ気づいてない<br><span style="background:linear-gradient(transparent 58%, #FFD447 58%); padding:0 3px;">強み</span>がある</h2>
+            <p style="margin:13px 0 0; font-size:14px; color:#6E655C; font-weight:500; line-height:1.8;">学習の成績だけじゃない。<br>キミの「強み」を見つけよう。</p>
+          </div>
+          <div style="display:flex; justify-content:center; gap:8px; padding:24px 0 0;">
+            <span style="width:22px; height:8px; border-radius:999px; background:#FFD447; box-shadow:inset 0 0 0 1px rgba(138,106,0,.35);"></span>
+            <span style="width:8px; height:8px; border-radius:999px; background:#E3DAC6;"></span>
+            <span style="width:8px; height:8px; border-radius:999px; background:#E3DAC6;"></span>
+          </div>
+          <div style="display:flex; gap:12px; padding:22px 26px 34px;">
+            <button style="flex:1; border:none; background:transparent; color:#6E655C; font-weight:700; font-size:15px; cursor:pointer; font-family:'Noto Sans JP',sans-serif;">スキップ</button>
+            <button style="flex:2; border:none; background:#FFD447; color:#2E2600; font-weight:900; font-size:16px; padding:17px 0; border-radius:999px; box-shadow:0 8px 18px rgba(138,106,0,.20); cursor:pointer; font-family:'Zen Maru Gothic',sans-serif;">次へ</button>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">オンボーディング</div>
+      </div>
+
+      <!-- 2b diag result -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="2b 診断結果" style="width:390px; height:800px; flex-shrink:0; background:#FAF6EE; border-radius:36px; border:1px solid rgba(58,53,50,.10); box-shadow:0 24px 48px rgba(58,53,50,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 24px 12px;">
+            <div style="font-family:'Zen Maru Gothic',sans-serif; font-weight:900; font-size:18px;"><span style="color:#E8A13D;">Ai</span><span style="color:#3A3532;">GROW</span></div>
+            <div style="font-size:11px; font-weight:700; color:#6E655C;">気質診断</div>
+          </div>
+          <div style="padding:6px 26px 0;">
+            <div style="display:flex; gap:5px;">
+              <span style="flex:1; height:6px; border-radius:999px; background:#FFD447; box-shadow:inset 0 0 0 1px rgba(138,106,0,.3);"></span>
+              <span style="flex:1; height:6px; border-radius:999px; background:#ECE5D4;"></span>
+              <span style="flex:1; height:6px; border-radius:999px; background:#ECE5D4;"></span>
+              <span style="flex:1; height:6px; border-radius:999px; background:#ECE5D4;"></span>
+              <span style="flex:1; height:6px; border-radius:999px; background:#ECE5D4;"></span>
+            </div>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:24px 24px 0; display:flex; flex-direction:column; gap:16px;">
+            <div style="text-align:center;">
+              <div style="font-size:11px; letter-spacing:2.5px; color:#6E655C; font-weight:700;">STEP 1 / 5　結果</div>
+              <div style="font-size:17px; font-weight:900; color:#3A3532; margin-top:6px; font-family:'Zen Maru Gothic',sans-serif;">外向性 / 内向性</div>
+            </div>
+            <div style="animation:pop .55s cubic-bezier(.2,.8,.2,1) both; margin-top:6px;">
+              <div style="background:#FFFFFF; border:1.5px solid #E3DAC6; border-radius:22px; padding:32px 22px 26px; text-align:center; position:relative; transform:rotate(-1.5deg); box-shadow:0 2px 8px rgba(58,53,50,.08);">
+                <span style="position:absolute; top:-11px; left:50%; transform:translateX(-50%) rotate(-4deg); width:92px; height:22px; background:rgba(255,212,71,.55); box-shadow:0 1px 3px rgba(58,53,50,.10); border-radius:2px;"></span>
+                <div style="width:54px; height:54px; border-radius:50%; background:#FFF6D6; border:1.5px solid #E3DAC6; margin:0 auto; display:flex; align-items:center; justify-content:center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2 L14.4 9.6 L22 12 L14.4 14.4 L12 22 L9.6 14.4 L2 12 L9.6 9.6 Z" fill="#E8A13D"></path></svg>
+                </div>
+                <div style="font-size:11px; font-weight:700; color:#6E655C; margin-top:16px; letter-spacing:3px;">キミの結果</div>
+                <div style="font-family:'Zen Maru Gothic',sans-serif; font-size:22px; font-weight:900; color:#3A3532; line-height:1.5; margin-top:7px;"><span style="background:linear-gradient(transparent 62%, #FFD447 62%); padding:0 3px;">エネルギッシュな挑戦者</span></div>
+                <div style="font-size:11px; color:#6E655C; margin-top:12px; font-weight:500;">この傾向をもとに診断を続けます</div>
+              </div>
+            </div>
+            <div style="background:#FFFFFF; border:1.5px solid #E3DAC6; border-radius:16px; padding:18px 20px; animation:rise .5s .18s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="font-size:12.5px; font-weight:900; color:#3A3532; font-family:'Zen Maru Gothic',sans-serif;">この結果について</div>
+              <p style="margin:8px 0 0; font-size:12.5px; color:#6E655C; line-height:1.9;">スコアは優劣ではなく、キミがどのような場面で力を発揮しやすいかの傾向を示しています。引き続き診断を進めましょう。</p>
+            </div>
+            <div style="animation:rise .5s .28s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="background:#FFF6D6; border-radius:4px; padding:14px 18px; position:relative; transform:rotate(1deg); box-shadow:0 4px 10px rgba(58,53,50,.10);">
+                <span style="position:absolute; bottom:0; right:0; width:0; height:0; border-bottom:14px solid rgba(138,106,0,.16); border-left:14px solid transparent;"></span>
+                <div style="font-size:11px; color:#8A6A00; font-weight:800;">あと 4 STEP</div>
+                <div style="display:flex; gap:4px; margin-top:8px;">
+                  <span style="flex:1; height:4px; border-radius:2px; background:#8A6A00;"></span>
+                  <span style="flex:1; height:4px; border-radius:2px; background:#EFE3BF;"></span>
+                  <span style="flex:1; height:4px; border-radius:2px; background:#EFE3BF;"></span>
+                  <span style="flex:1; height:4px; border-radius:2px; background:#EFE3BF;"></span>
+                  <span style="flex:1; height:4px; border-radius:2px; background:#EFE3BF;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px 26px 30px;">
+            <button style="width:100%; border:none; background:#FFD447; color:#2E2600; font-weight:900; font-size:16px; padding:17px 0; border-radius:999px; box-shadow:0 8px 18px rgba(138,106,0,.20); cursor:pointer; font-family:'Zen Maru Gothic',sans-serif;">次へすすむ</button>
+            <div style="text-align:center; font-size:11px; color:#A79C8C; margin-top:12px;">1 項目 約 5 分</div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">診断結果</div>
+      </div>
+
+      <!-- 2b torisetsu home -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="2b ホーム(トリセツ)" style="width:390px; height:800px; flex-shrink:0; background:#FAF6EE; border-radius:36px; border:1px solid rgba(58,53,50,.10); box-shadow:0 24px 48px rgba(58,53,50,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="background:#FFFFFF; border-bottom:1.5px solid #E3DAC6; padding:22px 24px 18px;">
+            <div style="font-size:10px; color:#6E655C; font-weight:700; letter-spacing:2px;">キミのトリセツ　総合タイプ</div>
+            <div style="display:flex; align-items:center; gap:12px; margin-top:8px;">
+              <div style="font-family:'Zen Maru Gothic',sans-serif; font-size:22px; font-weight:900; color:#3A3532;"><span style="background:linear-gradient(transparent 62%, #FFD447 62%); padding:0 2px;">「行動する創造者」</span></div>
+              <span style="border:1.5px dashed #8A6A00; color:#8A6A00; background:#FFFDF4; border-radius:10px; padding:3px 10px; font-size:11px; font-weight:800; font-family:'Zen Maru Gothic',sans-serif; transform:rotate(3deg);">Lv.3</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:4px; padding:0 14px; background:#FFFFFF; border-bottom:1.5px solid #E3DAC6; overflow:hidden;">
+            <span style="color:#3A3532; padding:13px 11px 11px; font-size:12.5px; font-weight:900; white-space:nowrap; box-shadow:inset 0 -3px 0 #FFD447;">今のキミ</span>
+            <span style="color:#A79C8C; padding:13px 11px 11px; font-size:12.5px; font-weight:700; white-space:nowrap;">強みTOP3</span>
+            <span style="color:#A79C8C; padding:13px 11px 11px; font-size:12.5px; font-weight:700; white-space:nowrap;">みんなの発見</span>
+            <span style="color:#A79C8C; padding:13px 11px 11px; font-size:12.5px; font-weight:700; white-space:nowrap;">未来のヒント</span>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:22px 18px 0; display:flex; flex-direction:column; gap:16px;">
+            <div>
+              <div style="font-size:10.5px; color:#8A6A00; font-weight:800; letter-spacing:2.5px;">STEP 1 / 5</div>
+              <div style="font-family:'Zen Maru Gothic',sans-serif; font-size:20px; font-weight:900; color:#3A3532; margin-top:4px;">今のキミのトリセツ</div>
+              <div style="font-size:12px; color:#6E655C; margin-top:3px;">まずはじっくり読んでみよう</div>
+            </div>
+            <div style="background:#FFFFFF; border-radius:18px; padding:18px 20px; border:1.5px solid #E3DAC6; position:relative; transform:rotate(-.5deg); box-shadow:0 2px 8px rgba(58,53,50,.06);">
+              <span style="position:absolute; top:-10px; right:20px; width:72px; height:18px; background:rgba(206,186,140,.5); box-shadow:0 1px 3px rgba(58,53,50,.10); transform:rotate(4deg); border-radius:2px;"></span>
+              <div style="font-size:14px; font-weight:900; color:#3A3532; font-family:'Zen Maru Gothic',sans-serif;">強み</div>
+              <div style="display:flex; flex-wrap:wrap; gap:9px; margin-top:12px;">
+                <span style="border:1.5px dashed #8A6A00; color:#8A6A00; background:#FFFDF4; border-radius:10px; padding:6px 13px; font-size:12px; font-weight:700; transform:rotate(-1.5deg);">個人的実行力</span>
+                <span style="border:1.5px dashed #8A6A00; color:#8A6A00; background:#FFFDF4; border-radius:10px; padding:6px 13px; font-size:12px; font-weight:700; transform:rotate(1deg);">創造力</span>
+                <span style="border:1.5px dashed #8A6A00; color:#8A6A00; background:#FFFDF4; border-radius:10px; padding:6px 13px; font-size:12px; font-weight:700; transform:rotate(-1deg);">表現力</span>
+                <span style="border:1.5px dashed #8A6A00; color:#8A6A00; background:#FFFDF4; border-radius:10px; padding:6px 13px; font-size:12px; font-weight:700; transform:rotate(1.5deg);">影響力の行使</span>
+              </div>
+              <p style="margin:13px 0 0; font-size:12.5px; color:#6E655C; line-height:1.9;">アイデアを生み出し、それを自分の力で形にしながら、言葉や行動で周囲に伝え、人を巻き込みながら実現していく力があります。</p>
+            </div>
+            <div style="background:#FFFFFF; border-radius:18px; padding:18px 20px; border:1.5px solid #E3DAC6; box-shadow:0 2px 8px rgba(58,53,50,.06);">
+              <div style="font-size:14px; font-weight:900; color:#3A3532; font-family:'Zen Maru Gothic',sans-serif;">キミの基本パターン</div>
+              <div style="display:flex; flex-direction:column; gap:9px; margin-top:11px;">
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#55503F; line-height:1.7; font-weight:500;"><span style="color:#8A6A00; font-weight:900;">›</span>人と話すなかでアイデアがどんどん出てくる</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#55503F; line-height:1.7; font-weight:500;"><span style="color:#8A6A00; font-weight:900;">›</span>考えるより先に動き出すことが多い</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#55503F; line-height:1.7; font-weight:500;"><span style="color:#8A6A00; font-weight:900;">›</span>周りを巻き込みながら進めるのが得意</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#55503F; line-height:1.7; font-weight:500;"><span style="color:#8A6A00; font-weight:900;">›</span>変化や新しい環境にワクワクできる</div>
+              </div>
+            </div>
+            <div style="background:#FFF6D6; border-radius:4px; padding:15px 16px; position:relative; transform:rotate(-.6deg); box-shadow:0 4px 10px rgba(58,53,50,.10);">
+              <span style="position:absolute; bottom:0; right:0; width:0; height:0; border-bottom:14px solid rgba(138,106,0,.16); border-left:14px solid transparent;"></span>
+              <div style="font-size:12.5px; font-weight:900; color:#3A3532; font-family:'Zen Maru Gothic',sans-serif;">読んでみて、どう感じた？</div>
+              <div style="display:flex; gap:7px; margin-top:10px;">
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #E3DAC6; border-radius:999px; padding:8px 4px; font-size:10.5px; font-weight:700; color:#55503F; background:#FFFFFF;"><span style="width:8px; height:8px; flex-shrink:0; border-radius:50%; background:#4FA872;"></span>これ自分っぽい</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #E3DAC6; border-radius:999px; padding:8px 4px; font-size:10.5px; font-weight:700; color:#55503F; background:#FFFFFF;"><span style="width:8px; height:8px; flex-shrink:0; border-radius:50%; background:#E8A13D;"></span>意外だった</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #E3DAC6; border-radius:999px; padding:8px 4px; font-size:10.5px; font-weight:700; color:#55503F; background:#FFFFFF;"><span style="width:8px; height:8px; flex-shrink:0; border-radius:50%; background:#E06A7E;"></span>伸ばしてみたい</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); background:#FFFFFF; border-top:1.5px solid #E3DAC6; padding:10px 0 14px;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#8A6A00;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11 L12 4.5 L20 11 V19.5 H14.5 V14.5 H9.5 V19.5 H4 Z"></path></svg>
+              <span style="font-size:9.5px; font-weight:800;">ホーム</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#A79C8C;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="15" height="16.5" rx="3"></rect><path d="M8.5 12.5 L11 15 L15.5 9.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">受検</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#A79C8C;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21 V4"></path><path d="M6.5 5 H17.5 L15 8.5 L17.5 12 H6.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">チャレンジ</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#A79C8C;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 H19 V20 H8 A2 2 0 0 1 6 18 Z"></path><path d="M9.5 8.5 H15.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">きろく</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#A79C8C;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="2"></rect><rect x="13" y="4" width="7" height="7" rx="2"></rect><rect x="4" y="13" width="7" height="7" rx="2"></rect><rect x="13" y="13" width="7" height="7" rx="2"></rect></svg>
+              <span style="font-size:9.5px; font-weight:700;">コンテンツ</span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">ホーム(トリセツ)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════ 2c ネイビー・フィールド ════════════════ -->
+  <div id="2c" style="display:flex; flex-direction:column; gap:24px;">
+    <div style="max-width:640px; display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:#142038; color:#c9f24e; border-radius:8px; padding:4px 10px; font-size:13px; font-weight:800;">2c</span>
+        <span style="font-size:20px; font-weight:900; color:#142038;">ネイビー・フィールド</span>
+      </div>
+      <p style="margin:0; font-size:13px; line-height:1.8; color:#6d7a85;">濃紺×ライムのハイコントラスト。スポーツ・部活のユニフォーム感で「先駆的・大胆・信頼」。診断結果はネイビーの面にライムで刻む、いちばん大人っぽくて攻めた案。</p>
+    </div>
+    <div style="display:flex; gap:32px; align-items:flex-start;">
+
+      <!-- 2c onboarding -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="2c オンボーディング" style="width:390px; height:800px; flex-shrink:0; background:#eef1f5; border-radius:36px; border:1px solid rgba(20,32,56,.10); box-shadow:0 24px 48px rgba(20,32,56,.12); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="flex:1; min-height:0; padding:48px 38px 0; display:flex; align-items:center; justify-content:center;">
+            <div style="position:relative; max-width:100%; max-height:100%; display:flex;">
+              <span style="position:absolute; inset:12px -12px -12px 12px; background:#c9f24e; border-radius:12px;"></span>
+              <img src="assets/onboard-1.png" alt="" style="position:relative; max-width:100%; max-height:100%; object-fit:contain; border-radius:12px; box-shadow:0 10px 26px rgba(20,32,56,.16);">
+            </div>
+          </div>
+          <div style="padding:30px 36px 0; text-align:center;">
+            <h2 style="margin:0; font-size:25px; font-weight:900; color:#142038; line-height:1.5;">まだ気づいてない<br><span style="box-shadow:inset 0 -10px 0 #c9f24e;">強み</span>がある</h2>
+            <p style="margin:13px 0 0; font-size:14px; color:#6b7690; font-weight:500; line-height:1.8;">学習の成績だけじゃない。<br>キミの「強み」を見つけよう。</p>
+          </div>
+          <div style="display:flex; justify-content:center; gap:7px; padding:24px 0 0;">
+            <span style="width:24px; height:8px; border-radius:999px; background:#142038;"></span>
+            <span style="width:8px; height:8px; border-radius:999px; background:#cfd6e4;"></span>
+            <span style="width:8px; height:8px; border-radius:999px; background:#cfd6e4;"></span>
+          </div>
+          <div style="display:flex; gap:12px; padding:22px 26px 34px;">
+            <button style="flex:1; border:none; background:transparent; color:#6b7690; font-weight:800; font-size:15px; cursor:pointer; font-family:'Noto Sans JP',sans-serif;">スキップ</button>
+            <button style="flex:2; border:none; background:#c9f24e; color:#142038; font-weight:900; font-size:16px; padding:17px 0; border-radius:12px; box-shadow:0 8px 20px rgba(160,200,40,.35); cursor:pointer; font-family:'Noto Sans JP',sans-serif;">次へ</button>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">オンボーディング</div>
+      </div>
+
+      <!-- 2c diag result -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="2c 診断結果" style="width:390px; height:800px; flex-shrink:0; background:#eef1f5; border-radius:36px; border:1px solid rgba(20,32,56,.10); box-shadow:0 24px 48px rgba(20,32,56,.12); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 24px 12px;">
+            <div style="display:flex; align-items:center; gap:6px;"><span style="width:10px; height:10px; background:#c9f24e; border-radius:2px;"></span><span style="font-weight:900; font-size:18px; color:#142038;">AiGROW</span></div>
+            <div style="font-size:11px; font-weight:700; color:#6b7690;">気質診断</div>
+          </div>
+          <div style="padding:6px 26px 0;">
+            <div style="display:flex; gap:5px;">
+              <span style="flex:1; height:5px; border-radius:999px; background:#142038;"></span>
+              <span style="flex:1; height:5px; border-radius:999px; background:#dfe4ee;"></span>
+              <span style="flex:1; height:5px; border-radius:999px; background:#dfe4ee;"></span>
+              <span style="flex:1; height:5px; border-radius:999px; background:#dfe4ee;"></span>
+              <span style="flex:1; height:5px; border-radius:999px; background:#dfe4ee;"></span>
+            </div>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:26px 24px 0; display:flex; flex-direction:column; gap:15px;">
+            <div style="text-align:center;">
+              <div style="font-size:11px; letter-spacing:2px; color:#6b7690; font-weight:700;">STEP 1 / 5　結果</div>
+              <div style="font-size:17px; font-weight:900; color:#142038; margin-top:6px;">外向性 / 内向性</div>
+            </div>
+            <div style="background:#142038; border-radius:16px; padding:32px 22px 28px; text-align:center; position:relative; overflow:hidden; animation:pop .55s cubic-bezier(.2,.8,.2,1) both;">
+              <span style="position:absolute; top:6px; right:14px; font-size:64px; font-weight:900; color:rgba(255,255,255,.07); line-height:1;">01</span>
+              <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.08); margin:0 auto; display:flex; align-items:center; justify-content:center;">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2 L14.4 9.6 L22 12 L14.4 14.4 L12 22 L9.6 14.4 L2 12 L9.6 9.6 Z" fill="#c9f24e"></path></svg>
+              </div>
+              <div style="font-size:11px; font-weight:800; color:#c9f24e; margin-top:15px; letter-spacing:3px;">キミの結果</div>
+              <div style="font-size:23px; font-weight:900; color:#fff; line-height:1.45; margin-top:6px;">エネルギッシュな挑戦者</div>
+              <div style="font-size:11px; color:rgba(255,255,255,.6); margin-top:10px; font-weight:500;">この傾向をもとに診断を続けます</div>
+            </div>
+            <div style="background:#fff; border:1px solid #dfe4ee; border-radius:12px; padding:18px 20px; animation:rise .5s .18s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="font-size:12.5px; font-weight:800; color:#142038;">この結果について</div>
+              <p style="margin:8px 0 0; font-size:12.5px; color:#6b7690; line-height:1.85;">スコアは優劣ではなく、キミがどのような場面で力を発揮しやすいかの傾向を示しています。引き続き診断を進めましょう。</p>
+            </div>
+            <div style="background:#e7ebf5; border-radius:12px; padding:14px 18px; animation:rise .5s .28s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="font-size:11px; color:#142038; font-weight:800;">あと 4 STEP</div>
+              <div style="display:flex; gap:4px; margin-top:8px;">
+                <span style="flex:1; height:4px; border-radius:2px; background:#142038;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#cbd3e4;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#cbd3e4;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#cbd3e4;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#cbd3e4;"></span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px 26px 30px;">
+            <button style="width:100%; border:none; background:#c9f24e; color:#142038; font-weight:900; font-size:16px; padding:17px 0; border-radius:12px; box-shadow:0 8px 20px rgba(160,200,40,.35); cursor:pointer; font-family:'Noto Sans JP',sans-serif;">次へすすむ</button>
+            <div style="text-align:center; font-size:11px; color:#9aa3b5; margin-top:12px;">1 項目 約 5 分</div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">診断結果</div>
+      </div>
+
+      <!-- 2c torisetsu home -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="2c ホーム(トリセツ)" style="width:390px; height:800px; flex-shrink:0; background:#eef1f5; border-radius:36px; border:1px solid rgba(20,32,56,.10); box-shadow:0 24px 48px rgba(20,32,56,.12); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="background:#142038; padding:22px 24px 18px; position:relative; overflow:hidden;">
+            <span style="position:absolute; top:-6px; right:10px; font-size:72px; font-weight:900; color:rgba(255,255,255,.06); line-height:1;">3</span>
+            <div style="font-size:10px; color:rgba(255,255,255,.55); font-weight:700; letter-spacing:2px;">キミのトリセツ　総合タイプ</div>
+            <div style="display:flex; align-items:center; gap:12px; margin-top:7px;">
+              <div style="font-size:23px; font-weight:900; color:#fff;">「行動する創造者」</div>
+              <span style="background:#c9f24e; color:#142038; border-radius:6px; padding:3px 10px; font-size:11px; font-weight:900;">Lv.3</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:2px; padding:0 12px; background:#fff; border-bottom:1px solid #dfe4ee; overflow:hidden;">
+            <span style="color:#142038; padding:13px 12px 11px; font-size:12.5px; font-weight:900; white-space:nowrap; box-shadow:inset 0 -3px 0 #c9f24e;">今のキミ</span>
+            <span style="color:#9aa3b5; padding:13px 12px 11px; font-size:12.5px; font-weight:700; white-space:nowrap;">強みTOP3</span>
+            <span style="color:#9aa3b5; padding:13px 12px 11px; font-size:12.5px; font-weight:700; white-space:nowrap;">みんなの発見</span>
+            <span style="color:#9aa3b5; padding:13px 12px 11px; font-size:12.5px; font-weight:700; white-space:nowrap;">未来のヒント</span>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:20px 18px 0; display:flex; flex-direction:column; gap:15px;">
+            <div>
+              <div style="font-size:10.5px; color:#142038; font-weight:900; letter-spacing:2.5px;"><span style="background:#c9f24e; padding:2px 7px; border-radius:3px;">STEP 1 / 5</span></div>
+              <div style="font-size:20px; font-weight:900; color:#142038; margin-top:8px;">今のキミのトリセツ</div>
+              <div style="font-size:12px; color:#6b7690; margin-top:2px;">まずはじっくり読んでみよう</div>
+            </div>
+            <div style="background:#fff; border-radius:14px; padding:18px 20px; border:1px solid #dfe4ee;">
+              <div style="font-size:14px; font-weight:900; color:#142038;">強み</div>
+              <div style="display:flex; flex-wrap:wrap; gap:7px; margin-top:12px;">
+                <span style="background:#142038; color:#c9f24e; border-radius:6px; padding:7px 13px; font-size:12px; font-weight:800; animation:chipIn .4s .05s both;">個人的実行力</span>
+                <span style="background:#142038; color:#c9f24e; border-radius:6px; padding:7px 13px; font-size:12px; font-weight:800; animation:chipIn .4s .12s both;">創造力</span>
+                <span style="background:#142038; color:#c9f24e; border-radius:6px; padding:7px 13px; font-size:12px; font-weight:800; animation:chipIn .4s .19s both;">表現力</span>
+                <span style="background:#142038; color:#c9f24e; border-radius:6px; padding:7px 13px; font-size:12px; font-weight:800; animation:chipIn .4s .26s both;">影響力の行使</span>
+              </div>
+              <p style="margin:13px 0 0; font-size:12.5px; color:#6b7690; line-height:1.85;">アイデアを生み出し、それを自分の力で形にしながら、言葉や行動で周囲に伝え、人を巻き込みながら実現していく力があります。</p>
+            </div>
+            <div style="background:#fff; border-radius:14px; padding:18px 20px; border:1px solid #dfe4ee;">
+              <div style="font-size:14px; font-weight:900; color:#142038;">キミの基本パターン</div>
+              <div style="display:flex; flex-direction:column; gap:9px; margin-top:11px;">
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#3c4656; line-height:1.65; font-weight:500;"><span style="color:#142038; font-weight:900;">›</span>人と話すなかでアイデアがどんどん出てくる</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#3c4656; line-height:1.65; font-weight:500;"><span style="color:#142038; font-weight:900;">›</span>考えるより先に動き出すことが多い</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#3c4656; line-height:1.65; font-weight:500;"><span style="color:#142038; font-weight:900;">›</span>周りを巻き込みながら進めるのが得意</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#3c4656; line-height:1.65; font-weight:500;"><span style="color:#142038; font-weight:900;">›</span>変化や新しい環境にワクワクできる</div>
+              </div>
+            </div>
+            <div style="background:#fff; border-radius:14px; padding:15px 16px; border:1px solid #dfe4ee;">
+              <div style="font-size:12.5px; font-weight:900; color:#142038;">読んでみて、どう感じた？</div>
+              <div style="display:flex; gap:7px; margin-top:10px;">
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #dfe4ee; border-radius:9px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#3c4656;"><span style="width:8px; height:8px; border-radius:50%; background:#2fa06a;"></span>これ自分っぽい</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #dfe4ee; border-radius:9px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#3c4656;"><span style="width:8px; height:8px; border-radius:50%; background:#2f6bff;"></span>意外だった</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #dfe4ee; border-radius:9px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#3c4656;"><span style="width:8px; height:8px; border-radius:50%; background:#e0745c;"></span>伸ばしてみたい</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); background:#fff; border-top:1px solid #dfe4ee; padding:10px 0 14px;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#142038;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 11 L12 4.5 L20 11 V19.5 H14.5 V14.5 H9.5 V19.5 H4 Z"></path></svg>
+              <span style="font-size:9.5px; font-weight:900; box-shadow:inset 0 -4px 0 #c9f24e;">ホーム</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#9aa3b5;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="15" height="16.5" rx="3"></rect><path d="M8.5 12.5 L11 15 L15.5 9.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">受検</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#9aa3b5;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21 V4"></path><path d="M6.5 5 H17.5 L15 8.5 L17.5 12 H6.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">チャレンジ</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#9aa3b5;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 H19 V20 H8 A2 2 0 0 1 6 18 Z"></path><path d="M9.5 8.5 H15.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">きろく</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#9aa3b5;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="2"></rect><rect x="13" y="4" width="7" height="7" rx="2"></rect><rect x="4" y="13" width="7" height="7" rx="2"></rect><rect x="13" y="13" width="7" height="7" rx="2"></rect></svg>
+              <span style="font-size:9.5px; font-weight:700;">コンテンツ</span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">ホーム(トリセツ)</div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<section style="display:flex; gap:72px; padding:64px; align-items:flex-start;">
+
+  <!-- ════════════════ 1a ソーダ・クリア ════════════════ -->
+  <div id="1a" style="display:flex; flex-direction:column; gap:24px;">
+    <div style="max-width:640px; display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:#31414e; color:#fff; border-radius:8px; padding:4px 10px; font-size:13px; font-weight:800;">1a</span>
+        <span style="font-size:20px; font-weight:900; color:#31414e; font-family:'M PLUS Rounded 1c',sans-serif;">ソーダ・クリア</span>
+      </div>
+      <p style="margin:0; font-size:13px; line-height:1.8; color:#6d7a85;">現ブランド(青×オレンジ)を継承しつつ、グラデーションを全廃してフラットに。淡い水色の面と白で「抜け感」を作る、いちばん堅実な進化。</p>
+    </div>
+    <div style="display:flex; gap:32px; align-items:flex-start;">
+
+      <!-- 1a onboarding -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="1a オンボーディング" style="width:390px; height:800px; flex-shrink:0; background:#f3f9fe; border-radius:36px; border:1px solid rgba(20,40,60,.08); box-shadow:0 24px 48px rgba(20,40,60,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="flex:1; min-height:0; padding:44px 30px 0; display:flex; align-items:center; justify-content:center;">
+            <img src="assets/onboard-1.png" alt="" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:24px; box-shadow:0 12px 32px rgba(30,80,130,.10);">
+          </div>
+          <div style="padding:26px 36px 0; text-align:center;">
+            <h2 style="margin:0; font-family:'M PLUS Rounded 1c',sans-serif; font-size:26px; font-weight:900; color:#31414e; line-height:1.42;">まだ気づいてない<br>強みがある</h2>
+            <p style="margin:12px 0 0; font-size:14px; color:#7f8f9b; font-weight:500; line-height:1.8;">学習の成績だけじゃない。<br>キミの「強み」を見つけよう。</p>
+          </div>
+          <div style="display:flex; justify-content:center; gap:7px; padding:24px 0 0;">
+            <span style="width:24px; height:8px; border-radius:999px; background:#fb8b3c;"></span>
+            <span style="width:8px; height:8px; border-radius:999px; background:#d3e5f2;"></span>
+            <span style="width:8px; height:8px; border-radius:999px; background:#d3e5f2;"></span>
+          </div>
+          <div style="display:flex; gap:10px; padding:22px 26px 34px;">
+            <button style="flex:1; border:none; background:transparent; color:#7f8f9b; font-family:'M PLUS Rounded 1c',sans-serif; font-weight:800; font-size:15px; border-radius:999px; cursor:pointer;">スキップ</button>
+            <button style="flex:2; border:none; background:#fb8b3c; color:#fff; font-family:'M PLUS Rounded 1c',sans-serif; font-weight:800; font-size:16px; padding:17px 0; border-radius:999px; box-shadow:0 8px 20px rgba(251,139,60,.28); cursor:pointer;">次へ</button>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">オンボーディング</div>
+      </div>
+
+      <!-- 1a diag result -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="1a 診断結果" style="width:390px; height:800px; flex-shrink:0; background:#fff; border-radius:36px; border:1px solid rgba(20,40,60,.08); box-shadow:0 24px 48px rgba(20,40,60,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 24px 12px;">
+            <div style="font-family:'M PLUS Rounded 1c',sans-serif; font-weight:900; font-size:18px;"><span style="color:#fb8b3c;">Ai</span><span style="color:#31414e;">GROW</span></div>
+            <div style="font-size:11px; font-weight:700; color:#7f8f9b;">気質診断</div>
+          </div>
+          <div style="padding:6px 26px 0;">
+            <div style="display:flex; gap:5px;">
+              <span style="flex:1; height:5px; border-radius:999px; background:#12b5c9;"></span>
+              <span style="flex:1; height:5px; border-radius:999px; background:#e4eef6;"></span>
+              <span style="flex:1; height:5px; border-radius:999px; background:#e4eef6;"></span>
+              <span style="flex:1; height:5px; border-radius:999px; background:#e4eef6;"></span>
+              <span style="flex:1; height:5px; border-radius:999px; background:#e4eef6;"></span>
+            </div>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:26px 24px 0; display:flex; flex-direction:column; gap:14px;">
+            <div style="text-align:center;">
+              <div style="font-size:11px; letter-spacing:1.5px; color:#7f8f9b; font-weight:700;">STEP 1 / 5　結果</div>
+              <div style="font-size:17px; font-weight:800; color:#31414e; margin-top:6px;">外向性 / 内向性</div>
+            </div>
+            <div style="background:#e3f7fa; border-radius:26px; padding:32px 22px 28px; text-align:center; animation:pop .55s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="width:52px; height:52px; border-radius:50%; background:#fff; margin:0 auto; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(18,181,201,.18);">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2 L14.4 9.6 L22 12 L14.4 14.4 L12 22 L9.6 14.4 L2 12 L9.6 9.6 Z" fill="#12b5c9"></path></svg>
+              </div>
+              <div style="font-size:11px; font-weight:800; color:#0d7f8e; margin-top:14px; letter-spacing:1px;">キミの結果</div>
+              <div style="font-family:'M PLUS Rounded 1c',sans-serif; font-size:22px; font-weight:900; color:#0b6b78; line-height:1.4; margin-top:6px;">エネルギッシュな挑戦者</div>
+              <div style="font-size:11px; color:#4d9aa5; margin-top:10px; font-weight:500;">この傾向をもとに診断を続けます</div>
+            </div>
+            <div style="background:#fff; border:1px solid #e4eef6; border-radius:20px; padding:18px 20px; animation:rise .5s .18s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="font-size:12.5px; font-weight:800; color:#31414e;">この結果について</div>
+              <p style="margin:8px 0 0; font-size:12.5px; color:#7f8f9b; line-height:1.85;">スコアは優劣ではなく、キミがどのような場面で力を発揮しやすいかの傾向を示しています。引き続き診断を進めましょう。</p>
+            </div>
+            <div style="background:#e8f4fe; border-radius:16px; padding:14px 18px; animation:rise .5s .28s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="font-size:11px; color:#1173b8; font-weight:800;">あと 4 STEP</div>
+              <div style="display:flex; gap:4px; margin-top:8px;">
+                <span style="flex:1; height:4px; border-radius:2px; background:#12b5c9;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#cfe4f5;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#cfe4f5;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#cfe4f5;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#cfe4f5;"></span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px 26px 30px;">
+            <button style="width:100%; border:none; background:#fb8b3c; color:#fff; font-family:'M PLUS Rounded 1c',sans-serif; font-weight:800; font-size:16px; padding:17px 0; border-radius:999px; box-shadow:0 8px 20px rgba(251,139,60,.28); cursor:pointer;">次へすすむ</button>
+            <div style="text-align:center; font-size:11px; color:#98a2ab; margin-top:12px;">1 項目 約 5 分</div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">診断結果</div>
+      </div>
+
+      <!-- 1a torisetsu home -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="1a ホーム(トリセツ)" style="width:390px; height:800px; flex-shrink:0; background:#f5f9fc; border-radius:36px; border:1px solid rgba(20,40,60,.08); box-shadow:0 24px 48px rgba(20,40,60,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="background:#e8f4fe; padding:22px 24px 18px;">
+            <div style="font-size:10px; color:#1173b8; font-weight:700; letter-spacing:1.2px;">キミのトリセツ　総合タイプ</div>
+            <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+              <div style="font-family:'M PLUS Rounded 1c',sans-serif; font-size:23px; font-weight:900; color:#31414e;">「行動する創造者」</div>
+              <span style="background:#ffd35c; color:#6b4b00; border-radius:999px; padding:3px 11px; font-size:11px; font-weight:800; font-family:'M PLUS Rounded 1c',sans-serif;">Lv.3</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; padding:12px 16px; background:#fff; border-bottom:1px solid #e4eef6; overflow:hidden;">
+            <span style="background:#1e9bf0; color:#fff; border-radius:999px; padding:8px 15px; font-size:12px; font-weight:800; font-family:'M PLUS Rounded 1c',sans-serif; white-space:nowrap;">今のキミ</span>
+            <span style="color:#7f8f9b; border:1px solid #e4eef6; border-radius:999px; padding:8px 15px; font-size:12px; font-weight:700; white-space:nowrap;">強みTOP3</span>
+            <span style="color:#7f8f9b; border:1px solid #e4eef6; border-radius:999px; padding:8px 15px; font-size:12px; font-weight:700; white-space:nowrap;">みんなの発見</span>
+            <span style="color:#7f8f9b; border:1px solid #e4eef6; border-radius:999px; padding:8px 15px; font-size:12px; font-weight:700; white-space:nowrap;">未来のヒント</span>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:20px 18px 0; display:flex; flex-direction:column; gap:14px;">
+            <div>
+              <div style="font-size:10.5px; color:#1e9bf0; font-weight:800; letter-spacing:1.5px;">STEP 1 / 5</div>
+              <div style="font-family:'M PLUS Rounded 1c',sans-serif; font-size:19px; font-weight:900; color:#31414e; margin-top:4px;">今のキミのトリセツ</div>
+              <div style="font-size:12px; color:#7f8f9b; margin-top:2px;">まずはじっくり読んでみよう</div>
+            </div>
+            <div style="background:#fff; border-radius:22px; padding:18px 20px; border:1px solid #e9f1f7;">
+              <div style="font-size:14px; font-weight:800; color:#31414e;">強み</div>
+              <div style="display:flex; flex-wrap:wrap; gap:7px; margin-top:11px;">
+                <span style="background:#e8f4fe; color:#1173b8; border-radius:999px; padding:7px 14px; font-size:12px; font-weight:700; animation:chipIn .4s .05s both;">個人的実行力</span>
+                <span style="background:#e8f4fe; color:#1173b8; border-radius:999px; padding:7px 14px; font-size:12px; font-weight:700; animation:chipIn .4s .12s both;">創造力</span>
+                <span style="background:#e8f4fe; color:#1173b8; border-radius:999px; padding:7px 14px; font-size:12px; font-weight:700; animation:chipIn .4s .19s both;">表現力</span>
+                <span style="background:#e8f4fe; color:#1173b8; border-radius:999px; padding:7px 14px; font-size:12px; font-weight:700; animation:chipIn .4s .26s both;">影響力の行使</span>
+              </div>
+              <p style="margin:12px 0 0; font-size:12.5px; color:#7f8f9b; line-height:1.85;">アイデアを生み出し、それを自分の力で形にしながら、言葉や行動で周囲に伝え、人を巻き込みながら実現していく力があります。</p>
+            </div>
+            <div style="background:#fff; border-radius:22px; padding:18px 20px; border:1px solid #e9f1f7;">
+              <div style="font-size:14px; font-weight:800; color:#31414e;">キミの基本パターン</div>
+              <div style="display:flex; flex-direction:column; gap:9px; margin-top:11px;">
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#4b5a66; line-height:1.65; font-weight:500;"><span style="color:#1e9bf0; font-weight:900;">›</span>人と話すなかでアイデアがどんどん出てくる</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#4b5a66; line-height:1.65; font-weight:500;"><span style="color:#1e9bf0; font-weight:900;">›</span>考えるより先に動き出すことが多い</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#4b5a66; line-height:1.65; font-weight:500;"><span style="color:#1e9bf0; font-weight:900;">›</span>周りを巻き込みながら進めるのが得意</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#4b5a66; line-height:1.65; font-weight:500;"><span style="color:#1e9bf0; font-weight:900;">›</span>変化や新しい環境にワクワクできる</div>
+              </div>
+            </div>
+            <div style="background:#fff; border-radius:22px; padding:15px 16px; border:1px solid #e9f1f7;">
+              <div style="font-size:12.5px; font-weight:800; color:#31414e; font-family:'M PLUS Rounded 1c',sans-serif;">読んでみて、どう感じた？</div>
+              <div style="display:flex; gap:7px; margin-top:10px;">
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #e4eef6; border-radius:999px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#4b5a66;"><span style="width:8px; height:8px; border-radius:50%; background:#18b271;"></span>これ自分っぽい</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #e4eef6; border-radius:999px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#4b5a66;"><span style="width:8px; height:8px; border-radius:50%; background:#1e9bf0;"></span>意外だった</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #e4eef6; border-radius:999px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#4b5a66;"><span style="width:8px; height:8px; border-radius:50%; background:#fb8b3c;"></span>伸ばしてみたい</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); background:#fff; border-top:1px solid #e4eef6; padding:10px 0 14px;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#1e9bf0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11 L12 4.5 L20 11 V19.5 H14.5 V14.5 H9.5 V19.5 H4 Z"></path></svg>
+              <span style="font-size:9.5px; font-weight:800;">ホーム</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a9b7c2;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="15" height="16.5" rx="3"></rect><path d="M8.5 12.5 L11 15 L15.5 9.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">受検</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a9b7c2;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21 V4"></path><path d="M6.5 5 H17.5 L15 8.5 L17.5 12 H6.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">チャレンジ</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a9b7c2;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 H19 V20 H8 A2 2 0 0 1 6 18 Z"></path><path d="M9.5 8.5 H15.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">きろく</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a9b7c2;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="2"></rect><rect x="13" y="4" width="7" height="7" rx="2"></rect><rect x="4" y="13" width="7" height="7" rx="2"></rect><rect x="13" y="13" width="7" height="7" rx="2"></rect></svg>
+              <span style="font-size:9.5px; font-weight:700;">コンテンツ</span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">ホーム(トリセツ)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════ 1b シトラス・ガーデン ════════════════ -->
+  <div id="1b" style="display:flex; flex-direction:column; gap:24px;">
+    <div style="max-width:640px; display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:#5a5ae0; color:#fff; border-radius:8px; padding:4px 10px; font-size:13px; font-weight:800; border:2px solid #26262e; box-shadow:2px 2px 0 #26262e;">1b</span>
+        <span style="font-size:20px; font-weight:900; color:#26262e;">ネオブルータル・ベント</span>
+      </div>
+      <p style="margin:0; font-size:13px; line-height:1.8; color:#6d7a85;">ネオブルータリズム×Bento Grid×ステッカーUI。太い墨線とハードシャドウ、白フチのステッカーバッジ、タイルを敷き詰めるベント構成。配色は1cのインディゴ×墨×グレーを継承。</p>
+    </div>
+    <div style="display:flex; gap:32px; align-items:flex-start;">
+
+      <!-- 1b onboarding -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="1b オンボーディング" style="width:390px; height:800px; flex-shrink:0; background:#f4f4f8; border-radius:36px; border:1px solid rgba(30,30,50,.10); box-shadow:0 24px 48px rgba(30,30,50,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="flex:1; min-height:0; padding:48px 36px 8px; display:flex; align-items:center; justify-content:center;">
+            <div style="position:relative; max-width:100%; max-height:100%; display:flex;">
+              <img src="assets/onboard-1.png" alt="" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:20px; border:2.5px solid #26262e; box-shadow:4px 4px 0 #26262e;">
+              <span style="position:absolute; top:-16px; right:-12px; background:#5a5ae0; color:#fff; font-size:12px; font-weight:900; padding:7px 14px; border-radius:999px; border:3px solid #fff; box-shadow:0 3px 8px rgba(30,30,50,.28); transform:rotate(8deg);">発見!</span>
+              <span style="position:absolute; bottom:-12px; left:-14px; background:#21b98a; color:#fff; font-size:11px; font-weight:900; padding:6px 12px; border-radius:999px; border:3px solid #fff; box-shadow:0 3px 8px rgba(30,30,50,.28); transform:rotate(-7deg);">キミの強み</span>
+            </div>
+          </div>
+          <div style="padding:28px 36px 0; text-align:center;">
+            <h2 style="margin:0; font-size:26px; font-weight:900; color:#26262e; line-height:1.5;">まだ気づいてない<br><span style="display:inline-block; background:#5a5ae0; color:#fff; padding:1px 10px; border-radius:8px; border:2px solid #26262e; box-shadow:2px 2px 0 #26262e; transform:rotate(-1.5deg);">強み</span>がある</h2>
+            <p style="margin:14px 0 0; font-size:14px; color:#74748c; font-weight:500; line-height:1.8;">学習の成績だけじゃない。<br>キミの「強み」を見つけよう。</p>
+          </div>
+          <div style="display:flex; justify-content:center; gap:7px; padding:24px 0 0;">
+            <span style="width:24px; height:9px; border-radius:999px; background:#5a5ae0; border:1.5px solid #26262e;"></span>
+            <span style="width:9px; height:9px; border-radius:999px; background:#fff; border:1.5px solid #26262e;"></span>
+            <span style="width:9px; height:9px; border-radius:999px; background:#fff; border:1.5px solid #26262e;"></span>
+          </div>
+          <div style="display:flex; gap:12px; padding:22px 26px 34px;">
+            <button style="flex:1; border:2px solid #26262e; background:#fff; color:#26262e; font-weight:800; font-size:15px; border-radius:14px; box-shadow:2px 2px 0 #26262e; cursor:pointer; font-family:'Noto Sans JP',sans-serif;">スキップ</button>
+            <button style="flex:2; border:2px solid #26262e; background:#5a5ae0; color:#fff; font-weight:900; font-size:16px; padding:16px 0; border-radius:14px; box-shadow:2px 2px 0 #26262e; cursor:pointer; font-family:'Noto Sans JP',sans-serif;">次へ →</button>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">オンボーディング</div>
+      </div>
+
+      <!-- 1b diag result -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="1b 診断結果" style="width:390px; height:800px; flex-shrink:0; background:#f4f4f8; border-radius:36px; border:1px solid rgba(30,30,50,.10); box-shadow:0 24px 48px rgba(30,30,50,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 24px 12px;">
+            <div style="font-weight:900; font-size:18px;"><span style="color:#5a5ae0;">Ai</span><span style="color:#26262e;">GROW</span></div>
+            <div style="font-size:11px; font-weight:800; color:#26262e; background:#fff; border:1.5px solid #26262e; border-radius:999px; padding:4px 11px; box-shadow:2px 2px 0 #26262e;">気質診断</div>
+          </div>
+          <div style="padding:8px 26px 0;">
+            <div style="display:flex; gap:5px;">
+              <span style="flex:1; height:8px; border-radius:999px; background:#5a5ae0; border:1.5px solid #26262e;"></span>
+              <span style="flex:1; height:8px; border-radius:999px; background:#fff; border:1.5px solid #26262e;"></span>
+              <span style="flex:1; height:8px; border-radius:999px; background:#fff; border:1.5px solid #26262e;"></span>
+              <span style="flex:1; height:8px; border-radius:999px; background:#fff; border:1.5px solid #26262e;"></span>
+              <span style="flex:1; height:8px; border-radius:999px; background:#fff; border:1.5px solid #26262e;"></span>
+            </div>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:24px 24px 0; display:flex; flex-direction:column; gap:14px;">
+            <div style="text-align:center;">
+              <div style="font-size:11px; letter-spacing:2px; color:#74748c; font-weight:800;">STEP 1 / 5　結果</div>
+              <div style="font-size:17px; font-weight:900; color:#26262e; margin-top:6px;">外向性 / 内向性</div>
+            </div>
+            <div style="animation:pop .55s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="background:#5a5ae0; border:2.5px solid #26262e; border-radius:22px; padding:32px 22px 28px; text-align:center; position:relative; box-shadow:3px 3px 0 #26262e;">
+                <span style="position:absolute; top:-14px; right:18px; background:#e0745c; color:#fff; font-size:11px; font-weight:900; padding:6px 13px; border-radius:999px; border:3px solid #fff; box-shadow:0 3px 8px rgba(30,30,50,.30); transform:rotate(7deg);">NEW!</span>
+                <div style="width:56px; height:56px; border-radius:50%; background:#fff; border:2.5px solid #26262e; margin:0 auto; display:flex; align-items:center; justify-content:center;">
+                  <svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L14.4 9.6 L22 12 L14.4 14.4 L12 22 L9.6 14.4 L2 12 L9.6 9.6 Z" fill="#5a5ae0" stroke="#26262e" stroke-width="1.2"></path></svg>
+                </div>
+                <div style="font-size:11px; font-weight:900; color:rgba(255,255,255,.75); margin-top:15px; letter-spacing:3px;">キミの結果</div>
+                <div style="font-size:22px; font-weight:900; color:#fff; line-height:1.45; margin-top:6px;">エネルギッシュな挑戦者</div>
+                <div style="font-size:11px; color:rgba(255,255,255,.7); margin-top:10px; font-weight:600;">この傾向をもとに診断を続けます</div>
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; animation:rise .5s .18s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="background:#fff; border:2px solid #26262e; border-radius:16px; padding:16px 16px; box-shadow:2px 2px 0 #26262e;">
+                <div style="font-size:12px; font-weight:900; color:#26262e;">この結果について</div>
+                <p style="margin:8px 0 0; font-size:11.5px; color:#74748c; line-height:1.75;">スコアは優劣ではなく、力を発揮しやすい場面の傾向です。</p>
+              </div>
+              <div style="display:grid; grid-template-rows:1fr 1fr; gap:12px;">
+                <div style="background:#21b98a; border:2px solid #26262e; border-radius:16px; padding:12px 14px; box-shadow:2px 2px 0 #26262e; display:flex; flex-direction:column; justify-content:center;">
+                  <div style="font-size:22px; font-weight:900; color:#fff; line-height:1;">あと4</div>
+                  <div style="font-size:10.5px; font-weight:800; color:rgba(255,255,255,.85); margin-top:4px;">STEP</div>
+                </div>
+                <div style="background:#ececfb; border:2px solid #26262e; border-radius:16px; padding:12px 14px; box-shadow:2px 2px 0 #26262e; display:flex; flex-direction:column; justify-content:center;">
+                  <div style="font-size:22px; font-weight:900; color:#26262e; line-height:1;">5分</div>
+                  <div style="font-size:10.5px; font-weight:800; color:#74748c; margin-top:4px;">1項目あたり</div>
+                </div>
+              </div>
+            </div>
+            <div style="background:#fff; border:2px solid #26262e; border-radius:16px; padding:13px 18px; box-shadow:2px 2px 0 #26262e; animation:rise .5s .28s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="font-size:11px; color:#26262e; font-weight:900;">進捗</div>
+                <div style="font-size:11px; color:#5a5ae0; font-weight:900;">1 / 5</div>
+              </div>
+              <div style="display:flex; gap:4px; margin-top:8px;">
+                <span style="flex:1; height:6px; border-radius:3px; background:#5a5ae0; border:1px solid #26262e;"></span>
+                <span style="flex:1; height:6px; border-radius:3px; background:#f4f4f8; border:1px solid #26262e;"></span>
+                <span style="flex:1; height:6px; border-radius:3px; background:#f4f4f8; border:1px solid #26262e;"></span>
+                <span style="flex:1; height:6px; border-radius:3px; background:#f4f4f8; border:1px solid #26262e;"></span>
+                <span style="flex:1; height:6px; border-radius:3px; background:#f4f4f8; border:1px solid #26262e;"></span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px 26px 30px;">
+            <button style="width:100%; border:2px solid #26262e; background:#5a5ae0; color:#fff; font-weight:900; font-size:16px; padding:16px 0; border-radius:14px; box-shadow:2px 2px 0 #26262e; cursor:pointer; font-family:'Noto Sans JP',sans-serif;">次へすすむ →</button>
+            <div style="text-align:center; font-size:11px; color:#9a9aae; margin-top:12px;">1 項目 約 5 分</div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">診断結果</div>
+      </div>
+
+      <!-- 1b torisetsu home -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="1b ホーム(トリセツ)" style="width:390px; height:800px; flex-shrink:0; background:#f4f4f8; border-radius:36px; border:1px solid rgba(30,30,50,.10); box-shadow:0 24px 48px rgba(30,30,50,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="background:#26262e; padding:22px 24px 18px; position:relative;">
+            <div style="font-size:10px; color:rgba(255,255,255,.55); font-weight:800; letter-spacing:1.5px;">キミのトリセツ　総合タイプ</div>
+            <div style="display:flex; align-items:center; gap:12px; margin-top:7px;">
+              <div style="font-size:22px; font-weight:900; color:#fff;">「行動する創造者」</div>
+              <span style="background:#e0745c; color:#fff; border-radius:999px; padding:4px 12px; font-size:11px; font-weight:900; border:3px solid #fff; box-shadow:0 3px 8px rgba(0,0,0,.35); transform:rotate(-6deg);">Lv.3</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; padding:14px 16px 12px; background:#f4f4f8; overflow:hidden;">
+            <span style="background:#5a5ae0; color:#fff; border:2px solid #26262e; border-radius:999px; padding:8px 15px; font-size:12px; font-weight:900; white-space:nowrap; box-shadow:1.5px 1.5px 0 #26262e;">今のキミ</span>
+            <span style="color:#26262e; background:#fff; border:2px solid #26262e; border-radius:999px; padding:8px 15px; font-size:12px; font-weight:700; white-space:nowrap;">強みTOP3</span>
+            <span style="color:#26262e; background:#fff; border:2px solid #26262e; border-radius:999px; padding:8px 15px; font-size:12px; font-weight:700; white-space:nowrap;">みんなの発見</span>
+            <span style="color:#26262e; background:#fff; border:2px solid #26262e; border-radius:999px; padding:8px 15px; font-size:12px; font-weight:700; white-space:nowrap;">未来のヒント</span>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:10px 18px 0; display:flex; flex-direction:column; gap:13px;">
+            <div style="display:flex; align-items:baseline; gap:10px;">
+              <span style="background:#26262e; color:#fff; font-size:10px; font-weight:900; letter-spacing:1.5px; padding:4px 9px; border-radius:6px;">STEP 1/5</span>
+              <div style="font-size:19px; font-weight:900; color:#26262e;">今のキミのトリセツ</div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div style="grid-column:1 / -1; background:#fff; border:2px solid #26262e; border-radius:18px; padding:16px 18px; box-shadow:2px 2px 0 #26262e; position:relative;">
+                <span style="position:absolute; top:-12px; right:14px; background:#21b98a; color:#fff; font-size:10px; font-weight:900; padding:5px 11px; border-radius:999px; border:3px solid #fff; box-shadow:0 3px 8px rgba(30,30,50,.28); transform:rotate(5deg);">強み</span>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                  <span style="background:#ececfb; color:#4343b8; border:1.5px solid #26262e; border-radius:999px; padding:6px 13px; font-size:12px; font-weight:800; transform:rotate(-1.5deg); animation:chipIn .4s .05s both;">個人的実行力</span>
+                  <span style="background:#ececfb; color:#4343b8; border:1.5px solid #26262e; border-radius:999px; padding:6px 13px; font-size:12px; font-weight:800; transform:rotate(1deg); animation:chipIn .4s .12s both;">創造力</span>
+                  <span style="background:#ececfb; color:#4343b8; border:1.5px solid #26262e; border-radius:999px; padding:6px 13px; font-size:12px; font-weight:800; transform:rotate(-1deg); animation:chipIn .4s .19s both;">表現力</span>
+                  <span style="background:#ececfb; color:#4343b8; border:1.5px solid #26262e; border-radius:999px; padding:6px 13px; font-size:12px; font-weight:800; transform:rotate(1.5deg); animation:chipIn .4s .26s both;">影響力の行使</span>
+                </div>
+                <p style="margin:12px 0 0; font-size:12px; color:#74748c; line-height:1.8;">アイデアを生み出し、自分の力で形にしながら、言葉や行動で周囲に伝え、人を巻き込みながら実現していく力があります。</p>
+              </div>
+              <div style="grid-column:1 / -1; background:#fff; border:2px solid #26262e; border-radius:18px; padding:16px 18px; box-shadow:2px 2px 0 #26262e;">
+                <div style="font-size:13.5px; font-weight:900; color:#26262e;">キミの基本パターン</div>
+                <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+                  <div style="display:flex; gap:9px; font-size:12px; color:#44445a; line-height:1.65; font-weight:500;"><span style="color:#5a5ae0; font-weight:900;">›</span>人と話すなかでアイデアがどんどん出てくる</div>
+                  <div style="display:flex; gap:9px; font-size:12px; color:#44445a; line-height:1.65; font-weight:500;"><span style="color:#5a5ae0; font-weight:900;">›</span>考えるより先に動き出すことが多い</div>
+                  <div style="display:flex; gap:9px; font-size:12px; color:#44445a; line-height:1.65; font-weight:500;"><span style="color:#5a5ae0; font-weight:900;">›</span>周りを巻き込みながら進めるのが得意</div>
+                  <div style="display:flex; gap:9px; font-size:12px; color:#44445a; line-height:1.65; font-weight:500;"><span style="color:#5a5ae0; font-weight:900;">›</span>変化や新しい環境にワクワクできる</div>
+                </div>
+              </div>
+              <div style="background:#5a5ae0; border:2px solid #26262e; border-radius:18px; padding:14px 16px; box-shadow:2px 2px 0 #26262e; display:flex; flex-direction:column; justify-content:center;">
+                <div style="font-size:24px; font-weight:900; color:#fff; line-height:1;">4つ</div>
+                <div style="font-size:10.5px; font-weight:800; color:rgba(255,255,255,.85); margin-top:5px;">見つかった強み</div>
+              </div>
+              <div style="background:#fff; border:2px solid #26262e; border-radius:18px; padding:12px 14px; box-shadow:2px 2px 0 #26262e;">
+                <div style="font-size:11.5px; font-weight:900; color:#26262e;">どう感じた？</div>
+                <div style="display:flex; flex-direction:column; gap:5px; margin-top:8px;">
+                  <span style="display:flex; align-items:center; gap:6px; font-size:10px; font-weight:800; color:#44445a;"><span style="width:8px; height:8px; flex-shrink:0; border-radius:50%; background:#21b98a; border:1px solid #26262e;"></span>これ自分っぽい</span>
+                  <span style="display:flex; align-items:center; gap:6px; font-size:10px; font-weight:800; color:#44445a;"><span style="width:8px; height:8px; flex-shrink:0; border-radius:50%; background:#5a5ae0; border:1px solid #26262e;"></span>意外だった</span>
+                  <span style="display:flex; align-items:center; gap:6px; font-size:10px; font-weight:800; color:#44445a;"><span style="width:8px; height:8px; flex-shrink:0; border-radius:50%; background:#e0745c; border:1px solid #26262e;"></span>伸ばしてみたい</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); background:#fff; border-top:2px solid #26262e; padding:10px 0 14px;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#5a5ae0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11 L12 4.5 L20 11 V19.5 H14.5 V14.5 H9.5 V19.5 H4 Z"></path></svg>
+              <span style="font-size:9.5px; font-weight:800;">ホーム</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a5a5ba;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="15" height="16.5" rx="3"></rect><path d="M8.5 12.5 L11 15 L15.5 9.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">受検</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a5a5ba;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21 V4"></path><path d="M6.5 5 H17.5 L15 8.5 L17.5 12 H6.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">チャレンジ</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a5a5ba;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 H19 V20 H8 A2 2 0 0 1 6 18 Z"></path><path d="M9.5 8.5 H15.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">きろく</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a5a5ba;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="2"></rect><rect x="13" y="4" width="7" height="7" rx="2"></rect><rect x="4" y="13" width="7" height="7" rx="2"></rect><rect x="13" y="13" width="7" height="7" rx="2"></rect></svg>
+              <span style="font-size:9.5px; font-weight:700;">コンテンツ</span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">ホーム(トリセツ)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════ 1c インディゴ・ミニマル ════════════════ -->
+  <div id="1c" style="display:flex; flex-direction:column; gap:24px;">
+    <div style="max-width:640px; display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:#26262e; color:#fff; border-radius:8px; padding:4px 10px; font-size:13px; font-weight:800;">1c</span>
+        <span style="font-size:20px; font-weight:900; color:#26262e;">インディゴ・ミニマル</span>
+      </div>
+      <p style="margin:0; font-size:13px; line-height:1.8; color:#6d7a85;">インディゴ1色+墨色のエディトリアル調。角丸ひかえめ・装飾ゼロで「知的で静か」。ダークなヒーローが今っぽく、中高生でも子どもっぽく見えない。</p>
+    </div>
+    <div style="display:flex; gap:32px; align-items:flex-start;">
+
+      <!-- 1c onboarding -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="1c オンボーディング" style="width:390px; height:800px; flex-shrink:0; background:#f4f4f8; border-radius:36px; border:1px solid rgba(30,30,50,.08); box-shadow:0 24px 48px rgba(30,30,50,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="flex:1; min-height:0; padding:44px 30px 0; display:flex; align-items:center; justify-content:center;">
+            <img src="assets/onboard-1.png" alt="" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:18px; box-shadow:0 12px 32px rgba(40,40,80,.12);">
+          </div>
+          <div style="padding:26px 36px 0; text-align:center;">
+            <h2 style="margin:0; font-size:24px; font-weight:900; color:#26262e; line-height:1.5; letter-spacing:.01em;">まだ気づいてない<br>強みがある</h2>
+            <p style="margin:12px 0 0; font-size:14px; color:#74748c; font-weight:500; line-height:1.8;">学習の成績だけじゃない。<br>キミの「強み」を見つけよう。</p>
+          </div>
+          <div style="display:flex; justify-content:center; gap:7px; padding:24px 0 0;">
+            <span style="width:24px; height:8px; border-radius:999px; background:#5a5ae0;"></span>
+            <span style="width:8px; height:8px; border-radius:999px; background:#d9d9e6;"></span>
+            <span style="width:8px; height:8px; border-radius:999px; background:#d9d9e6;"></span>
+          </div>
+          <div style="display:flex; gap:10px; padding:22px 26px 34px;">
+            <button style="flex:1; border:none; background:transparent; color:#74748c; font-weight:800; font-size:15px; border-radius:14px; cursor:pointer; font-family:'Noto Sans JP',sans-serif;">スキップ</button>
+            <button style="flex:2; border:none; background:#5a5ae0; color:#fff; font-weight:800; font-size:16px; padding:17px 0; border-radius:16px; box-shadow:0 8px 20px rgba(90,90,224,.24); cursor:pointer; font-family:'Noto Sans JP',sans-serif;">次へ</button>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">オンボーディング</div>
+      </div>
+
+      <!-- 1c diag result -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="1c 診断結果" style="width:390px; height:800px; flex-shrink:0; background:#f4f4f8; border-radius:36px; border:1px solid rgba(30,30,50,.08); box-shadow:0 24px 48px rgba(30,30,50,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 24px 12px;">
+            <div style="font-weight:900; font-size:18px;"><span style="color:#5a5ae0;">Ai</span><span style="color:#26262e;">GROW</span></div>
+            <div style="font-size:11px; font-weight:700; color:#74748c;">気質診断</div>
+          </div>
+          <div style="padding:6px 26px 0;">
+            <div style="display:flex; gap:5px;">
+              <span style="flex:1; height:3px; border-radius:999px; background:#5a5ae0;"></span>
+              <span style="flex:1; height:3px; border-radius:999px; background:#e0e0ea;"></span>
+              <span style="flex:1; height:3px; border-radius:999px; background:#e0e0ea;"></span>
+              <span style="flex:1; height:3px; border-radius:999px; background:#e0e0ea;"></span>
+              <span style="flex:1; height:3px; border-radius:999px; background:#e0e0ea;"></span>
+            </div>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:26px 24px 0; display:flex; flex-direction:column; gap:14px;">
+            <div style="text-align:center;">
+              <div style="font-size:11px; letter-spacing:2px; color:#74748c; font-weight:700;">STEP 1 / 5　結果</div>
+              <div style="font-size:17px; font-weight:800; color:#26262e; margin-top:6px;">外向性 / 内向性</div>
+            </div>
+            <div style="background:#fff; border:1px solid #e6e6f0; border-radius:20px; padding:34px 22px 30px; text-align:center; animation:pop .55s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="width:56px; height:56px; border-radius:50%; background:#ececfb; margin:0 auto; display:flex; align-items:center; justify-content:center;">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2 L14.4 9.6 L22 12 L14.4 14.4 L12 22 L9.6 14.4 L2 12 L9.6 9.6 Z" fill="#5a5ae0"></path></svg>
+              </div>
+              <div style="font-size:11px; font-weight:800; color:#5a5ae0; margin-top:16px; letter-spacing:2px;">キミの結果</div>
+              <div style="font-size:22px; font-weight:900; color:#26262e; line-height:1.45; margin-top:6px;">エネルギッシュな挑戦者</div>
+              <div style="font-size:11px; color:#74748c; margin-top:10px; font-weight:500;">この傾向をもとに診断を続けます</div>
+            </div>
+            <div style="background:#fff; border:1px solid #e6e6f0; border-radius:16px; padding:18px 20px; animation:rise .5s .18s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="font-size:12.5px; font-weight:800; color:#26262e;">この結果について</div>
+              <p style="margin:8px 0 0; font-size:12.5px; color:#74748c; line-height:1.85;">スコアは優劣ではなく、キミがどのような場面で力を発揮しやすいかの傾向を示しています。引き続き診断を進めましょう。</p>
+            </div>
+            <div style="background:#ececfb; border-radius:14px; padding:14px 18px; animation:rise .5s .28s cubic-bezier(.2,.8,.2,1) both;">
+              <div style="font-size:11px; color:#4343b8; font-weight:800;">あと 4 STEP</div>
+              <div style="display:flex; gap:4px; margin-top:8px;">
+                <span style="flex:1; height:4px; border-radius:2px; background:#5a5ae0;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#d5d5ee;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#d5d5ee;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#d5d5ee;"></span>
+                <span style="flex:1; height:4px; border-radius:2px; background:#d5d5ee;"></span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px 26px 30px;">
+            <button style="width:100%; border:none; background:#5a5ae0; color:#fff; font-weight:800; font-size:16px; padding:17px 0; border-radius:16px; box-shadow:0 8px 20px rgba(90,90,224,.24); cursor:pointer; font-family:'Noto Sans JP',sans-serif;">次へすすむ</button>
+            <div style="text-align:center; font-size:11px; color:#9a9aae; margin-top:12px;">1 項目 約 5 分</div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">診断結果</div>
+      </div>
+
+      <!-- 1c torisetsu home -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div data-screen-label="1c ホーム(トリセツ)" style="width:390px; height:800px; flex-shrink:0; background:#f4f4f8; border-radius:36px; border:1px solid rgba(30,30,50,.08); box-shadow:0 24px 48px rgba(30,30,50,.10); overflow:hidden; display:flex; flex-direction:column;">
+          <div style="background:#26262e; padding:22px 24px 18px;">
+            <div style="font-size:10px; color:rgba(255,255,255,.55); font-weight:700; letter-spacing:1.5px;">キミのトリセツ　総合タイプ</div>
+            <div style="display:flex; align-items:center; gap:10px; margin-top:7px;">
+              <div style="font-size:23px; font-weight:900; color:#fff;">「行動する創造者」</div>
+              <span style="background:#5a5ae0; color:#fff; border-radius:999px; padding:3px 11px; font-size:11px; font-weight:800;">Lv.3</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:2px; padding:0 12px; background:#fff; border-bottom:1px solid #e6e6f0; overflow:hidden;">
+            <span style="color:#26262e; padding:13px 12px 11px; font-size:12.5px; font-weight:800; white-space:nowrap; box-shadow:inset 0 -2px 0 #5a5ae0;">今のキミ</span>
+            <span style="color:#9a9aae; padding:13px 12px 11px; font-size:12.5px; font-weight:700; white-space:nowrap;">強みTOP3</span>
+            <span style="color:#9a9aae; padding:13px 12px 11px; font-size:12.5px; font-weight:700; white-space:nowrap;">みんなの発見</span>
+            <span style="color:#9a9aae; padding:13px 12px 11px; font-size:12.5px; font-weight:700; white-space:nowrap;">未来のヒント</span>
+          </div>
+          <div style="flex:1; min-height:0; overflow:hidden; padding:20px 18px 0; display:flex; flex-direction:column; gap:14px;">
+            <div>
+              <div style="font-size:10.5px; color:#5a5ae0; font-weight:800; letter-spacing:2px;">STEP 1 / 5</div>
+              <div style="font-size:19px; font-weight:900; color:#26262e; margin-top:4px;">今のキミのトリセツ</div>
+              <div style="font-size:12px; color:#74748c; margin-top:2px;">まずはじっくり読んでみよう</div>
+            </div>
+            <div style="background:#fff; border-radius:18px; padding:18px 20px; border:1px solid #e9e9f2;">
+              <div style="font-size:14px; font-weight:800; color:#26262e;">強み</div>
+              <div style="display:flex; flex-wrap:wrap; gap:7px; margin-top:11px;">
+                <span style="background:#ececfb; color:#4343b8; border-radius:8px; padding:7px 13px; font-size:12px; font-weight:700; animation:chipIn .4s .05s both;">個人的実行力</span>
+                <span style="background:#ececfb; color:#4343b8; border-radius:8px; padding:7px 13px; font-size:12px; font-weight:700; animation:chipIn .4s .12s both;">創造力</span>
+                <span style="background:#ececfb; color:#4343b8; border-radius:8px; padding:7px 13px; font-size:12px; font-weight:700; animation:chipIn .4s .19s both;">表現力</span>
+                <span style="background:#ececfb; color:#4343b8; border-radius:8px; padding:7px 13px; font-size:12px; font-weight:700; animation:chipIn .4s .26s both;">影響力の行使</span>
+              </div>
+              <p style="margin:12px 0 0; font-size:12.5px; color:#74748c; line-height:1.85;">アイデアを生み出し、それを自分の力で形にしながら、言葉や行動で周囲に伝え、人を巻き込みながら実現していく力があります。</p>
+            </div>
+            <div style="background:#fff; border-radius:18px; padding:18px 20px; border:1px solid #e9e9f2;">
+              <div style="font-size:14px; font-weight:800; color:#26262e;">キミの基本パターン</div>
+              <div style="display:flex; flex-direction:column; gap:9px; margin-top:11px;">
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#44445a; line-height:1.65; font-weight:500;"><span style="color:#5a5ae0; font-weight:900;">›</span>人と話すなかでアイデアがどんどん出てくる</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#44445a; line-height:1.65; font-weight:500;"><span style="color:#5a5ae0; font-weight:900;">›</span>考えるより先に動き出すことが多い</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#44445a; line-height:1.65; font-weight:500;"><span style="color:#5a5ae0; font-weight:900;">›</span>周りを巻き込みながら進めるのが得意</div>
+                <div style="display:flex; gap:9px; font-size:12.5px; color:#44445a; line-height:1.65; font-weight:500;"><span style="color:#5a5ae0; font-weight:900;">›</span>変化や新しい環境にワクワクできる</div>
+              </div>
+            </div>
+            <div style="background:#fff; border-radius:18px; padding:15px 16px; border:1px solid #e9e9f2;">
+              <div style="font-size:12.5px; font-weight:800; color:#26262e;">読んでみて、どう感じた？</div>
+              <div style="display:flex; gap:7px; margin-top:10px;">
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #e0e0ea; border-radius:10px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#44445a;"><span style="width:8px; height:8px; border-radius:50%; background:#21b98a;"></span>これ自分っぽい</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #e0e0ea; border-radius:10px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#44445a;"><span style="width:8px; height:8px; border-radius:50%; background:#5a5ae0;"></span>意外だった</span>
+                <span style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border:1px solid #e0e0ea; border-radius:10px; padding:8px 4px; font-size:10.5px; font-weight:800; color:#44445a;"><span style="width:8px; height:8px; border-radius:50%; background:#e0745c;"></span>伸ばしてみたい</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); background:#fff; border-top:1px solid #e6e6f0; padding:10px 0 14px;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#5a5ae0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11 L12 4.5 L20 11 V19.5 H14.5 V14.5 H9.5 V19.5 H4 Z"></path></svg>
+              <span style="font-size:9.5px; font-weight:800;">ホーム</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a5a5ba;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="15" height="16.5" rx="3"></rect><path d="M8.5 12.5 L11 15 L15.5 9.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">受検</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a5a5ba;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21 V4"></path><path d="M6.5 5 H17.5 L15 8.5 L17.5 12 H6.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">チャレンジ</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a5a5ba;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 H19 V20 H8 A2 2 0 0 1 6 18 Z"></path><path d="M9.5 8.5 H15.5"></path></svg>
+              <span style="font-size:9.5px; font-weight:700;">きろく</span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:#a5a5ba;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="2"></rect><rect x="13" y="4" width="7" height="7" rx="2"></rect><rect x="4" y="13" width="7" height="7" rx="2"></rect><rect x="13" y="13" width="7" height="7" rx="2"></rect></svg>
+              <span style="font-size:9.5px; font-weight:700;">コンテンツ</span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#98a2ab;">ホーム(トリセツ)</div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>
