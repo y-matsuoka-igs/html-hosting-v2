@@ -141,7 +141,34 @@ function HomeVarB({ state, comp }) {
         </div>
       </div>
       <NextCard action={action} onGo={() => nav.go(action.go)} />
-      <ContentTeaser unlocked={comp >= 100} onOpen={() => nav.tab('report')} />
+      <MutualProgressCard state={state} nav={nav} />
+    </div>
+  );
+}
+
+/* キミが得られた相互評価の進捗 */
+function MutualProgressCard({ state, nav }) {
+  const got = state.other && state.other.done ? 3 : 0, full = got >= 3;
+  return (
+    <div className="card card--flat" style={{ padding: '16px 16px 15px', textAlign: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontSize: 12, fontWeight: 800, color: 'var(--text)' }}>
+        <span>キミが得られた相互評価</span>
+        <span style={{ color: 'var(--text-sub)', fontWeight: 500 }}>—</span>
+        <span>現在の評価完了者数</span>
+      </div>
+      <div style={{ marginTop: 8, fontFamily: 'var(--font-round)', color: full ? 'var(--green)' : 'var(--text)' }}>
+        <span style={{ fontSize: 34, fontWeight: 900, lineHeight: 1 }}>{got}</span>
+        <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-sub)' }}> / 3 </span>
+        <span style={{ fontSize: 17, fontWeight: 800 }}>名</span>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 7, marginTop: 10 }}>
+        {[0, 1, 2].map((i) => <span key={i} style={{ width: 34, height: 8, borderRadius: 999, background: i < got ? 'var(--green)' : 'var(--border)' }}></span>)}
+      </div>
+      {full ? (
+        <div style={{ marginTop: 10, display: 'inline-flex', alignItems: 'center', gap: 5, background: 'var(--green-soft, #e6f4e6)', color: 'var(--green)', borderRadius: 999, padding: '4px 12px', fontSize: 11, fontWeight: 800 }}>相互評価がそろったよ！</div>
+      ) : (
+        <button className="btn" style={{ marginTop: 12, background: '#fff', color: 'var(--blue-dark)', border: '2px solid #1f1b16', boxShadow: '2px 2px 0 #1f1b16', width: 'auto', padding: '10px 18px', fontSize: 12.5 }} onClick={() => nav.go('other-start', { tab: 1 })}>評価の完了状況を確認</button>
+      )}
     </div>
   );
 }

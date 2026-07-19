@@ -15,7 +15,7 @@ const BLANK = {
   diag:  { answers: {}, done: false, type: null },
   self:  { answers: {}, done: false },
   other: { answers: {}, done: false },
-  exp: 0, tasks: [], seenAnnounce: false,
+  exp: 0, tasks: [], seenAnnounce: false, peerDone: true,
 };
 function loadState() {
   try { return { ...BLANK, ...JSON.parse(localStorage.getItem('aigrow_state') || '{}') }; }
@@ -106,13 +106,17 @@ function App() {
       case 'start-diag':  return <StartDiagScreen />;
       case 'diag-game':   return <DiagGameScreen />;
       case 'diag-result': return <DiagResultScreen />;
+      case 'start-self':   return <StartSelfScreen />;
+      case 'start-other':  return <StartOtherScreen />;
+      case 'other-start':  return <OtherStartScreen />;
       case 'self-eval':    return <SelfEvalScreen />;
       case 'other-eval':   return <OtherEvalScreen />;
       case 'strength-eval': return <StrengthEvalScreen />;
       case 'announce':     return <AnnounceScreen />;
       case 'task-complete':return <TaskCompleteScreen />;
       case 'diag-complete':
-      case 'self-complete': return <StepCompleteScreen />;
+      case 'self-complete':
+      case 'other-complete': return <StepCompleteScreen />;
       case 'home':    return <TorisetsuCombined />;  // ホームタブ = 新トリセツ
       case 'exam':    return state.examCourses ? <ExamCoursesScreen /> : ((comp >= 100 && state.seenAnnounce) ? <ExamWaitingScreen /> : <HomeScreen />);   // 受検タブ = コース登録 / 進捗リング / 準備中
       case 'torisetsu': return <TorisetsuScreen />;   // エイリアス
@@ -157,6 +161,8 @@ function App() {
         <TweakButton label="気質診断完了（ステップ）" onClick={() => { update({ diag: { ...state.diag, done: true } }); nav.go('diag-complete', { kind: 'diag' }); }} />
         <TweakButton label="自己評価完了（ステップ）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true } }); nav.go('self-complete', { kind: 'self' }); }} />
         <TweakButton label="他者評価" onClick={() => nav.go('other-eval')} />
+        <TweakToggle label="相互評価 完了（今のキミ解放）" value={!!state.peerDone}
+          onChange={v => update({ peerDone: v })} />
         <TweakButton label="完了サマリー" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true } }); nav.go('task-complete'); }} />
         <TweakButton label="機能解放の通知" onClick={() => nav.go('announce')} />
         <TweakSection label="メイン画面（タブ）" />

@@ -16,7 +16,6 @@ const TJ = {
 function StepHead({ n, title, sub }) {
   return (
     <div style={{ padding:'6px 2px 0' }}>
-      <div style={{ fontFamily:TJ.round, fontWeight:800, fontSize:10, letterSpacing:2, color:TJ.blue }}>STEP {n} / 4</div>
       <div style={{ fontFamily:TJ.round, fontWeight:900, fontSize:19, color:TJ.text, lineHeight:1.3, marginTop:3 }}>{title}</div>
       {sub && <div style={{ fontSize:11.5, color:TJ.sub, fontWeight:600, marginTop:3 }}>{sub}</div>}
     </div>
@@ -840,7 +839,7 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
 
   return (
     <>
-      <StepHead n={4} title="成長のヒント" sub="今のキミの成分に、力を足すとカタチが変わる" />
+      <StepHead n={2} title="成長のヒント" sub="今のキミの成分に、力を足すとカタチが変わる" />
 
       {/* ── 成分ブレンド レーダー（自己 × 他者） ── */}
       <div style={{ background:'#fff', border:'1.5px solid #e3d9c4', borderRadius:16, padding:'13px 8px 10px' }}>
@@ -950,9 +949,9 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
 }
 
 /* ── ステップインジケーター＆フッターナビ（トリセツ統合UI） ── */
-const TORI_STEPS = ['トリセツ','キミのカード','みんなの発見','成長のヒント'];
+const TORI_STEPS = ['今のキミ','成長のヒント'];
 
-const TORI_STEP_CHIPS = [['📖','今のキミ'],['🏆','キミのカード'],['💬','みんなの発見'],['💡','成長のヒント']];
+const TORI_STEP_CHIPS = [['📖','今のキミ'],['💡','成長のヒント']];
 
 function ToriStepIndicator({ step, onJump, freeJump }) {
   const railRef = React.useRef(null);
@@ -982,14 +981,14 @@ function ToriStepIndicator({ step, onJump, freeJump }) {
         })}
       </div>
       <div style={{ height:3, background:'#eef1f4' }}>
-        <div style={{ height:'100%', width:`${(step / 4) * 100}%`, background:'#315cfa' }}></div>
+        <div style={{ height:'100%', width:`${(step / 2) * 100}%`, background:'#315cfa' }}></div>
       </div>
     </div>
   );
 }
 
 function ToriStepNav({ step, goStep, onShare }) {
-  const first = step === 1, last = step === 4;
+  const first = step === 1, last = step === 2;
   const nextLabel = last ? null : TORI_STEP_CHIPS[step][1];
   const circ = (disabled) => ({
     width:46, height:46, borderRadius:'50%', border:'none', flexShrink:0,

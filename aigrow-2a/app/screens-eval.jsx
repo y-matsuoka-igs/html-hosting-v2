@@ -216,6 +216,31 @@ function StrengthEvalScreen() {
   );
 }
 
+/* ─────────── 自己評価 開始 ─────────── */
+function StartSelfScreen() {
+  const nav = useNav();
+  return (
+    <div className="screen screen--white">
+      <StatusBar />
+      <AppHeader sub="自己評価" noMenu />
+      <div className="scroll" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1, minHeight: 480, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '12px 30px 24px', gap: 6 }}>
+          <Pill style={{ background: 'var(--blue-soft)', color: 'var(--blue-dark)' }}>STEP 2 / 3</Pill>
+          <div style={{ margin: '18px 0 6px', display: 'flex', justifyContent: 'center', color: 'var(--blue)' }}><FIcon name="pencil" size={64} sw={1.6} /></div>
+          <h1 style={{ fontSize: 22, fontWeight: 900, lineHeight: 1.5 }}>自己評価を開始しましょう</h1>
+          <p style={{ fontSize: 13.5, color: 'var(--text-sub)', fontWeight: 600, marginTop: 8, lineHeight: 1.8, textAlign: 'left' }}>
+            これから、あなた自身に関する質問にいくつかお答えいただきます。画面の上部に質問が出ますので、4つの選択肢の内から当てはまる答えを選択し、「次へ」を押して回答してください。 一度回答した質問には戻ることができませんので、間違いのないよう正確に回答してください。
+          </p>
+        </div>
+        <div style={{ flexShrink: 0, padding: '0 24px 26px' }}>
+          <button className="btn btn--cta btn--lg" onClick={() => nav.go('self-eval')}>自己評価をはじめる</button>
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-sub)', marginTop: 12 }}>全 5 問 約 3 分</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SelfEvalScreen() {
   const nav = useNav();
   return <EvalQuestion store="self" qList={SELF_Q} accent="#315cfa" label="自己評価"
@@ -227,4 +252,4 @@ function OtherEvalScreen() {
     onComplete={() => nav.go('strength-eval')} />;
 }
 
-Object.assign(window, { SelfEvalScreen, OtherEvalScreen, StrengthEvalScreen, SELF_Q, OTHER_Q });
+Object.assign(window, { StartSelfScreen, SelfEvalScreen, OtherEvalScreen, StrengthEvalScreen, SELF_Q, OTHER_Q });

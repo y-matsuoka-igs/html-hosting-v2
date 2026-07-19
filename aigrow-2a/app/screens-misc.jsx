@@ -65,8 +65,8 @@ const TC_TRAITS = [
 
 const STEP_FLOW = [
   { key: 'diag', label: '気質診断', route: 'start-diag' },
-  { key: 'self', label: '自己評価', route: 'self-eval' },
-  { key: 'other', label: '相互評価', route: 'other-eval' },
+  { key: 'self', label: '自己評価', route: 'start-self' },
+  { key: 'other', label: '相互評価', route: 'start-other' },
 ];
 const SELF_PEERS = [
   { course: '自己・相互の全問題', name: '入江 平作', period: '2026-05-01 13:15' },
@@ -81,6 +81,7 @@ function StepCompleteScreen() {
   const COPY = {
     diag: { catch: 'キミの気質のクセが見えてきたよ', body: '5つの項目に答えてくれてありがとう！\n続けて「自己評価」でキミ自身の見え方をチェックしよう。' },
     self: { catch: '自分から見たキミが記録できたよ', body: 'おつかれさま！次は「相互評価」で、\nまわりから見たキミの姿を集めよう。' },
+    other: { catch: 'まわりから見たキミが集まったよ', body: '' },
   }[kind] || {};
   const pct = Math.round((doneIdx + 1) / STEP_FLOW.length * 100);
   const R = 46, C = 2 * Math.PI * R;
@@ -124,6 +125,29 @@ function StepCompleteScreen() {
           </div>
         </div>
 
+        {/* キミが得られた相互評価の進捗 */}
+        {(() => { const got = kind === 'other' ? 3 : 0, full = got >= 3; return (
+        <div className="card card--flat" style={{ padding: '16px 16px 15px', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontSize: 12, fontWeight: 800, color: 'var(--text)' }}>
+            <span>キミが得られた相互評価</span>
+            <span style={{ color: 'var(--text-sub)', fontWeight: 500 }}>—</span>
+            <span>現在の評価完了者数</span>
+          </div>
+          <div style={{ marginTop: 8, fontFamily: 'var(--font-round)', color: full ? 'var(--green)' : 'var(--text)' }}>
+            <span style={{ fontSize: 34, fontWeight: 900, lineHeight: 1 }}>{got}</span>
+            <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-sub)' }}> / 3 </span>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>名</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 7, marginTop: 10 }}>
+            {[0, 1, 2].map((i) => <span key={i} style={{ width: 34, height: 8, borderRadius: 999, background: i < got ? 'var(--green)' : 'var(--border)' }}></span>)}
+          </div>
+          {full ? (
+            <div style={{ marginTop: 10, display: 'inline-flex', alignItems: 'center', gap: 5, background: 'var(--green-soft, #e6f4e6)', color: 'var(--green)', borderRadius: 999, padding: '4px 12px', fontSize: 11, fontWeight: 800 }}>相互評価がそろったよ！</div>
+          ) : (
+            <button className="btn" style={{ marginTop: 12, background: '#fff', color: 'var(--blue-dark)', border: '2px solid #1f1b16', boxShadow: '2px 2px 0 #1f1b16', width: 'auto', padding: '10px 18px', fontSize: 12.5 }} onClick={() => nav.go('other-start', { tab: 1 })}>評価の完了状況を確認</button>
+          )}
+        </div>); })()}
+
         {/* 次のステップ案内 */}
         {next && (
           <div style={{ background: '#fff5cc', borderRadius: 'var(--r-md)', padding: '14px 16px', borderLeft: '4px solid var(--orange)' }}>
@@ -132,8 +156,10 @@ function StepCompleteScreen() {
           </div>
         )}
 
-        {kind === 'self' ? <MutualEvalStart nav={nav} /> : (
+        {next ? (
           <button className="btn btn--cta btn--lg" onClick={() => nav.go(next.route)}>{next.label}にすすむ</button>
+        ) : (
+          <button className="btn btn--cta btn--lg" onClick={() => nav.go('home')}>完成したトリセツを見る</button>
         )}
       </div>
     </div>
@@ -182,9 +208,47 @@ function TaskCompleteModal({ onClose }) {
   );
 }
 
-/* 相互評価の開始：「自分が評価する」×「評価をお願いする」タブ */
+/* ─────────── 相互評価 開始 ─────────── */
+function StartOtherScreen() {
+  const nav = useNav();
+  return (
+    <div className="screen screen--white">
+      <StatusBar />
+      <AppHeader sub="相互評価" noMenu />
+      <div className="scroll" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1, minHeight: 480, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '12px 30px 24px', gap: 6 }}>
+          <Pill style={{ background: 'var(--blue-soft)', color: 'var(--blue-dark)' }}>STEP 3 / 3</Pill>
+          <div style={{ margin: '18px 0 6px', display: 'flex', justifyContent: 'center', color: 'var(--blue)' }}><FIcon name="handshake" size={64} sw={1.6} /></div>
+          <h1 style={{ fontSize: 22, fontWeight: 900, lineHeight: 1.5 }}>さいごは、おたがいの<br/>強みを送り合おう！</h1>
+          <p style={{ fontSize: 13.5, color: 'var(--text-sub)', fontWeight: 600, marginTop: 8, lineHeight: 1.7 }}>
+            友だちを評価して、キミも評価してもらう。<br/>まわりから見たキミの姿がわかって、<br/>トリセツが完成するよ。
+          </p>
+        </div>
+        <div style={{ flexShrink: 0, padding: '0 24px 26px' }}>
+          <button className="btn btn--cta btn--lg" onClick={() => nav.go('other-start')}>相互評価をはじめる</button>
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-sub)', marginTop: 12 }}>1 人 約 3 分</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* 相互評価の開始ハブ：「自分が評価する」×「評価をお願いする」タブ */
+function OtherStartScreen() {
+  const nav = useNav();
+  return (
+    <div className="screen">
+      <StatusBar />
+      <AppHeader sub="相互評価" noMenu />
+      <div className="scroll pad stack">
+        <MutualEvalStart nav={nav} />
+      </div>
+    </div>
+  );
+}
+
 function MutualEvalStart({ nav }) {
-  const [tab, setTab] = useSm(0);
+  const [tab, setTab] = useSm((nav.params && nav.params.tab) || 0);
   const [query, setQuery] = useSm('');
   const [copied, setCopied] = useSm(false);
   const tabs = [['handshake', '自分が評価する'], ['megaphone', '評価をお願いする']];
@@ -233,6 +297,27 @@ function MutualEvalStart({ nav }) {
             </div>
           </div>
 
+          {/* 依頼状況 */}
+          <div style={{ background: '#ffece3', borderRadius: 'var(--r-md)', padding: '11px 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8590c" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span style={{ fontSize: 12.5, fontWeight: 800, color: '#e8590c' }}>残り3名の方からの評価完了待ちです。</span>
+          </div>
+          <div className="card card--flat" style={{ padding: '14px 14px 16px' }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-sub)', marginBottom: 8 }}>回答待ち</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {[0, 1, 2].map(i => (
+                <div key={i} style={{ background: '#fff', border: '1.5px solid var(--border)', borderRadius: 'var(--r-md)', padding: '11px 13px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}><circle cx="10" cy="8" r="3.5"/><path d="M4 19c0-3.1 2.7-5.5 6-5.5s6 2.4 6 5.5"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 5.6M18.5 13.9c1.5 1 2.5 2.6 2.5 4.6"/></svg>
+                  <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text)' }}>ユーザ名は表示されません</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-sub)', margin: '14px 0 8px' }}>回答済み</div>
+            <div style={{ background: '#fff', border: '1.5px solid var(--border)', borderRadius: 'var(--r-md)', padding: '11px 13px' }}>
+              <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-sub)' }}>なし</span>
+            </div>
+          </div>
+
           {/* QRコード */}
           <button className="btn btn--primary btn--lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v2M20 20h-4"/></svg>
@@ -270,6 +355,7 @@ function MutualEvalStart({ nav }) {
   );
 }
 
+/* ─────────── 完了サマリー（今のキミ・自己評価版） ─────────── */
 function TaskCompleteScreen() {
   const nav = useNav();
   const [showModal, setShowModal] = useSm(true);
@@ -278,14 +364,79 @@ function TaskCompleteScreen() {
       <StatusBar />
       <AppHeader />
       <div className="scroll pad stack">
-        {/* 今のキミ（成分ブレンド表） */}
-        <div className="fade-in" style={{ background: 'linear-gradient(150deg, #315cfa, #2447c9)', borderRadius: 16, border: '2px solid #1f1b16', boxShadow: '5px 5px 0 #1f1b16', padding: '20px 18px 16px', color: '#fff' }}>
-          <div style={{ fontFamily: 'var(--font-round)', fontSize: 18, fontWeight: 900, lineHeight: 1.4 }}>今のキミ（成分ブレンド表）</div>
-          <div style={{ fontSize: 12, fontWeight: 600, opacity: .75, marginTop: 4 }}>自己評価だけでできている、キミの今</div>
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 6px' }}><SelfRadar size={230} /></div>
-          <div style={{ background: 'rgba(255,255,255,.14)', borderRadius: 12, padding: '12px 14px', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-            <span style={{ flexShrink: 0, display: 'flex', paddingTop: 1, color: '#ffd633' }}><FIcon name="sparkle" size={17} color="#ffd633" /></span>
-            <p style={{ fontSize: 12.5, fontWeight: 600, lineHeight: 1.75, textAlign: 'left' }}>キミの自己評価からは、こんな成分が見えてきたよ！「考え創る力」に一番自信を持っているんだね！</p>
+        <SelfSummarySection />
+        {/* 注意：トリセツ完成まであと一歩 */}
+        <div style={{ background: '#fff8e1', borderRadius: 'var(--r-md)', padding: '14px 16px', borderLeft: '4px solid var(--orange)' }}>
+          <div style={{ fontSize: 12.5, fontWeight: 800, color: '#E65100', marginBottom: 6, lineHeight: 1.6 }}><span style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 5 }}><FIcon name="book" size={14} color="#E65100" /> <span>みんなの相互評価が完了すると「トリセツ」が完成するよ</span></span></div>
+          <p style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.7, fontWeight: 500 }}>トリセツが完成するまで、キミ自身が認識している性格と潜在的な気質の結果を確認してみよう</p>
+        </div>
+        <button className="btn btn--cta btn--lg" onClick={() => { nav.update && nav.update((s) => ({ diag: { ...s.diag, done: true }, self: { ...s.self, done: true }, other: { ...s.other, done: true }, seenAnnounce: false })); nav.go('exam'); }}>受検の進捗を確認する</button>
+      </div>
+      {showModal && <TaskCompleteModal onClose={() => setShowModal(false)} />}
+    </div>);
+}
+
+/* ─────────── 今のキミ（自己評価版） ─────────── */
+function SelfSummarySection() {
+  return (
+    <>
+        {/* 今のキミ（自己評価）— カード単体表示 */}
+        <div className="fade-in">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <div style={{ fontFamily: 'var(--font-round)', fontSize: 18, fontWeight: 900, lineHeight: 1.4, color: 'var(--text)' }}>今のキミ</div>
+            <span style={{ background: '#ffd633', color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 999, padding: '3px 10px', fontSize: 10.5, fontWeight: 800, fontFamily: 'var(--font-round)' }}>自己評価の結果</span>
+          </div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-sub)', marginTop: 4 }}>キミの自己評価だけでできている、今のキミ</div>
+
+          {/* 自己評価カード — タイプは確定、ビジュアルは小物アイテムで表現 */}
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '14px 0 4px' }}>
+            <div style={{ width: '100%', maxWidth: 280, borderRadius: 16, background: '#2447c9', border: '2.5px solid #1f1b16', boxShadow: '6px 6px 0 rgba(31,27,22,.55)', overflow: 'hidden', padding: '12px 12px 15px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 8.5, letterSpacing: 2.5, fontWeight: 800, color: '#ffd633' }}>KIMI NO TORISETSU</span>
+                <span style={{ background: 'rgba(255,255,255,.16)', borderRadius: 999, padding: '2px 9px', fontSize: 8.5, fontWeight: 800, letterSpacing: 1, color: '#fff' }}>SELF</span>
+              </div>
+
+              {/* アート枠 — キミの持ち物（小物アイテム）のコンポジション */}
+              <div style={{ marginTop: 9, borderRadius: 12, border: '2px solid #1f1b16', background: '#6e8cff', height: 128, position: 'relative', overflow: 'hidden' }}>
+                <svg style={{ position: 'absolute', top: 10, left: 12 }} width="11" height="11" viewBox="0 0 24 24" fill="#fff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
+                <svg style={{ position: 'absolute', bottom: 12, right: 14 }} width="8" height="8" viewBox="0 0 24 24" fill="#ffd633"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
+                {/* 台座の影 */}
+                <div style={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', width: 150, height: 12, borderRadius: '50%', background: 'rgba(31,27,22,.18)' }}></div>
+                {[
+                  ['bulb', 'アイデア', { left: 22, bottom: 34, size: 44, rot: '-8deg' }],
+                  ['rocket', '行動力', { left: '50%', bottom: 42, size: 52, rot: '0deg', center: true }],
+                  ['megaphone', 'まきこみ力', { right: 22, bottom: 34, size: 44, rot: '8deg' }],
+                ].map(([icon, label, p]) => (
+                  <div key={icon} style={{ position: 'absolute', bottom: p.bottom, ...(p.center ? { left: '50%', transform: `translateX(-50%) rotate(${p.rot})` } : p.left != null ? { left: p.left, transform: `rotate(${p.rot})` } : { right: p.right, transform: `rotate(${p.rot})` }), width: p.size, height: p.size, borderRadius: '50%', background: '#fff', border: '2px solid #1f1b16', boxShadow: '2.5px 2.5px 0 #1f1b16', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2447c9' }}>
+                    <FIcon name={icon} size={p.size * 0.52} color="#2447c9" />
+                  </div>
+                ))}
+              </div>
+
+              {/* ネームプレート */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: -14, position: 'relative' }}>
+                <div style={{ background: '#ffd633', color: '#1f1b16', border: '2px solid #1f1b16', borderRadius: 10, padding: '6px 16px', fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 17.5, boxShadow: '3px 3px 0 #1f1b16' }}>行動する創造者</div>
+              </div>
+
+              <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12.5, color: '#fff', textAlign: 'center', marginTop: 11 }}>ひらめいたら、まず動く。</div>
+
+              {/* カードテキスト */}
+              <div style={{ background: '#fff', border: '2px solid #1f1b16', borderRadius: 10, padding: '10px 12px', marginTop: 9 }}>
+                <p style={{ fontSize: 11, color: '#1f1b16', lineHeight: 1.75, fontWeight: 600, margin: 0 }}>新しいアイデアを思いつくだけでなく、実際に動いて形にできる人。キミが動くとまわりも動き出すよ。</p>
+              </div>
+
+              {/* とくい技 */}
+              <div style={{ display: 'flex', gap: 6, marginTop: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+                {[['bulb', 'アイデア'], ['rocket', '行動力'], ['megaphone', 'まきこみ力']].map(([ic, t]) => (
+                  <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#fff', border: '1.5px solid #1f1b16', color: '#1f1b16', borderRadius: 999, padding: '3px 11px', fontSize: 10, fontWeight: 800, fontFamily: 'var(--font-round)', boxShadow: '2px 2px 0 #1f1b16' }}><FIcon name={ic} size={12} color="#1f1b16" />{t}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ background: '#fff', border: '2px solid #1f1b16', borderRadius: 12, padding: '12px 14px', display: 'flex', gap: 10, alignItems: 'flex-start', marginTop: 12, boxShadow: '3px 3px 0 #1f1b16' }}>
+            <span style={{ flexShrink: 0, display: 'flex', paddingTop: 1, color: 'var(--blue)' }}><FIcon name="sparkle" size={17} color="var(--blue)" /></span>
+            <p style={{ fontSize: 12.5, fontWeight: 600, lineHeight: 1.75, textAlign: 'left', color: 'var(--text)' }}>自己評価から、キミの3つの持ち物「アイデア・行動力・まきこみ力」が見えてきたよ！</p>
           </div>
         </div>
 
@@ -311,17 +462,7 @@ function TaskCompleteScreen() {
           </div>
         </div>
 
-        {/* 注意：トリセツ完成まであと一歩 */}
-        <div style={{ background: '#fff8e1', borderRadius: 'var(--r-md)', padding: '14px 16px', borderLeft: '4px solid var(--orange)' }}>
-          <div style={{ fontSize: 12.5, fontWeight: 800, color: '#E65100', marginBottom: 6, lineHeight: 1.6 }}><span style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 5 }}><FIcon name="book" size={14} color="#E65100" /> <span>みんなの相互評価が完了すると「トリセツ」が完成するよ</span></span></div>
-          <p style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.7, fontWeight: 500 }}>トリセツが完成するまで、キミ自身が認識している性格と潜在的な気質の結果を確認してみよう</p>
-        </div>
-
-        <button className="btn btn--cta btn--lg" onClick={() => nav.go('exam')}>ホームへ進む</button>
-      </div>
-      {showModal && <TaskCompleteModal onClose={() => setShowModal(false)} />}
-    </div>);
-
+    </>);
 }
 
-Object.assign(window, { TaskCompleteScreen, StepCompleteScreen });
+Object.assign(window, { SelfSummarySection, TaskCompleteScreen, StepCompleteScreen, StartOtherScreen, OtherStartScreen });
