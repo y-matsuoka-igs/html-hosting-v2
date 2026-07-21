@@ -29,7 +29,7 @@ JCard = React.forwardRef(JCard);
 
 /* ════════ STEP 2: 今のキミ（トレーディングカード） ════════ */
 const NOW_TYPE_PROFILE = {
-  name:'行動する創造者',
+  name:'探索する創造者',
   catch:'ひらめいたら、まず動く。',
   desc:'新しいアイデアを思いつくだけでなく、実際に動いて形にできる人。人と関わるのも得意だから、キミが動くとまわりも動き出すよ。',
   traits:['アイデア','行動力','まきこみ力'],
@@ -54,13 +54,13 @@ function TypeHeroSection() {
             <svg style={{ position:'absolute', top:10, left:14 }} width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
             <svg style={{ position:'absolute', top:26, right:20 }} width="8" height="8" viewBox="0 0 24 24" fill="#ffd633"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
             <svg style={{ position:'absolute', bottom:18, left:26 }} width="7" height="7" viewBox="0 0 24 24" fill="rgba(255,255,255,.65)"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
-            {Character && <Character size={78} />}
+            {Character && <Character size={78} body="bubble" item="magnifier" />}
           </div>
 
           {/* ネームプレート */}
           <div style={{ display:'flex', justifyContent:'center', marginTop:-14, position:'relative' }}>
             <div style={{ background:'#ffd633', color:'#1f1b16', border:'2px solid #1f1b16', borderRadius:10, padding:'6px 16px', fontFamily:TJ.round, fontWeight:900, fontSize:17.5, boxShadow:'3px 3px 0 #1f1b16' }}>
-              行動する創造者
+              探索する創造者
             </div>
           </div>
 

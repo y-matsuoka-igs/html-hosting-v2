@@ -92,10 +92,10 @@ function ChallengeScreen() {
         {/* 成長ステータス（コンパクト） */}
         {!collapsed && (
         <div style={{ background:'#fff', borderRadius:14, padding:'9px 13px', marginBottom:10, border:'2px solid #1f1b16', boxShadow:'3px 3px 0 rgba(31,27,22,.9)', display:'flex', alignItems:'center', gap:11 }}>
-          <div style={{ flexShrink:0, display:'flex' }}>{Character && <Character size={40} />}</div>
+          <div style={{ flexShrink:0, display:'flex' }}>{Character && <Character size={40} body="bubble" item="magnifier" />}</div>
           <div style={{ flex:1, minWidth:0 }}>
             <div style={{ display:'flex', alignItems:'center', gap:7 }}>
-              <span style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:14, color:'var(--blue-dark)', whiteSpace:'nowrap' }}>行動する創造者</span>
+              <span style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:14, color:'var(--blue-dark)', whiteSpace:'nowrap' }}>探索する創造者</span>
               <span style={{ background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:6, padding:'1px 8px', fontSize:10, fontWeight:900, fontFamily:'var(--font-round)' }}>Lv.3</span>
             </div>
             <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:6 }}>

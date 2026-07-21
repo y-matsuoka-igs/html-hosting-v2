@@ -24,7 +24,7 @@ const TC = {
 
 // ── コンテンツデータ ───────────────────────────────────────
 const TORI = {
-  typeTitle: '行動する創造者',
+  typeTitle: '探索する創造者',
   typeSub: 'アイデアと実行力を兼ね備えた',
   strengths: ['個人的実行力', '創造力', '表現力', '影響力の行使'],
   strengthDesc: 'アイデアを生み出し、それを自分の力で形にしながら、言葉や行動で周囲に伝え、人を巻き込みながら実現していく力があります。',
@@ -72,20 +72,25 @@ const CHALLENGES_DATA = [
 // ── Character Avatar ──────────────────────────────────────
 // 素体（ブロブ＋台座）と持ち物を別管理。item を差し替えると持ち物が変わる。
 const CHAR_ITEMS = {
-  // 電球：想像者（アイデア・ひらめき）のモチーフ
+  // 筆とパレット：創造者（アート・表現）のモチーフ
   bulb: (
     <g>
-      <circle cx="84" cy="52" r="10" fill="#ffd633" stroke="#1f2b4d" strokeWidth="3.5" />
-      <path d="M80.5 64h7" stroke="#1f2b4d" strokeWidth="3.5" strokeLinecap="round" />
-      <path d="M81.5 68.5h5" stroke="#1f2b4d" strokeWidth="3.5" strokeLinecap="round" />
-      <path d="M84 36v-4M96 40l3-3M99 52h4" stroke="#1f2b4d" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M80 49q1.5-2.5 4.5-3" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" fill="none" />
+      {/* パレット */}
+      <path d="M78 66c-7 0-12-4.5-12-10.5S72 45 79 45s13 4 13 9.5c0 3-2.5 4.5-5 4.5h-3c-2 0-3 1-3 2.5s0.5 2.5-3 4.5Z" fill="#fff" stroke="#1f1b16" strokeWidth="2.4" strokeLinejoin="round" />
+      <circle cx="74" cy="51" r="2" fill="#1f1b16" />
+      <circle cx="81" cy="49.5" r="2" fill="#1f1b16" />
+      <circle cx="85.5" cy="54" r="2" fill="#1f1b16" />
+      {/* 筆 */}
+      <g transform="rotate(38 90 42)">
+        <rect x="87" y="30" width="5" height="18" rx="1.5" fill="#fff" stroke="#1f1b16" strokeWidth="2.2" />
+        <path d="M87 48h5l-2.5 6Z" fill="#1f1b16" stroke="#1f1b16" strokeWidth="2.2" strokeLinejoin="round" />
+      </g>
     </g>
   ),
   magnifier: (
     <g>
-      <line x1="81" y1="64" x2="75" y2="73" stroke="#1f2b4d" strokeWidth="4.5" strokeLinecap="round" />
-      <circle cx="84" cy="57" r="9" fill="#eef3fb" stroke="#1f2b4d" strokeWidth="4" />
+      <line x1="81" y1="64" x2="75" y2="73" stroke="#1a3fcf" strokeWidth="4.5" strokeLinecap="round" />
+      <circle cx="84" cy="57" r="9" fill="#eef3fb" stroke="#1a3fcf" strokeWidth="4" />
       <path d="M80 53q2-2.5 5-2" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" fill="none" />
     </g>
   ),
@@ -111,24 +116,71 @@ const CHAR_ITEMS = {
   ),
 };
 
-function Character({ size = 60, item = 'bulb' }) {
+function Character({ size = 60, item = 'bulb', body = 'blob' }) {
   return (
     <div style={{ position: 'relative', width: size, height: size * 1.2, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', flexShrink: 0 }}>
       <svg viewBox="0 0 96 96" style={{ position: 'relative', width: size * 1.15, height: size * 1.15, overflow: 'visible', animation: 'floaty 2.6s ease-in-out infinite' }}>
-        <defs>
-          <linearGradient id="charBody" x1="0" y1="0" x2="0.4" y2="1">
-            <stop offset="0" stopColor="#f9a05c" />
-            <stop offset="1" stopColor="#e56a1f" />
-          </linearGradient>
-        </defs>
-        <path d="M14 8l1.8 5.2L21 15l-5.2 1.8L14 22l-1.8-5.2L7 15l5.2-1.8Z" fill="#ffd633" />
-        <path d="M23 2l1.1 3.2L27.3 6.3l-3.2 1.1L23 10.6l-1.1-3.2L18.7 6.3l3.2-1.1Z" fill="#c9b8f5" />
-        <ellipse cx="48" cy="88" rx="26" ry="6.5" fill="#e56a1f" opacity=".85" />
-        <ellipse cx="48" cy="84.5" rx="19" ry="5" fill="#f9a05c" />
-        <circle cx="48" cy="50" r="29" fill="url(#charBody)" />
-        <ellipse cx="38" cy="32" rx="9" ry="4.5" fill="#ffffff" opacity=".35" transform="rotate(-18 38 32)" />
-        <ellipse cx="40" cy="50" rx="4.6" ry="8" fill="#ffffff" />
-        <ellipse cx="56" cy="50" rx="4.6" ry="8" fill="#ffffff" />
+        {body === 'arrow' ? (
+          <>
+            {/* 体（フラットな探偵シルエット・青） */}
+            <path d="M48 30c15 0 26 10 26 26 0 12-6 20-6 24H28c0-4-6-12-6-24 0-16 11-26 26-26Z" fill="#1a3fcf" />
+            {/* 白目 */}
+            <ellipse cx="41" cy="52" rx="7" ry="9" fill="#fff" />
+            <ellipse cx="56" cy="52" rx="7" ry="9" fill="#fff" />
+            {/* 青目（上を見る） */}
+            <circle cx="42.5" cy="48" r="4" fill="#1a3fcf" />
+            <circle cx="57.5" cy="48" r="4" fill="#1a3fcf" />
+            {/* 口 */}
+            <ellipse cx="48.5" cy="64" rx="2.2" ry="3" fill="#fff" />
+            {/* ディアストーカー帽（探偵帽・青アウトライン） */}
+            <g>
+              <path d="M24 30c0-2 3-3 8-3s8 1 8 3-3 3-8 3-8-1-8-3Z" fill="#fff" stroke="#1a3fcf" strokeWidth="2.4" strokeLinejoin="round" transform="translate(-4 0)" />
+              <path d="M68 30c0-2 3-3 8-3s8 1 8 3-3 3-8 3-8-1-8-3Z" fill="#fff" stroke="#1a3fcf" strokeWidth="2.4" strokeLinejoin="round" transform="translate(4 0)" />
+              <path d="M26 30c0-3 5-6 8-9 2 3 6 6 6 9" fill="#fff" stroke="#1a3fcf" strokeWidth="2.4" strokeLinejoin="round" />
+              <path d="M70 30c0-3-5-6-8-9-2 3-6 6-6 9" fill="#fff" stroke="#1a3fcf" strokeWidth="2.4" strokeLinejoin="round" />
+              <path d="M28 30c0-9 9-15 20-15s20 6 20 15c0 2-2 3-5 3H33c-3 0-5-1-5-3Z" fill="#fff" stroke="#1a3fcf" strokeWidth="2.6" strokeLinejoin="round" />
+              <path d="M28 30h40" stroke="#1a3fcf" strokeWidth="2.2" strokeLinecap="round" />
+            </g>
+          </>
+        ) : body === 'creator' || body === 'bubble' ? (
+          <>
+            {/* 体（吹き出し型・緑） */}
+            <path d="M48 16c19 0 33 11 33 26 0 15-14 26-33 26-3 0-6-.2-8.8-.7L25 80l2.3-13.2C21 62 15 54.5 15 42 15 27 29 16 48 16Z" fill="#4caf50" />
+            {/* 白目 */}
+            <ellipse cx="40" cy="44" rx="8" ry="10.5" fill="#fff" />
+            <ellipse cx="58" cy="44" rx="8" ry="10.5" fill="#fff" />
+            {/* 青目（上を見る） */}
+            <circle cx="41.5" cy="40" r="4.6" fill="#1a3fcf" />
+            <circle cx="59.5" cy="40" r="4.6" fill="#1a3fcf" />
+            {/* 口 */}
+            <ellipse cx="49" cy="57" rx="2.4" ry="3.4" fill="#fff" />
+            {/* ベレー帽（青アウトライン） */}
+            <g transform="rotate(-14 40 16)">
+              <ellipse cx="38" cy="17" rx="15" ry="6" fill="#fff" stroke="#1a3fcf" strokeWidth="2.6" />
+              <path d="M25 17c0-6 6-10 13-10s13 3 13 8c0 2.5-2 3.5-4.5 3.5H29.5C27 18.5 25 18 25 17Z" fill="#fff" stroke="#1a3fcf" strokeWidth="2.6" strokeLinejoin="round" />
+              <circle cx="51" cy="10" r="2.6" fill="#1a3fcf" />
+            </g>
+          </>
+        ) : (
+          <>
+            {/* 体（黒い横長ブロブ） */}
+            <path d="M48 20c19 0 33 11 33 28 0 17-14 28-33 28S15 65 15 48C15 31 29 20 48 20Z" fill="#1f1b16" />
+            {/* 白目 */}
+            <ellipse cx="40" cy="46" rx="8" ry="10.5" fill="#fff" />
+            <ellipse cx="58" cy="46" rx="8" ry="10.5" fill="#fff" />
+            {/* 黒目（上を見る） */}
+            <circle cx="41.5" cy="42" r="4.6" fill="#1f1b16" />
+            <circle cx="59.5" cy="42" r="4.6" fill="#1f1b16" />
+            {/* 口 */}
+            <ellipse cx="49" cy="59" rx="2.4" ry="3.4" fill="#fff" />
+            {/* ベレー帽（左に寄せてちょこんと） */}
+            <g transform="rotate(-14 40 18)">
+              <ellipse cx="38" cy="19" rx="15" ry="6" fill="#fff" stroke="#1f1b16" strokeWidth="2.6" />
+              <path d="M25 19c0-6 6-10 13-10s13 3 13 8c0 2.5-2 3.5-4.5 3.5H29.5C27 20.5 25 20 25 19Z" fill="#fff" stroke="#1f1b16" strokeWidth="2.6" strokeLinejoin="round" />
+              <circle cx="51" cy="12" r="2.6" fill="#1f1b16" />
+            </g>
+          </>
+        )}
         {CHAR_ITEMS[item] || null}
       </svg>
       <style>{`@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}`}</style>
@@ -152,7 +204,7 @@ function StickyHero({ collapsed }) {
         </div>
         {!collapsed &&
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-          <Character size={58} />
+          <Character size={58} body="bubble" item="magnifier" />
           <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 10, fontWeight: 800, fontFamily: TC.fontRound, marginTop: -2, transform: 'rotate(3deg)' }}>Lv.3</div>
         </div>}
         <HeaderMenu dark />
@@ -279,7 +331,7 @@ function TorisetsuTab({ nav, goChallenge }) {
         </div>
       )}
 
-      <StepReaction nav={nav} step={1} />
+      <StepReaction nav={nav} step={1} onGrow={goChallenge} />
     </>);
 
 }
@@ -295,21 +347,22 @@ const REACT_THANKS = {
   wow: '新しい発見だね。意外な一面もキミの魅力だよ。',
   grow: 'その意気！「マイチャレンジ」で伸ばしていこう。'
 };
-function StepReaction({ nav, step }) {
+function StepReaction({ nav, step, onGrow }) {
   const saved = nav.state && nav.state.toriReactions || {};
   const picked = saved[step];
   const set = (key) => nav.update && nav.update((s) => ({ toriReactions: { ...(s.toriReactions || {}), [step]: key } }));
   const sel = STEP_REACTIONS.find((r) => r.key === picked);
   return (
-    <div style={{ background: '#fff', borderRadius: 14, padding: '12px 14px', border: '1.5px solid #e3d9c4' }}>
+    <div style={{ background: picked ? '#fff' : '#fff8e1', borderRadius: 14, padding: '13px 14px', border: picked ? '1.5px solid #e3d9c4' : '2px solid #ffb300', boxShadow: picked ? 'none' : '3px 3px 0 #ffb300' }}>
       {!picked ?
       <>
-          <div style={{ fontFamily: TC.fontRound, fontWeight: 800, fontSize: 12.5, color: TC.text, marginBottom: 9, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ fontFamily: TC.fontRound, fontWeight: 900, fontSize: 13, color: TC.text, marginBottom: 9, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <FIcon name="sparkle" size={14} color="#f59e0b" />
             読んでみて、どう感じた？
           </div>
           <div style={{ display: 'flex', gap: 7 }}>
             {STEP_REACTIONS.map((r) =>
-          <button key={r.key} onClick={() => set(r.key)} style={{ flex: 1, cursor: 'pointer', border: '1.5px solid #1f1b16', background: '#fff', borderRadius: 10, padding: '7px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, WebkitTapHighlightColor: 'transparent' }}>
+          <button key={r.key} onClick={() => set(r.key)} style={{ flex: 1, cursor: 'pointer', border: '1.5px solid #1f1b16', background: '#fff', borderRadius: 10, padding: '9px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, boxShadow: '2px 2px 0 #1f1b16', WebkitTapHighlightColor: 'transparent' }}>
                 <FIcon name={r.icon} size={13} color={r.color} />
                 <span style={{ fontSize: 10.5, fontWeight: 800, fontFamily: TC.fontRound, color: TC.text, whiteSpace: 'nowrap' }}>{r.label}</span>
               </button>
@@ -317,15 +370,22 @@ function StepReaction({ nav, step }) {
           </div>
         </> :
 
-      <div className="fade-in" style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-          <span style={{ width: 28, height: 28, borderRadius: '50%', background: sel.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <FIcon name={sel.icon} size={14} color="#fff" />
-          </span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontFamily: TC.fontRound, fontWeight: 800, fontSize: 12.5, color: sel.color, lineHeight: 1.2 }}>{sel.label}</div>
-            <div style={{ fontSize: 10.5, color: TC.textSub, fontWeight: 600, lineHeight: 1.4, marginTop: 1 }}>{REACT_THANKS[picked]}</div>
+      <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+            <span style={{ width: 28, height: 28, borderRadius: '50%', background: sel.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <FIcon name={sel.icon} size={14} color="#fff" />
+            </span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontFamily: TC.fontRound, fontWeight: 800, fontSize: 12.5, color: sel.color, lineHeight: 1.2 }}>{sel.label}</div>
+              <div style={{ fontSize: 10.5, color: TC.textSub, fontWeight: 600, lineHeight: 1.4, marginTop: 1 }}>{REACT_THANKS[picked]}</div>
+            </div>
+            <button onClick={() => set(null)} style={{ flexShrink: 0, border: 'none', background: 'none', color: TC.textSub, fontSize: 10.5, fontWeight: 700, fontFamily: TC.fontRound, cursor: 'pointer', padding: '4px 2px' }}>変更</button>
           </div>
-          <button onClick={() => set(null)} style={{ flexShrink: 0, border: 'none', background: 'none', color: TC.textSub, fontSize: 10.5, fontWeight: 700, fontFamily: TC.fontRound, cursor: 'pointer', padding: '4px 2px' }}>変更</button>
+          {onGrow &&
+          <button onClick={onGrow} className="btn btn--cta" style={{ width: '100%', padding: '12px 16px', fontSize: 13.5, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
+            「成長のヒント」を見る
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </button>}
         </div>
       }
     </div>);

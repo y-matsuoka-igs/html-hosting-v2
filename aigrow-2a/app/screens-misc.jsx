@@ -388,48 +388,30 @@ function SelfSummarySection() {
           </div>
           <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-sub)', marginTop: 4 }}>キミの自己評価だけでできている、今のキミ</div>
 
-          {/* 自己評価カード — タイプは確定、ビジュアルは小物アイテムで表現 */}
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '14px 0 4px' }}>
-            <div style={{ width: '100%', maxWidth: 280, borderRadius: 16, background: '#2447c9', border: '2.5px solid #1f1b16', boxShadow: '6px 6px 0 rgba(31,27,22,.55)', overflow: 'hidden', padding: '12px 12px 15px' }}>
+          {/* 自己評価カード — トリセツカードと同じ見せ方 */}
+          {/* 探索者カード（矢印素体＋虫眼鏡） */}
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '6px 0 2px' }}>
+            <div style={{ width: '100%', maxWidth: 280, borderRadius: 16, background: '#315cfa', border: '2.5px solid #1f1b16', boxShadow: '6px 6px 0 #1f1b16', position: 'relative', overflow: 'hidden', padding: '12px 12px 15px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: 8.5, letterSpacing: 2.5, fontWeight: 800, color: '#ffd633' }}>KIMI NO TORISETSU</span>
-                <span style={{ background: 'rgba(255,255,255,.16)', borderRadius: 999, padding: '2px 9px', fontSize: 8.5, fontWeight: 800, letterSpacing: 1, color: '#fff' }}>SELF</span>
+                <span style={{ display: 'flex', gap: 2 }}>
+                  {[0, 1, 2].map((i) => <svg key={i} width="13" height="13" viewBox="0 0 24 24" fill="#ffd633" stroke="#1f1b16" strokeWidth="1.5" strokeLinejoin="round"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.4 7-6.2-3.6L5.8 21l1.4-7L2 9.4l7-.8z" /></svg>)}
+                </span>
               </div>
-
-              {/* アート枠 — キミの持ち物（小物アイテム）のコンポジション */}
-              <div style={{ marginTop: 9, borderRadius: 12, border: '2px solid #1f1b16', background: '#6e8cff', height: 128, position: 'relative', overflow: 'hidden' }}>
-                <svg style={{ position: 'absolute', top: 10, left: 12 }} width="11" height="11" viewBox="0 0 24 24" fill="#fff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
-                <svg style={{ position: 'absolute', bottom: 12, right: 14 }} width="8" height="8" viewBox="0 0 24 24" fill="#ffd633"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
-                {/* 台座の影 */}
-                <div style={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', width: 150, height: 12, borderRadius: '50%', background: 'rgba(31,27,22,.18)' }}></div>
-                {[
-                  ['bulb', 'アイデア', { left: 22, bottom: 34, size: 44, rot: '-8deg' }],
-                  ['rocket', '行動力', { left: '50%', bottom: 42, size: 52, rot: '0deg', center: true }],
-                  ['megaphone', 'まきこみ力', { right: 22, bottom: 34, size: 44, rot: '8deg' }],
-                ].map(([icon, label, p]) => (
-                  <div key={icon} style={{ position: 'absolute', bottom: p.bottom, ...(p.center ? { left: '50%', transform: `translateX(-50%) rotate(${p.rot})` } : p.left != null ? { left: p.left, transform: `rotate(${p.rot})` } : { right: p.right, transform: `rotate(${p.rot})` }), width: p.size, height: p.size, borderRadius: '50%', background: '#fff', border: '2px solid #1f1b16', boxShadow: '2.5px 2.5px 0 #1f1b16', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2447c9' }}>
-                    <FIcon name={icon} size={p.size * 0.52} color="#2447c9" />
-                  </div>
-                ))}
+              {/* アート枠 */}
+              <div style={{ marginTop: 9, borderRadius: 12, border: '2px solid #1f1b16', background: '#6e8cff', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: 128, position: 'relative', overflow: 'hidden' }}>
+                <svg style={{ position: 'absolute', top: 10, left: 14 }} width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
+                <svg style={{ position: 'absolute', top: 26, right: 20 }} width="8" height="8" viewBox="0 0 24 24" fill="#ffd633"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
+                {window.Character && <window.Character size={78} body="arrow" item="magnifier" />}
               </div>
-
               {/* ネームプレート */}
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: -14, position: 'relative' }}>
-                <div style={{ background: '#ffd633', color: '#1f1b16', border: '2px solid #1f1b16', borderRadius: 10, padding: '6px 16px', fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 17.5, boxShadow: '3px 3px 0 #1f1b16' }}>行動する創造者</div>
+                <div style={{ background: '#ffd633', color: '#1f1b16', border: '2px solid #1f1b16', borderRadius: 10, padding: '6px 16px', fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 17.5, boxShadow: '3px 3px 0 #1f1b16' }}>探索者</div>
               </div>
-
-              <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12.5, color: '#fff', textAlign: 'center', marginTop: 11 }}>ひらめいたら、まず動く。</div>
-
+              <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12.5, color: '#fff', textAlign: 'center', marginTop: 11 }}>知りたいから、確かめにいく。</div>
               {/* カードテキスト */}
               <div style={{ background: '#fff', border: '2px solid #1f1b16', borderRadius: 10, padding: '10px 12px', marginTop: 9 }}>
-                <p style={{ fontSize: 11, color: '#1f1b16', lineHeight: 1.75, fontWeight: 600, margin: 0 }}>新しいアイデアを思いつくだけでなく、実際に動いて形にできる人。キミが動くとまわりも動き出すよ。</p>
-              </div>
-
-              {/* とくい技 */}
-              <div style={{ display: 'flex', gap: 6, marginTop: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-                {[['bulb', 'アイデア'], ['rocket', '行動力'], ['megaphone', 'まきこみ力']].map(([ic, t]) => (
-                  <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#fff', border: '1.5px solid #1f1b16', color: '#1f1b16', borderRadius: 999, padding: '3px 11px', fontSize: 10, fontWeight: 800, fontFamily: 'var(--font-round)', boxShadow: '2px 2px 0 #1f1b16' }}><FIcon name={ic} size={12} color="#1f1b16" />{t}</span>
-                ))}
+                <p style={{ fontSize: 11, color: '#1f1b16', lineHeight: 1.75, fontWeight: 600, margin: 0 }}>気になったことをそのままにせず、自分の目で確かめにいく人。まわりが見落とす発見を拾い上げるよ。</p>
               </div>
             </div>
           </div>
