@@ -118,7 +118,12 @@ function App() {
 
   const comp = completion(state);
   const selfOnly = !!(state.self && state.self.done) && !(state.other && state.other.done) && !!state.torisetsuDone;
-  const badges = { exam: state.examCourses ? true : comp < 100 };
+  const chTasks = (state.tasks && state.tasks.length) ? state.tasks : [{ done: false }, { done: false }];
+  const hasPendingChallenge = chTasks.some(t => !t.done);
+  const badges = {
+    exam: state.examCourses ? true : comp < 100,
+    challenge: hasPendingChallenge || !!state.growthLogUpdated,
+  };
 
   const render = () => {
     switch (screen) {

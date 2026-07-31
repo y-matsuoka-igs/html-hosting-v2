@@ -490,7 +490,7 @@ function ChallengeTab({ nav }) {
   const completeTask = (idx) => {
     if (!nav) return;
     const list = userTasks.map((t, i) => i === idx ? { ...t, done: true, completedDate: todayStr2() } : t);
-    nav.update((s) => ({ tasks: list, exp: (s.exp || 0) + 1 }));
+    nav.update((s) => ({ tasks: list, exp: (s.exp || 0) + 1, growthLogUpdated: true }));
   };
 
   const addTask = (text, tag) => {

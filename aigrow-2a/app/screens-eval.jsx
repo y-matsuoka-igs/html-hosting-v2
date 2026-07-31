@@ -210,7 +210,7 @@ function StrengthEvalScreen() {
         </div>
         <button className="btn btn--lg" disabled={tags.length === 0}
           style={{ background: tags.length === 0 ? 'var(--border)' : accent, color: '#fff', boxShadow: tags.length === 0 ? 'none' : 'var(--shadow)' }}
-          onClick={() => nav.go('other-complete', { kind: 'other' })}>次へ</button>
+          onClick={() => { nav.update && nav.update({ other: { ...(nav.state && nav.state.other), done: true } }); nav.go('other-complete-wait', { kind: 'other', waiting: true }); }}>次へ</button>
       </div>
     </div>
   );
@@ -219,8 +219,9 @@ function StrengthEvalScreen() {
 /* ─────────── 自己評価 開始 ─────────── */
 function StartSelfScreen() {
   const nav = useNav();
+  const [rule, setRule] = useSe(false);
   return (
-    <div className="screen screen--white">
+    <div className="screen screen--white" style={{ position: 'relative' }}>
       <StatusBar />
       <AppHeader sub="自己評価" noMenu />
       <div className="scroll" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -229,14 +230,15 @@ function StartSelfScreen() {
           <div style={{ margin: '18px 0 6px', display: 'flex', justifyContent: 'center', color: 'var(--blue)' }}><FIcon name="pencil" size={64} sw={1.6} /></div>
           <h1 style={{ fontSize: 22, fontWeight: 900, lineHeight: 1.5 }}>自己評価を開始しましょう</h1>
           <p style={{ fontSize: 13.5, color: 'var(--text-sub)', fontWeight: 600, marginTop: 8, lineHeight: 1.8, textAlign: 'left' }}>
-            これから、あなた自身に関する質問にいくつかお答えいただきます。画面の上部に質問が出ますので、4つの選択肢の内から当てはまる答えを選択し、「次へ」を押して回答してください。 一度回答した質問には戻ることができませんので、間違いのないよう正確に回答してください。
+            これから、あなた自身に関する質問にいくつかお答えいただきます。画面の上部に質問が出ますので、4つの選択肢の内から当てはまる答えを選択し、「次へ」を押して回答してください。
           </p>
         </div>
         <div style={{ flexShrink: 0, padding: '0 24px 26px' }}>
-          <button className="btn btn--cta btn--lg" onClick={() => nav.go('self-eval')}>自己評価をはじめる</button>
+          <button className="btn btn--cta btn--lg" onClick={() => setRule(true)}>自己評価をはじめる</button>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-sub)', marginTop: 12 }}>全 5 問 約 3 分</p>
         </div>
       </div>
+      {rule && <AnswerRuleModal onCancel={() => setRule(false)} onStart={() => nav.go('self-eval')} />}
     </div>
   );
 }

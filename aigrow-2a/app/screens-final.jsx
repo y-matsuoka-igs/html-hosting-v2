@@ -51,6 +51,9 @@ function ChallengeScreen() {
   const nav = useNav();
   const initTab = (nav.params && nav.params.tab === 'tree') ? 1 : 0;
   const [tab, setTab] = React.useState(initTab);
+  const logUpdated = !!nav.state.growthLogUpdated;
+  const pickTab = (i) => { setTab(i); if (i === 1 && nav.state.growthLogUpdated) nav.update({ growthLogUpdated:false }); };
+  React.useEffect(() => { if (tab === 1 && nav.state.growthLogUpdated) nav.update({ growthLogUpdated:false }); }, [tab, nav.state.growthLogUpdated]);
   React.useEffect(() => {
     if (nav.params && nav.params.tab === 'tree') setTab(1);
     else if (nav.params && nav.params.tab === 'challenge') setTab(0);
@@ -110,11 +113,12 @@ function ChallengeScreen() {
 
         <div style={{ display:'flex', gap:4 }}>
           {['チャレンジ中', '成長ログ'].map((t,i) => (
-            <button key={i} onClick={() => setTab(i)}
+            <button key={i} onClick={() => pickTab(i)}
               style={{ flex:1, border:'none', cursor:'pointer', padding:'9px 0', fontFamily:'var(--font-round)', fontWeight:800, fontSize:13,
-                background:'transparent', color: tab===i?'#fff':'rgba(255,255,255,.55)',
+                background:'transparent', color: tab===i?'#fff':'rgba(255,255,255,.55)', display:'flex', alignItems:'center', justifyContent:'center', gap:6,
                 borderBottom: tab===i?'3px solid #ffd633':'3px solid transparent', transition:'all .15s' }}>
               {t}
+              {i===1 && logUpdated && <span style={{ width:8, height:8, borderRadius:'50%', background:'var(--orange)', border:'1.5px solid #fff', flexShrink:0 }}></span>}
             </button>
           ))}
         </div>
@@ -155,7 +159,7 @@ function ChallengeTab({ nav }) {
   const selectedFromFuture = !!selItem.future;
   const completeTask = (idx) => {
     const list = tasks.map((t,i) => i===idx?{...t,done:true,completedDate:todayStr()}:t);
-    nav.update(s => ({ tasks:list, exp:(s.exp||0)+1 }));
+    nav.update(s => ({ tasks:list, exp:(s.exp||0)+1, growthLogUpdated:true }));
   };
 
   return (

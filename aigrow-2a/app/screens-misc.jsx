@@ -237,7 +237,11 @@ function StepCompleteScreen(props) {
           <button className="btn btn--cta btn--lg" onClick={() => nav.go('ask-eval')}>評価の完了状況を確認</button>
         ) : null)}
       </div>
-      {waiting && !p.noModal && showModal && <TaskCompleteModal onClose={() => setShowModal(false)} />}
+      {waiting && !p.noModal && showModal && (
+        <TaskCompleteModal
+          onClose={() => setShowModal(false)}
+          onSeeResult={() => { setShowModal(false); nav.update && nav.update({ seenAnnounce: false }); nav.go('announce'); }} />
+      )}
     </div>
   );
 }
@@ -262,7 +266,7 @@ function SelfRadar({ size = 230 }) {
 }
 
 /* 完了モーダル */
-function TaskCompleteModal({ onClose }) {
+function TaskCompleteModal({ onClose, onSeeResult }) {
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 22px', background: 'rgba(0,0,0,.55)', backdropFilter: 'blur(2px)' }}>
       <div className="fade-in" style={{ width: '100%', maxWidth: 400, background: '#fff', borderRadius: 18, overflow: 'hidden', border: '2px solid #1f1b16', boxShadow: '6px 6px 0 #1f1b16' }}>
@@ -277,18 +281,42 @@ function TaskCompleteModal({ onClose }) {
             ))}
           </div>
           <p style={{ fontSize: 12.5, color: 'var(--text-sub)', fontWeight: 600, lineHeight: 1.7, textAlign: 'center', marginBottom: 16 }}>お疲れさまでした！<br />今のキミの結果を見てみよう。</p>
-          <button className="btn btn--cta btn--lg" onClick={onClose}>結果を見る</button>
+          <button className="btn btn--cta btn--lg" onClick={onSeeResult || onClose}>結果を見る</button>
         </div>
       </div>
     </div>
   );
 }
 
+
+/* ─────────── 回答前の注意モーダル（自己評価／相互評価 共通） ─────────── */
+function AnswerRuleModal({ onCancel, onStart }) {
+  return (
+    <div style={{ position: 'absolute', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 22px', background: 'rgba(0,0,0,.55)', backdropFilter: 'blur(2px)' }}>
+      <div className="fade-in" style={{ width: '100%', maxWidth: 360, background: '#fff', borderRadius: 18, overflow: 'hidden', border: '2px solid #1f1b16', boxShadow: '6px 6px 0 #1f1b16', textAlign: 'center' }}>
+        <div style={{ background: 'var(--orange)', padding: '22px 20px 18px', color: '#fff' }}>
+          <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}><FIcon name="warning" size={38} color="#fff" /></div>
+          <div style={{ fontFamily: 'var(--font-round)', fontSize: 18, fontWeight: 900, lineHeight: 1.45 }}>回答をはじめる前に</div>
+        </div>
+        <div style={{ padding: '18px 20px 20px' }}>
+          <p style={{ fontSize: 13, color: 'var(--text)', fontWeight: 700, lineHeight: 1.9, marginBottom: 16, textAlign: 'left' }}>
+            一度回答した質問には戻ることができませんので、間違いのないよう正確に回答してください。
+          </p>
+          <button className="btn btn--cta btn--lg" onClick={onStart}>了解して始める</button>
+          <button onClick={onCancel} style={{ width: '100%', marginTop: 10, background: 'none', border: 'none', cursor: 'pointer', fontSize: 12.5, fontWeight: 700, color: 'var(--text-sub)' }}>もどる</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+Object.assign(window, { AnswerRuleModal });
+
 /* ─────────── 相互評価 開始 ─────────── */
 function StartOtherScreen() {
   const nav = useNav();
+  const [rule, setRule] = useSm(false);
   return (
-    <div className="screen screen--white">
+    <div className="screen screen--white" style={{ position: 'relative' }}>
       <StatusBar />
       <AppHeader sub="相互評価" noMenu />
       <div className="scroll" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -301,13 +329,11 @@ function StartOtherScreen() {
           </p>
         </div>
         <div style={{ flexShrink: 0, padding: '0 24px 26px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: '#fff4ef', border: '1px solid #ffd3c9', borderRadius: 10, padding: '9px 12px', marginBottom: 12, fontSize: 12, fontWeight: 700, color: 'var(--orange-dark)' }}>
-            一度回答した質問には戻れません
-          </div>
-          <button className="btn btn--cta btn--lg" onClick={() => nav.go('other-start')}>相互評価をはじめる</button>
+          <button className="btn btn--cta btn--lg" onClick={() => setRule(true)}>相互評価をはじめる</button>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-sub)', marginTop: 12 }}>1 人 約 3 分</p>
         </div>
       </div>
+      {rule && <AnswerRuleModal onCancel={() => setRule(false)} onStart={() => nav.go('other-start')} />}
     </div>
   );
 }

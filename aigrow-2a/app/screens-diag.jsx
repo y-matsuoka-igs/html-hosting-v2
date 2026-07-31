@@ -4,27 +4,27 @@ const { useState: useSd, useEffect: useEd, useRef: useRd } = React;
 /* 5フェーズ（Big Five）— カラーは仕様準拠：color=上段 / label=ラベル / ans=回答 */
 const DIAG_AXES = [
   { idx: 1, axis: '外向性', pairLabel: '外向性/内向性', funLabel: 'ワクワク発信', result: 'エネルギッシュな挑戦者', emoji: 'fire',
-    color: '#C24634', label: '#F3CABF', ans: '#D98B45',
+    color: '#C24634', deep: '#8C2C1C', label: '#F3CABF', ans: '#D98B45',
     attrL: '活発', attrR: '静か',
     wordsL: ['社交的', 'おしゃべり', '行動派', 'ノリがいい', '明るい'],
     wordsR: ['慎重', '聞き役', '控えめ', '落ち着き', 'ひとり時間'] },
   { idx: 2, axis: '協調性', pairLabel: '協調性/独立性', funLabel: 'なかまと共に', result: '調和を重んじるサポーター', emoji: 'handshake',
-    color: '#2E8560', label: '#C0E2D2', ans: '#5FA98B',
+    color: '#2E8560', deep: '#175843', label: '#C0E2D2', ans: '#5FA98B',
     attrL: '協力', attrR: 'わが道',
     wordsL: ['思いやり', 'やさしい', '世話好き', 'チームワーク', '気配り'],
     wordsR: ['単独行動', '自分優先', 'ドライ', '競争心', 'マイペース'] },
   { idx: 3, axis: '誠実性', pairLabel: '自律性/自由性', funLabel: 'やりぬく力', result: '意志の強い努力家', emoji: 'target',
-    color: '#4A3E9E', label: '#CFC9EE', ans: '#7C6EC8',
+    color: '#4A3E9E', deep: '#2F2670', label: '#CFC9EE', ans: '#7C6EC8',
     attrL: '計画的', attrR: '気分屋',
     wordsL: ['コツコツ', '几帳面', '責任感', '準備万端', 'きっちり'],
     wordsR: ['気まぐれ', '後回し', '思いつき', '飽きっぽい', 'ゆるい'] },
   { idx: 4, axis: '情緒安定性', pairLabel: '繊細性/平穏性', funLabel: 'こころアンテナ', result: 'リスクを察知する慎重な守り手', emoji: 'compass',
-    color: '#3457A0', label: '#C3D2EC', ans: '#4F86A8',
+    color: '#3457A0', deep: '#1F3B72', label: '#C3D2EC', ans: '#4F86A8',
     attrL: 'どっしり', attrR: '敏感',
     wordsL: ['冷静', '平常心', '楽観的', '切り替え上手', 'リラックス'],
     wordsR: ['心配性', 'ドキドキ', '繊細', '緊張しやすい', '気にしがち'] },
   { idx: 5, axis: '開放性', pairLabel: '開放性/保守性', funLabel: 'ひらめき探検', result: '知的好奇心旺盛な探求者', emoji: 'search',
-    color: '#8A5A2E', label: '#EDD8BE', ans: '#C08A42',
+    color: '#8A5A2E', deep: '#5E3A17', label: '#EDD8BE', ans: '#C08A42',
     attrL: '挑戦', attrR: 'いつも通り',
     wordsL: ['好奇心', 'アイデア', '冒険', '新しいもの', '想像力'],
     wordsR: ['定番', '現実的', 'ルーティン', '慣れた道', '安定'] },
@@ -316,7 +316,7 @@ function DiagGameScreen() {
           boxShadow: ring ? `0 0 0 3px ${ring}, 0 8px 18px rgba(0,0,0,.16)` : '0 2px 8px rgba(0,0,0,.12)',
           transform: hit ? 'scale(1.05)' : 'scale(1)', transition: 'transform .15s, box-shadow .15s' }}>
         <div style={{ background: ax.color, color: '#fff', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 16, padding: '14px 6px', textAlign: 'center' }}>{cat}</div>
-        <div style={{ background: ax.label, color: ax.color, fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 15, padding: '13px 6px', textAlign: 'center' }}>{attr}</div>
+        <div style={{ background: ax.deep, color: '#fff', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 15, padding: '13px 6px', textAlign: 'center', borderTop: '2px solid rgba(255,255,255,.5)' }}>{attr}</div>
       </button>
     );
   };
@@ -463,7 +463,7 @@ function DiagWordsScreen() {
 
   const CAT = ({ title, words, isTop }) => (
     <div style={{ border: `2px solid ${ax.ans}`, borderRadius: 12, overflow: 'hidden', background: '#fff', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ background: isTop ? ax.color : ax.label, color: isTop ? '#fff' : ax.color, fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 15, textAlign: 'center', padding: '11px 6px' }}>{title}</div>
+      <div style={{ background: isTop ? ax.color : ax.deep, color: '#fff', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 15, textAlign: 'center', padding: '11px 6px' }}>{title}</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: 10 }}>
         {words.map(w => (
           <div key={w} style={{ border: `1.5px solid ${ax.ans}`, borderRadius: 8, color: 'var(--text)', fontWeight: 600, fontSize: 13, textAlign: 'center', padding: '9px 4px', background: '#fff' }}>{w}</div>
