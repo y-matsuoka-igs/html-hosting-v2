@@ -6,7 +6,7 @@ function TabHeader({ icon, title }) {
   return (
     <div style={{ background:'#315cfa', padding:'12px 16px 14px', flexShrink:0, borderBottom:'2px solid #1f1b16' }}>
       <div style={{ display:'flex', alignItems:'center', gap:9 }}>
-        <div style={{ width:34, height:34, borderRadius:11, background:'rgba(255,255,255,.2)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff' }}><FIcon name={icon} size={18} /></div>
+        <div style={{ color:'#fff', display:'flex', alignItems:'center', flexShrink:0 }}><FIcon name={icon} size={20} /></div>
         <div style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:17, color:'#fff' }}>{title}</div>
         <div style={{ marginLeft:'auto' }}><HeaderMenu dark /></div>
       </div>
@@ -251,6 +251,10 @@ const EXAM_REQUESTS = [
   { course: '自己・相互の全問題', name: '入江 平作', period: '2026-05-01 13:15 〜 2026-07-04 00:00' },
   { course: '自己・相互の全問題', name: '青田 徳彦', period: '2026-05-01 13:15 〜 2026-07-04 00:00' },
 ];
+const EXAM_MY_REQUESTS = [
+  { course: '自己・相互の全問題', done: 0, total: 3, period: '2026-05-01 13:15 〜 2026-07-04 00:00' },
+  { course: 'IAT', done: 1, total: 3, period: '2026-04-27 11:05 〜 2026-07-04 00:00' },
+];
 function ChevR() {
   return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c3bba9" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M9 5l7 7-7 7"/></svg>;
 }
@@ -301,6 +305,25 @@ function ExamCoursesScreen() {
                 <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text)', lineHeight: 1.4 }}>{r.course}</div>
                 <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', fontFamily: 'var(--font-round)', marginTop: 1 }}>{r.name}</div>
                 <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 500, marginTop: 3 }}>期間: {r.period}</div>
+              </div>
+              <ChevR />
+            </div>
+          ))}
+        </div>
+
+        {/* お友達への評価リクエスト一覧 */}
+        <SectionHead>お友達への評価リクエスト一覧</SectionHead>
+        <div className="card" style={{ padding: '4px 16px' }}>
+          {EXAM_MY_REQUESTS.map((r, i) => (
+            <div key={i} onClick={() => nav.go('ask-eval')}
+              style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '15px 0', cursor: 'pointer', borderTop: i > 0 ? '1px solid var(--border-soft)' : 'none' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', fontFamily: 'var(--font-round)' }}>{r.course}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginTop: 5 }}>
+                  <span style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 700 }}>現在の評価完了者数</span>
+                  <span style={{ fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 14, color: r.done > 0 ? 'var(--green)' : 'var(--text-sub)' }}>{r.done} / {r.total} 名</span>
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 500, marginTop: 4 }}>期間: {r.period}</div>
               </div>
               <ChevR />
             </div>
@@ -425,4 +448,46 @@ function RecordScreen() {
   );
 }
 
-Object.assign(window, { ExamHubScreen, ReportScreen, ExamCoursesScreen, ExamWaitingScreen, RecordScreen });
+/* ════ 受検準備中（トリセツなしパターン） ════ */
+function ExamWaitingNoToriScreen() {
+  return (
+    <div className="screen">
+      <StatusBar />
+      <TabHeader icon="clip" title="受検" />
+      <div className="scroll pad stack">
+        {/* 準備中ヒーロー */}
+        <div style={{ background: '#315cfa', borderRadius: 'var(--r-lg)', padding: '22px 22px 24px', textAlign: 'center', color: '#fff', border: '2px solid #1f1b16', boxShadow: '4px 4px 0 #1f1b16' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+            <svg width="60" height="60" viewBox="0 0 72 72" fill="none">
+              <rect x="12" y="8" width="48" height="56" rx="8" fill="none" stroke="white" strokeWidth="3.5"/>
+              <path d="M24 8v-2a4 4 0 0 1 8 0v2M40 8v-2a4 4 0 0 1 8 0v2" stroke="white" strokeWidth="3"/>
+              <rect x="20" y="6" width="32" height="8" rx="4" fill="white" opacity=".25"/>
+              <line x1="24" y1="30" x2="48" y2="30" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+              <line x1="24" y1="40" x2="40" y2="40" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+              <circle cx="54" cy="54" r="14" fill="#2447c9" stroke="white" strokeWidth="3"/>
+              <path d="M54 48v7l4 3" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, opacity: .8, marginBottom: 8 }}>NEXT SESSION</div>
+          <h1 style={{ fontFamily: 'var(--font-round)', fontSize: 22, fontWeight: 900, lineHeight: 1.4, marginBottom: 10 }}>
+            次のAi GROW受検は<br/>準備中です
+          </h1>
+          <p style={{ fontSize: 13, opacity: .85, lineHeight: 1.7, fontWeight: 500 }}>
+            次回の受検案内が届くまで、<br/>今の強みを活かして前へ進もう！
+          </p>
+        </div>
+
+        {/* 次回受検の目安 */}
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>次回受検の目安</div>
+          <div style={{ background: 'var(--bg)', borderRadius: 'var(--r-md)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-sub)" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span style={{ fontSize: 13, color: 'var(--text-sub)', fontWeight: 600 }}>学校・担当者からの案内をお待ちください</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { ExamHubScreen, ReportScreen, ExamCoursesScreen, ExamWaitingScreen, ExamWaitingNoToriScreen, RecordScreen });

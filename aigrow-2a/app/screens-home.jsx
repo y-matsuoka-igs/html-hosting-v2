@@ -106,42 +106,85 @@ function HomeVarA({ state, comp }) {
   );
 }
 
-/* ════ 案B：リング型（マスコット＋円形プログレス） ════ */
+/* ════ 案B：ステップ完了ヒーロー型（StepCompleteScreen 準拠） ════ */
 function HomeVarB({ state, comp }) {
   const nav = useNav();
   const steps = homeSteps(state);
   const action = nextAction(state, comp);
   const doneCount = steps.filter(s => s.done).length;
-  const R = 52, C = 2 * Math.PI * R;
+  const doneIdx = steps.findIndex(s => !s.done); // -1 if all done
+  const nextIdx = doneIdx < 0 ? -1 : doneIdx;
+  const allDone = doneCount === steps.length;
+  const R = 46, C = 2 * Math.PI * R;
+  const pct = doneCount / steps.length * 100;
+
+  const HERO_COPY = [
+    { title: 'キミの取扱説明書をつくろう', catch: 'まずは気質診断からスタート！' },
+    { title: 'STEP 1 完了！', catch: '気質のクセが見えてきたよ' },
+    { title: 'STEP 2 完了！', catch: '自分から見たキミが記録できたよ' },
+    { title: 'トリセツが完成したよ！', catch: 'キミだけの取扱説明書ができあがりました' },
+  ][doneCount];
+
+  const NEXT_COPY = allDone
+    ? { head: '新しい機能が解放！', body: '新しい機能が解放されました。さっそくホームで見てみよう。' }
+    : { head: `つぎは「${steps[nextIdx].label}」`, body: action.desc };
+
   return (
     <div className="stack">
-      <div className="card" style={{ textAlign: 'center', padding: '22px 18px', background: '#fff' }}>
-        <div style={{ position: 'relative', width: 140, height: 140, margin: '0 auto 6px' }}>
-          <svg width="140" height="140" viewBox="0 0 140 140" style={{ transform: 'rotate(-90deg)' }}>
-            <circle cx="70" cy="70" r={R} fill="none" stroke="#e3eef8" strokeWidth="13" />
-            <circle cx="70" cy="70" r={R} fill="none" stroke="url(#hg)" strokeWidth="13" strokeLinecap="round"
-              strokeDasharray={`${comp / 100 * C} ${C}`} style={{ transition: 'stroke-dasharray .7s cubic-bezier(.2,.8,.2,1)' }} />
-            <defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#315cfa"/><stop offset="1" stopColor="#2447c9"/></linearGradient></defs>
+      {/* Hero */}
+      <div className="fade-in" style={{ background: '#315cfa', borderRadius: 'var(--r-lg)', padding: '26px 20px', textAlign: 'center', color: '#fff', border: '2px solid #1f1b16', boxShadow: '4px 4px 0 #1f1b16' }}>
+        <div style={{ position: 'relative', width: 124, height: 124, margin: '0 auto 12px' }}>
+          <svg width="124" height="124" viewBox="0 0 124 124" style={{ transform: 'rotate(-90deg)' }}>
+            <circle cx="62" cy="62" r={R} fill="none" stroke="rgba(255,255,255,.22)" strokeWidth="12" />
+            <circle cx="62" cy="62" r={R} fill="none" stroke="#ffd633" strokeWidth="12" strokeLinecap="round"
+              strokeDasharray={`${pct / 100 * C} ${C}`} style={{ transition: 'stroke-dasharray .7s cubic-bezier(.2,.8,.2,1)' }} />
           </svg>
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 34, color: 'var(--blue-dark)', lineHeight: 1 }}>{doneCount}<span style={{ fontSize: 16, color: 'var(--text-sub)' }}>/3</span></div>
-            <div style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 700, marginTop: 2 }}>ステップ完了</div>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {allDone
+              ? <div style={{ display: 'flex', color: '#ffd633' }}><FIcon name="party" size={40} color="#ffd633" /></div>
+              : <div style={{ fontFamily: 'var(--font-round)', color: '#fff', lineHeight: 1 }}>
+                  <span style={{ fontSize: 40, fontWeight: 900 }}>{doneCount}</span>
+                  <span style={{ fontSize: 18, fontWeight: 700, opacity: .8 }}>/{steps.length}</span>
+                </div>}
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 4 }}>
-          {steps.map(s => (
-            <div key={s.key} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flex: 1 }}>
-              <div style={{ width: 38, height: 38, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17,
-                background: s.done ? 'var(--green-soft)' : 'var(--bg)', border: s.done ? '2px solid var(--green)' : '2px solid var(--border-soft)' }}>
-                {s.done ? <span style={{fontWeight:900}}>✓</span> : <FIcon name={s.emoji} size={17} />}
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, opacity: .85, marginBottom: 8 }}>STEP {doneCount} / {steps.length} 完了</div>
+        <div style={{ fontFamily: 'var(--font-round)', fontSize: 22, fontWeight: 900, lineHeight: 1.4 }}>{HERO_COPY.title}</div>
+        <div style={{ fontSize: 12.5, opacity: .9, lineHeight: 1.7, marginTop: 8 }}>{HERO_COPY.catch}</div>
+      </div>
+
+      {/* 3 ステップ進捗 */}
+      <div className="card card--flat" style={{ padding: '15px 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          {steps.map((s, i) => (
+            <React.Fragment key={s.key}>
+              {i > 0 && <div style={{ flex: 1, height: 2, background: steps[i - 1].done ? 'var(--green)' : 'var(--border)' }}></div>}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, flexShrink: 0 }}>
+                <div style={{ width: 30, height: 30, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: '#fff',
+                  background: s.done ? 'var(--green)' : (i === nextIdx ? 'var(--blue)' : 'var(--border)') }}>
+                  {s.done ? '✓' : i + 1}
+                </div>
+                <span style={{ fontSize: 9.5, fontWeight: 700, color: s.done ? 'var(--green)' : (i === nextIdx ? 'var(--blue-dark)' : 'var(--text-sub)') }}>{s.label}</span>
               </div>
-              <span style={{ fontSize: 10, fontWeight: 700, color: s.done ? 'var(--text)' : 'var(--text-sub)' }}>{s.label}</span>
-            </div>
+            </React.Fragment>
           ))}
         </div>
       </div>
-      <NextCard action={action} onGo={() => nav.go(action.go)} />
+
+      {/* 相互評価の集まり状況 */}
       <MutualProgressCard state={state} nav={nav} />
+
+      {/* 次のステップ案内 */}
+      <div style={{ background: '#fff5cc', borderRadius: 'var(--r-md)', padding: '14px 16px', borderLeft: '4px solid var(--orange)' }}>
+        <div style={{ fontSize: 12.5, fontWeight: 800, color: '#E65100', marginBottom: 6, lineHeight: 1.6 }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><FIcon name="book" size={14} color="#E65100" /> {NEXT_COPY.head}</span>
+        </div>
+        <p style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.8, fontWeight: 500, whiteSpace: 'pre-line' }}>{NEXT_COPY.body}</p>
+      </div>
+
+      <button className="btn btn--cta btn--lg" onClick={() => nav.go(action.go)}>{action.cta}</button>
+
+      <ContentTeaser unlocked={comp >= 100} onOpen={() => nav.tab('report')} />
     </div>
   );
 }

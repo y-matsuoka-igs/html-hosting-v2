@@ -30,7 +30,9 @@ function Icon({ name, size = 24, sw = 2 }) {
     leaf:   <path d="M5 19c0-8 6-13 14-14-1 9-6 14-14 14zM5 19c3-3 5-5 9-7"/>,
     flag:   <><path d="M4 21V4"/><path d="M4 4h12l-3 5 3 5H4"/></>,
     menu:   <path d="M4 7h16M4 12h16M4 17h16"/>,
+    help:   <><circle cx="12" cy="12" r="9"/><path d="M9.2 9.3a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.2-2.8 4"/><path d="M12 17.5h.01"/></>,
     globe:  <><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></>,
+    info:   <><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></>,
     logout: <><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5M21 12H9"/></>,
     report: <><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></>,
   };
@@ -57,11 +59,25 @@ function Logo({ height = 22, style }) {
   return <img src="assets/logo-aigrow.svg" alt="AiGROW" style={{ height, width: 'auto', display: 'block', ...style }} />;
 }
 
+const FAQ_ITEMS = [
+  { q: '回答した内容をあとから直せますか？', a: '一度回答した質問には戻れません。ゆっくり考えてから答えてね。次の受検期間ではまた新しく回答できるよ。' },
+  { q: 'トリセツが表示されないのはなぜ？', a: '気質診断・自己評価・まわりからの相互評価がすべてそろうとトリセツが解放されます。相手の回答を待っている間は表示できません。' },
+  { q: '評価をお願いできる人数に上限はある？', a: '1回の受検期間で最大10人までリクエストできます。断られた場合はその枠がもどるので、別の友だちに送れます。' },
+  { q: '評価した内容は相手に知られる？', a: '誰がどう評価したかは相手に見えません。集計された結果だけがトリセツに反映されます。安心して正直に答えてね。' },
+  { q: '受検期間を過ぎてしまったら？', a: '期間を過ぎた受検には回答できません。先生から次の期間が設定されるとホームに通知が届きます。' },
+  { q: '途中で画面を閉じても大丈夫？', a: 'そこまでの回答は保存されています。受検タブから同じコースを選ぶと、続きから再開できます。' },
+];
+
 /* ─────────── Header hamburger menu（右からスライドイン） ─────────── */
 function HeaderMenu({ dark, langOnly }) {
   const nav = useNav();
+  const userName = nav && nav.state && nav.state.userName;
+  const [about, setAbout] = useStateR(false);
+  const [faq, setFaq] = useStateR(false);
+  const [openQ, setOpenQ] = useStateR(null);
   const [open, setOpen] = useStateR(false);
   const [lang, setLang] = useStateR('ja');
+  const [confirmOut, setConfirmOut] = useStateR(false);
   useEffectR(() => {
     if (!open) return;
     const onKey = e => { if (e.key === 'Escape') setOpen(false); };
@@ -70,8 +86,8 @@ function HeaderMenu({ dark, langOnly }) {
   }, [open]);
   const item = { display: 'flex', alignItems: 'center', gap: 12, width: '100%', border: 'none', background: 'none', cursor: 'pointer', padding: '13px 14px', borderRadius: 12, fontSize: 14.5, fontWeight: 700, fontFamily: 'var(--font)', color: 'var(--text)', textAlign: 'left', WebkitTapHighlightColor: 'transparent' };
   return (
-    <div style={{ flexShrink: 0 }}>
-      <button aria-label="メニュー" onClick={() => setOpen(true)}
+    <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+      <button aria-label="メニュー" onClick={() => { setAbout(false); setFaq(false); setOpen(true); }}
         style={{ width: 38, height: 38, borderRadius: 12, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', background: dark ? 'rgba(255,255,255,.2)' : 'var(--bg)', color: dark ? '#fff' : 'var(--text)', WebkitTapHighlightColor: 'transparent' }}>
         <Icon name="menu" size={20} />
       </button>
@@ -98,15 +114,34 @@ function HeaderMenu({ dark, langOnly }) {
           transition: 'transform .34s cubic-bezier(.22,1,.36,1), opacity .24s ease',
           paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         {/* Drawer header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 14px 14px 18px', borderBottom: '1.5px solid var(--border-soft)' }}>
-          <span style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)' }}>メニュー</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 14px 14px 18px', borderBottom: '1.5px solid var(--border-soft)', flexShrink: 0 }}>
+          {about || faq ? (
+            <button onClick={() => { setAbout(false); setFaq(false); }} style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 15, fontWeight: 800, fontFamily: 'var(--font)', color: 'var(--text)', WebkitTapHighlightColor: 'transparent' }}>
+              <Icon name="back" size={20} /> {faq ? 'よくある質問' : 'AiGROWについて'}
+            </button>
+          ) : (
+            <span style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)' }}>メニュー</span>
+          )}
           <button aria-label="閉じる" onClick={() => setOpen(false)}
-            style={{ width: 36, height: 36, borderRadius: 10, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', color: 'var(--text)', WebkitTapHighlightColor: 'transparent' }}>
+            style={{ width: 36, height: 36, borderRadius: 10, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', color: 'var(--text)', WebkitTapHighlightColor: 'transparent', flexShrink: 0 }}>
             <Icon name="close" size={20} />
           </button>
         </div>
 
-        <div style={{ flex: 1, overflowY: 'auto', padding: '14px 12px' }}>
+        {/* Sliding panes */}
+        <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', width: '300%', transform: faq ? 'translateX(-66.6667%)' : about ? 'translateX(-33.3333%)' : 'translateX(0)', transition: 'transform .3s cubic-bezier(.22,1,.36,1)' }}>
+
+        <div style={{ width: '33.3333%', overflowY: 'auto', padding: '14px 12px' }}>
+          {!langOnly && userName && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', marginBottom: 8, background: 'var(--blue-soft)', borderRadius: 12 }}>
+              <span style={{ width: 32, height: 32, borderRadius: '50%', background: '#315cfa', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon name="user" size={17} /></span>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 10, fontWeight: 800, color: 'var(--text-sub)' }}>ログイン中</div>
+                <div style={{ fontSize: 14, fontWeight: 900, fontFamily: 'var(--font-round)', color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userName} さん</div>
+              </div>
+            </div>
+          )}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 12px 8px', fontSize: 11.5, fontWeight: 800, color: 'var(--text-sub)', letterSpacing: '.02em' }}>
             <Icon name="globe" size={14} /> 言語切り替え
           </div>
@@ -124,12 +159,137 @@ function HeaderMenu({ dark, langOnly }) {
             <Icon name="book" size={18} /> トリセツ
           </button>
 
+          {/* FAQ */}
+          <div style={{ height: 1, background: 'var(--border-soft)', margin: '10px 8px' }}></div>
+          <button onClick={() => { setOpenQ(null); setFaq(true); }} style={{ ...item, justifyContent: 'space-between' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}><Icon name="help" size={18} /> よくある質問（FAQ）</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: .45 }}><polyline points="9 6 15 12 9 18" /></svg>
+          </button>
+
+          {/* AiGROWについて */}
+          <div style={{ height: 1, background: 'var(--border-soft)', margin: '10px 8px' }}></div>
+          <button onClick={() => setAbout(true)} style={{ ...item, justifyContent: 'space-between' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}><Icon name="info" size={18} /> AiGROWについて</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: .45 }}><polyline points="9 6 15 12 9 18" /></svg>
+          </button>
+
           {!langOnly && (<>
             <div style={{ height: 1, background: 'var(--border-soft)', margin: '10px 8px' }}></div>
-            <button onClick={() => { setOpen(false); nav && nav.go('login'); }} style={{ ...item, color: '#e0533f' }}>
+            <button onClick={() => setConfirmOut(true)} style={{ ...item, color: '#e0533f' }}>
               <Icon name="logout" size={18} /> ログアウト
             </button>
           </>)}
+        </div>
+
+        {/* Pane 2: AiGROWについて */}
+        <div style={{ width: '33.3333%', overflowY: 'auto', padding: '14px 12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 12px 8px', fontSize: 11.5, fontWeight: 800, color: 'var(--text-sub)', letterSpacing: '.02em' }}>
+            <Icon name="info" size={14} /> 利用に関する注意事項
+          </div>
+          {[['利用規約', 'https://www.aigrow.jp/terms'], ['第三者評価者利用規約', 'https://www.aigrow.jp/terms-evaluator'], ['プライバシーポリシー', 'https://www.aigrow.jp/privacy']].map(([label, href]) => (
+            <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+              style={{ ...item, justifyContent: 'space-between', textDecoration: 'none' }}>
+              <span>{label}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: .4, flexShrink: 0 }}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6M10 14 21 3" /></svg>
+            </a>
+          ))}
+        </div>
+
+        {/* Pane 3: よくある質問（FAQ） */}
+        <div style={{ width: '33.3333%', overflowY: 'auto', padding: '14px 12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 12px 8px', fontSize: 11.5, fontWeight: 800, color: 'var(--text-sub)', letterSpacing: '.02em' }}>
+            <Icon name="help" size={14} /> 困ったときは
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {FAQ_ITEMS.map((q, i) => {
+              const on = openQ === i;
+              return (
+                <div key={i} style={{ background: on ? 'var(--blue-softer)' : 'var(--bg)', borderRadius: 12, overflow: 'hidden' }}>
+                  <button onClick={() => setOpenQ(on ? null : i)}
+                    style={{ display: 'flex', alignItems: 'flex-start', gap: 9, width: '100%', border: 'none', background: 'none', cursor: 'pointer', padding: '12px 13px', textAlign: 'left', fontFamily: 'var(--font)', WebkitTapHighlightColor: 'transparent' }}>
+                    <span style={{ flexShrink: 0, fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 12, color: 'var(--blue-dark)', marginTop: 1 }}>Q</span>
+                    <span style={{ flex: 1, fontSize: 13, fontWeight: 800, color: 'var(--text)', lineHeight: 1.55 }}>{q.q}</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: .45, marginTop: 3, transform: on ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }}><polyline points="6 9 12 15 18 9" /></svg>
+                  </button>
+                  {on && (
+                    <div style={{ display: 'flex', gap: 9, padding: '0 13px 13px' }}>
+                      <span style={{ flexShrink: 0, fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 12, color: 'var(--orange)' }}>A</span>
+                      <p style={{ flex: 1, fontSize: 12.5, fontWeight: 600, color: 'var(--text-sub)', lineHeight: 1.85 }}>{q.a}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <a href="https://www.aigrow.jp/contact" target="_blank" rel="noopener noreferrer"
+            style={{ ...item, justifyContent: 'space-between', textDecoration: 'none', marginTop: 10, background: 'var(--blue-soft)', color: 'var(--blue-dark)', fontSize: 13.5 }}>
+            <span>解決しないときはお問い合わせ</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: .5, flexShrink: 0 }}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6M10 14 21 3" /></svg>
+          </a>
+        </div>
+
+        </div>
+        </div>
+      </div>
+
+      {confirmOut && (
+        <div style={{ position: 'fixed', top: 0, bottom: 0,
+          left: 'max(0px, calc((100vw - 480px) / 2))', right: 'max(0px, calc((100vw - 480px) / 2))',
+          zIndex: 420, background: 'rgba(20,18,14,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 22 }}>
+          <div className="fade-in" style={{ width: '100%', maxWidth: 320, background: '#fff', border: '2px solid #1f1b16', boxShadow: '5px 5px 0 #1f1b16', borderRadius: 'var(--r-lg)', padding: '22px 20px 18px', textAlign: 'center' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: '#fdeae6', color: '#e0533f', marginBottom: 12 }}>
+              <Icon name="logout" size={22} />
+            </span>
+            <div style={{ fontFamily: 'var(--font-round)', fontSize: 16.5, fontWeight: 900, color: 'var(--text)', lineHeight: 1.6 }}>ログアウトしてよろしいでしょうか？</div>
+            <p style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--text-sub)', lineHeight: 1.75, margin: '8px 0 18px' }}>また同じアカウントでログインすると、<br />続きから利用できます。</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+              <button onClick={() => { setConfirmOut(false); setOpen(false); nav && nav.go('login'); }}
+                style={{ width: '100%', border: '2px solid #1f1b16', boxShadow: '3px 3px 0 #1f1b16', borderRadius: 999, padding: '13px 16px', background: '#e0533f', color: '#fff', fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 14.5, cursor: 'pointer' }}>ログアウトする</button>
+              <button onClick={() => setConfirmOut(false)}
+                style={{ width: '100%', border: 'none', background: 'none', color: 'var(--text-sub)', fontFamily: 'var(--font)', fontWeight: 800, fontSize: 13.5, padding: '6px 0', cursor: 'pointer' }}>キャンセル</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────── ログイン中ユーザーの常時表示バー（全画面共通・最下部） ─────────── */
+function UserBar({ name }) {
+  return null;
+  /* eslint-disable no-unreachable */
+  if (!name) return null;
+  return (
+    <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+      padding: '5px 12px', background: '#f3ecd9', borderTop: '1px solid var(--border-soft)',
+      fontSize: 10.5, fontWeight: 800, color: '#7a7263', letterSpacing: '.02em' }}>
+      <Icon name="user" size={12} />
+      <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{name} さんでログイン中</span>
+    </div>
+  );
+}
+
+/* ─────────── ログイン直後の本人確認モーダル ─────────── */
+function WelcomeModal({ name, onOk, onLogout }) {
+  return (
+    <div style={{ position: 'fixed', top: 0, bottom: 0,
+      left: 'max(0px, calc((100vw - 480px) / 2))', right: 'max(0px, calc((100vw - 480px) / 2))',
+      zIndex: 400, background: 'rgba(20,18,14,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 22 }}>
+      <div className="fade-in" style={{ width: '100%', maxWidth: 340, background: '#fff', border: '2px solid #1f1b16', boxShadow: '5px 5px 0 #1f1b16', borderRadius: 'var(--r-lg)', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '16px 16px 14px', borderBottom: '1.5px solid var(--border-soft)' }}>
+          <p style={{ flex: 1, fontSize: 11.5, lineHeight: 1.75, color: 'var(--text-sub)', fontWeight: 600 }}>
+            {name}さんでない場合は、<br />右上のアイコンをタップしてログアウトしてください
+          </p>
+          <button aria-label="ログアウト" onClick={onLogout}
+            style={{ width: 34, height: 34, borderRadius: 10, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', color: '#e0533f', flexShrink: 0, WebkitTapHighlightColor: 'transparent' }}>
+            <Icon name="logout" size={19} />
+          </button>
+        </div>
+        <div style={{ padding: '20px 20px 18px', textAlign: 'center' }}>
+          <div style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--text-sub)', textAlign: 'left' }}>ようこそ</div>
+          <div style={{ fontFamily: 'var(--font-round)', fontSize: 22, fontWeight: 900, color: 'var(--text)', margin: '12px 0 20px' }}>{name} さん</div>
+          <button className="btn btn--cta btn--lg" onClick={onOk}>OK</button>
         </div>
       </div>
     </div>
@@ -156,12 +316,12 @@ const NAV_TABS = [
   { key: 'record',    label: 'きろく',      icon: 'book' },
   { key: 'report',   label: 'レポート',    icon: 'report' },
 ];
-function BottomNav({ active, onTab, badges = {}, locked = false }) {
+function BottomNav({ active, onTab, badges = {}, locked = false, enabledKeys }) {
   return (
     <div className="botnav">
       {NAV_TABS.map(t => {
         const isActive = active === t.key;
-        const isDisabled = locked && !isActive;
+        const isDisabled = enabledKeys ? (!isActive && !enabledKeys.includes(t.key)) : (locked && !isActive);
         return (
           <button key={t.key}
             className={'botnav__item' + (isActive ? ' active' : '')}
@@ -211,6 +371,6 @@ function Mascot({ size = 80, mood = 'happy' }) {
 }
 
 Object.assign(window, {
-  NavCtx, useNav, Icon, Logo, Device, StatusBar, AppHeader, HeaderMenu,
+  NavCtx, useNav, Icon, Logo, Device, StatusBar, AppHeader, HeaderMenu, WelcomeModal, UserBar,
   BottomNav, NAV_TABS, Pill, Progress, Mascot,
 });

@@ -29,10 +29,12 @@ function LoginScreen() {
   const [id, setId] = useStateA('');
   const [pw, setPw] = useStateA('');
   const [err, setErr] = useStateA('');
+  const [showPw, setShowPw] = useStateA(false);
   const ok = sid.trim().length > 0 && id.trim().length > 0 && pw.length > 0;
 
   const submit = () => {
     if (!ok) { setErr('学校ID・ID・パスワードを入力してね'); return; }
+    nav.update && nav.update({ showWelcome: true });
     nav.go('onboard');
   };
 
@@ -68,8 +70,16 @@ function LoginScreen() {
             </div>
             <div style={{ position: 'relative' }}>
               <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-sub)', display: 'flex' }}><Icon name="lock" size={20} /></span>
-              <input className="field" style={{ paddingLeft: 44 }} type="password" placeholder="パスワード" value={pw}
+              <input className="field" style={{ paddingLeft: 44, paddingRight: 46 }} type={showPw ? 'text' : 'password'} placeholder="パスワード" value={pw}
                 onChange={e => { setPw(e.target.value); setErr(''); }} />
+              <button type="button" onClick={() => setShowPw(v => !v)} aria-label={showPw ? 'パスワードを隠す' : 'パスワードを表示'}
+                style={{ position: 'absolute', right: 6, top: '50%', transform: 'translateY(-50%)', width: 36, height: 36, borderRadius: 10, border: 'none', background: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-sub)', WebkitTapHighlightColor: 'transparent' }}>
+                {showPw ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.2A9.7 9.7 0 0 1 12 5c6 0 9 7 9 7a15.6 15.6 0 0 1-2.4 3.3M6.3 6.4A15.9 15.9 0 0 0 3 12s3 7 9 7a9.5 9.5 0 0 0 4.2-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                )}
+              </button>
             </div>
             {err && <div style={{ color: '#e23', fontSize: 12, fontWeight: 700, paddingLeft: 4 }}>{err}</div>}
             <button className="btn btn--cta btn--lg" onClick={submit} style={{ marginTop: 4 }}>ログイン</button>
@@ -104,6 +114,11 @@ function OnboardScreen() {
     if (t) setIdx(Math.round(t.scrollLeft / t.clientWidth));
   };
   const next = () => { if (last) nav.go('start-diag'); else goTo(idx + 1); };
+
+  // 歓迎モーダルのOK後にスライドを開始する
+  if (nav.state && nav.state.showWelcome) {
+    return <div className="screen" style={{ background: '#fffbf2' }}><StatusBar /></div>;
+  }
 
   return (
     <div className="screen" style={{ background: '#fffbf2' }}>

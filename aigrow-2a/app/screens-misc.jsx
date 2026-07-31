@@ -2,9 +2,9 @@
 const { useState: useSm, useEffect: useEm } = React;
 
 const UNLOCKS = [
-{ emoji: 'book', title: 'トリセツが完成しました', desc: 'キミだけの取扱説明書が見られるよ', color: 'var(--green)' },
-{ emoji: 'link', title: 'トリセツをシェアできる', desc: '友だちや先生に結果を送れるよ', color: 'var(--blue)' },
-{ emoji: 'footsteps', title: 'チャレンジ機能が解放', desc: 'AiGROWが次の行動を提案するよ', color: 'var(--orange)' }];
+{ emoji: 'book', title: '今のキミの「トリセツ」が完成', desc: 'キミだけの取扱説明書が見られるよ', color: 'var(--green)' },
+{ emoji: 'footsteps', title: 'チャレンジ機能が使える', desc: '成長のヒントを、実際の行動に変えるよ', color: 'var(--orange)' },
+{ emoji: 'link', title: 'バッジを獲得できる', desc: '結果と行動でバッジが獲得できるよ', color: 'var(--blue)' }];
 
 
 function AnnounceScreen() {
@@ -56,6 +56,78 @@ function AnnounceScreen() {
 
 Object.assign(window, { AnnounceScreen });
 
+/* ─────────── 相手からの相互評価待ち（トリセツ未解放） ─────────── */
+const WAIT_STEPS = [
+{ icon: 'sparkle', title: '気質診断', desc: 'キミの答えは届いているよ', done: true },
+{ icon: 'user', title: '自己評価', desc: '5つの質問に回答ずみ', done: true },
+{ icon: 'users', title: 'まわりからの相互評価', desc: '2人の回答を待っています', done: false }];
+
+
+function WaitingPeerScreen() {
+  const nav = useNav();
+  const [show, setShow] = useSm(false);
+  useEm(() => { const t = setTimeout(() => setShow(true), 80); return () => clearTimeout(t); }, []);
+
+  return (
+    <div className="screen" style={{ background: 'var(--blue)', position: 'relative', overflow: 'hidden' }}>
+      <StatusBar dark />
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: .55 }}>
+        {[['#fff', 12, 18, 0], ['#cfe0ff', 80, 12, .4], ['#fff', 65, 30, .8], ['#cfe0ff', 30, 72, .2], ['#fff', 88, 60, .6]].map(([c, l, top, d], i) =>
+        <div key={i} style={{ position: 'absolute', left: `${l}%`, top: `${top}%`, width: 8, height: 8, borderRadius: '50%', background: c, animation: `floaty 3.2s ${d}s ease-in-out infinite` }}></div>
+        )}
+      </div>
+
+      <div className="scroll" style={{ display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 2 }}>
+        <div style={{ flex: 1, minHeight: 540, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 24px', textAlign: 'center' }}>
+          <div style={{ transform: show ? 'scale(1)' : 'scale(0)', transition: 'transform .5s cubic-bezier(.2,1.3,.4,1.3)', color: '#fff', display: 'flex', justifyContent: 'center', animation: 'floaty 3s ease-in-out infinite' }}>
+            <FIcon name="hourglass" size={66} sw={1.6} />
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-round)', fontSize: 25, fontWeight: 900, color: '#fff', marginTop: 10, lineHeight: 1.45 }}>相手からの<br />相互評価を待ってね</h1>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,.92)', fontWeight: 600, marginTop: 12, lineHeight: 1.8 }}>
+            まわりの回答がそろうまで、<br />トリセツはまだ表示できません。
+          </p>
+
+          <div style={{ width: '100%', marginTop: 22, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {WAIT_STEPS.map((u, i) =>
+            <div key={i} style={{ background: '#fff', borderRadius: 'var(--r-lg)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 13, boxShadow: 'var(--shadow)',
+              transform: show ? 'translateY(0)' : 'translateY(24px)', opacity: show ? 1 : 0, transition: `all .45s ${0.2 + i * 0.12}s cubic-bezier(.2,.9,.3,1.2)` }}>
+                <div style={{ width: 44, height: 44, borderRadius: 13, flexShrink: 0, background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: u.done ? 'var(--green)' : 'var(--blue)' }}>
+                  <FIcon name={u.icon} size={22} />
+                </div>
+                <div style={{ flex: 1, textAlign: 'left' }}>
+                  <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 14, color: 'var(--text)' }}>{u.title}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 500 }}>{u.desc}</div>
+                </div>
+                {u.done ?
+                <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--green)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                </div> :
+                <span style={{ flexShrink: 0, fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 10.5, padding: '5px 9px', borderRadius: 999, background: 'var(--blue-soft)', color: 'var(--blue-dark)' }}>待機中</span>}
+              </div>
+            )}
+          </div>
+
+          <div style={{ width: '100%', marginTop: 14, background: 'rgba(255,255,255,.16)', border: '1px solid rgba(255,255,255,.35)', borderRadius: 'var(--r-md)', padding: '12px 14px', display: 'flex', gap: 10, textAlign: 'left',
+            opacity: show ? 1 : 0, transition: 'opacity .5s .6s' }}>
+            <span style={{ flexShrink: 0, color: '#fff', marginTop: 1 }}><FIcon name="bell" size={18} /></span>
+            <p style={{ fontSize: 11.5, color: '#fff', fontWeight: 600, lineHeight: 1.75 }}>
+              全員の回答がそろうと通知が届いて、その場でトリセツが解放されるよ。まだ評価をお願いしていない友だちがいたら、リクエストを送ってみよう。
+            </p>
+          </div>
+        </div>
+
+        <div style={{ flexShrink: 0, padding: '4px 24px 26px' }}>
+          <button className="btn btn--lg" style={{ background: '#fff', color: 'var(--blue-dark)', boxShadow: 'var(--shadow-lg)' }} onClick={() => nav.go('ask-eval')}>評価をお願いする</button>
+          <button className="btn" style={{ background: 'transparent', color: 'rgba(255,255,255,.9)', marginTop: 6 }} onClick={() => nav.go('exam')}>受検タブに戻る</button>
+        </div>
+      </div>
+    </div>);
+
+}
+
+Object.assign(window, { WaitingPeerScreen });
+
+
 /* ─────────── タスク完了：キミの性格・傾向コメント（元HTML準拠） ─────────── */
 const TC_TRAITS = [
 { emoji: 'bulb', title: 'アイデアの豊かさ', desc: '気質の「開放性の高さ」と「創造性」が組み合わさり、誰も思いつかない発想を生み出す力があります', bg: 'var(--green-soft)', color: '#2E7D32' },
@@ -72,9 +144,11 @@ const SELF_PEERS = [
   { course: '自己・相互の全問題', name: '入江 平作', period: '2026-05-01 13:15' },
   { course: '自己・相互の全問題', name: '青田 徳彦', period: '2026-05-01 13:15' },
 ];
-function StepCompleteScreen() {
+function StepCompleteScreen(props) {
+  const p = props || {};
   const nav = useNav();
-  const kind = (nav.params && nav.params.kind) || 'diag';
+  const kind = p.kind || (nav.params && nav.params.kind) || 'diag';
+  const [showModal, setShowModal] = useSm(true);
   const doneIdx = STEP_FLOW.findIndex(s => s.key === kind);
   const cur = STEP_FLOW[doneIdx];
   const next = STEP_FLOW[doneIdx + 1];
@@ -85,8 +159,10 @@ function StepCompleteScreen() {
   }[kind] || {};
   const pct = Math.round((doneIdx + 1) / STEP_FLOW.length * 100);
   const R = 46, C = 2 * Math.PI * R;
+  const waiting = kind === 'other' && !!(p.waiting || (nav.params && nav.params.waiting));
+  const allDone = kind === 'other' && !waiting;
   return (
-    <div className="screen">
+    <div className="screen" style={{ position: 'relative' }}>
       <StatusBar />
       <AppHeader noMenu />
       <div className="scroll pad stack">
@@ -126,7 +202,7 @@ function StepCompleteScreen() {
         </div>
 
         {/* キミが得られた相互評価の進捗 */}
-        {(() => { const got = kind === 'other' ? 3 : 0, full = got >= 3; return (
+        {(() => { const got = allDone ? 3 : 0, full = got >= 3; return (
         <div className="card card--flat" style={{ padding: '16px 16px 15px', textAlign: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontSize: 12, fontWeight: 800, color: 'var(--text)' }}>
             <span>キミが得られた相互評価</span>
@@ -141,10 +217,8 @@ function StepCompleteScreen() {
           <div style={{ display: 'flex', justifyContent: 'center', gap: 7, marginTop: 10 }}>
             {[0, 1, 2].map((i) => <span key={i} style={{ width: 34, height: 8, borderRadius: 999, background: i < got ? 'var(--green)' : 'var(--border)' }}></span>)}
           </div>
-          {full ? (
+          {full && (
             <div style={{ marginTop: 10, display: 'inline-flex', alignItems: 'center', gap: 5, background: 'var(--green-soft, #e6f4e6)', color: 'var(--green)', borderRadius: 999, padding: '4px 12px', fontSize: 11, fontWeight: 800 }}>相互評価がそろったよ！</div>
-          ) : (
-            <button className="btn" style={{ marginTop: 12, background: '#fff', color: 'var(--blue-dark)', border: '2px solid #1f1b16', boxShadow: '2px 2px 0 #1f1b16', width: 'auto', padding: '10px 18px', fontSize: 12.5 }} onClick={() => nav.go('other-start', { tab: 1 })}>評価の完了状況を確認</button>
           )}
         </div>); })()}
 
@@ -159,9 +233,11 @@ function StepCompleteScreen() {
         {next ? (
           <button className="btn btn--cta btn--lg" onClick={() => nav.go(next.route)}>{next.label}にすすむ</button>
         ) : (
-          <button className="btn btn--cta btn--lg" onClick={() => nav.go('home')}>完成したトリセツを見る</button>
-        )}
+          waiting ? (
+          <button className="btn btn--cta btn--lg" onClick={() => nav.go('ask-eval')}>評価の完了状況を確認</button>
+        ) : null)}
       </div>
+      {waiting && !p.noModal && showModal && <TaskCompleteModal onClose={() => setShowModal(false)} />}
     </div>
   );
 }
@@ -225,6 +301,9 @@ function StartOtherScreen() {
           </p>
         </div>
         <div style={{ flexShrink: 0, padding: '0 24px 26px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: '#fff4ef', border: '1px solid #ffd3c9', borderRadius: 10, padding: '9px 12px', marginBottom: 12, fontSize: 12, fontWeight: 700, color: 'var(--orange-dark)' }}>
+            一度回答した質問には戻れません
+          </div>
           <button className="btn btn--cta btn--lg" onClick={() => nav.go('other-start')}>相互評価をはじめる</button>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-sub)', marginTop: 12 }}>1 人 約 3 分</p>
         </div>
@@ -241,53 +320,73 @@ function OtherStartScreen() {
       <StatusBar />
       <AppHeader sub="相互評価" noMenu />
       <div className="scroll pad stack">
-        <MutualEvalStart nav={nav} />
+        <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', background: '#fff', border: '2px solid #1f1b16', borderRadius: 'var(--r-lg)', boxShadow: '3px 3px 0 #1f1b16', padding: '13px 14px' }}>
+          <span style={{ flexShrink: 0, display: 'flex', paddingTop: 1, color: 'var(--blue)' }}><FIcon name="sparkle" size={17} color="var(--blue)" /></span>
+          <p style={{ fontSize: 12.5, fontWeight: 600, lineHeight: 1.75, color: 'var(--text)' }}>キミが相互評価する友達が表示されているので、1人ずつ選んで相互評価を進めよう</p>
+        </div>
+        <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-sub)', fontFamily: 'var(--font-round)', padding: '2px 2px 0' }}>相互評価する友達</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {SELF_PEERS.map((p, i) => (
+            <button key={i} onClick={() => nav.go('other-eval')}
+              style={{ width: '100%', textAlign: 'left', cursor: 'pointer', background: '#fff', border: '2px solid #1f1b16', borderRadius: 'var(--r-lg)', boxShadow: '3px 3px 0 #1f1b16', padding: '14px 15px', display: 'flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--blue-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--blue)' }}><FIcon name="handshake" size={20} color="var(--blue)" /></span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 700 }}>受検コース名：{p.course}</div>
+                <div style={{ fontSize: 14.5, fontWeight: 900, color: 'var(--text)', fontFamily: 'var(--font-round)', marginTop: 2, lineHeight: 1.35 }}>「{p.name}」を相互評価をする</div>
+                <div style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 500, marginTop: 3 }}>期間：{p.period}</div>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c3bba9" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-function MutualEvalStart({ nav }) {
-  const [tab, setTab] = useSm((nav.params && nav.params.tab) || 0);
-  const [query, setQuery] = useSm('');
-  const [copied, setCopied] = useSm(false);
-  const tabs = [['handshake', '自分が評価する'], ['megaphone', '評価をお願いする']];
+function EvalReqGroup({ label, count, badge, first, muted }) {
   return (
     <>
-      <div style={{ display: 'flex', gap: 8 }}>
-        {tabs.map(([ic, label], i) => (
-          <button key={label} onClick={() => setTab(i)}
-            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '11px 4px', cursor: 'pointer', borderRadius: 12,
-              border: '2px solid #1f1b16', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12.5, transition: 'all .15s',
-              background: tab === i ? 'var(--blue)' : '#fff', color: tab === i ? '#fff' : 'var(--text)',
-              boxShadow: tab === i ? '3px 3px 0 #1f1b16' : 'none' }}>
-            <FIcon name={ic} size={15} color={tab === i ? '#fff' : 'var(--blue)'} /> {label}
-          </button>
-        ))}
-      </div>
-
-      {tab === 0 && (
-        <>
-          <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-sub)', fontFamily: 'var(--font-round)', padding: '2px 2px 0' }}>相互評価する友達</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {SELF_PEERS.map((p, i) => (
-              <button key={i} onClick={() => nav.go('other-eval')}
-                style={{ width: '100%', textAlign: 'left', cursor: 'pointer', background: '#fff', border: '2px solid #1f1b16', borderRadius: 'var(--r-lg)', boxShadow: '3px 3px 0 #1f1b16', padding: '14px 15px', display: 'flex', alignItems: 'center', gap: 12 }}>
-                <span style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--blue-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--blue)' }}><FIcon name="handshake" size={20} color="var(--blue)" /></span>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 700 }}>受検コース名：{p.course}</div>
-                  <div style={{ fontSize: 14.5, fontWeight: 900, color: 'var(--text)', fontFamily: 'var(--font-round)', marginTop: 2, lineHeight: 1.35 }}>「{p.name}」を相互評価をする</div>
-                  <div style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 500, marginTop: 3 }}>期間：{p.period}</div>
-                </div>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c3bba9" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M9 5l7 7-7 7"/></svg>
-              </button>
-            ))}
-          </div>
-        </>
+      <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-sub)', margin: first ? '0 0 8px' : '14px 0 8px' }}>{label}</div>
+      {count === 0 ? (
+        <div style={{ background: '#fff', border: '1.5px solid var(--border)', borderRadius: 'var(--r-md)', padding: '11px 13px' }}>
+          <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-sub)' }}>なし</span>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {Array.from({ length: count }).map((_, i) => (
+            <div key={i} style={{ background: '#fff', border: '1.5px solid var(--border)', borderRadius: 'var(--r-md)', padding: '11px 13px', display: 'flex', alignItems: 'center', gap: 10, opacity: muted ? 0.6 : 1 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}><circle cx="10" cy="8" r="3.5"/><path d="M4 19c0-3.1 2.7-5.5 6-5.5s6 2.4 6 5.5"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 5.6M18.5 13.9c1.5 1 2.5 2.6 2.5 4.6"/></svg>
+              <span style={{ flex: 1, minWidth: 0, fontSize: 12.5, fontWeight: 600, color: 'var(--text)', textDecoration: muted ? 'line-through' : 'none' }}>ユーザ名は表示されません</span>
+              {badge && <span style={{ flexShrink: 0, fontSize: 10.5, fontWeight: 800, color: badge.color, background: badge.bg, borderRadius: 999, padding: '3px 9px' }}>{badge.text}</span>}
+            </div>
+          ))}
+        </div>
       )}
+    </>
+  );
+}
 
-      {tab === 1 && (
-        <>
+/* 独立画面：評価をお願いする */
+function AskEvalScreen() {
+  const nav = useNav();
+  return (
+    <div className="screen">
+      <StatusBar />
+      <AppHeader sub="評価をお願いする" noMenu />
+      <div className="scroll pad stack">
+        <AskEvalBody nav={nav} />
+      </div>
+    </div>
+  );
+}
+
+function AskEvalBody({ nav }) {
+  const [query, setQuery] = useSm('');
+  const [copied, setCopied] = useSm(false);
+  const [sent3, setSent3] = useSm(false);
+  return (
+    <>
           {/* 評価完了者数 */}
           <div className="card card--flat" style={{ textAlign: 'center', padding: '16px 14px' }}>
             <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-sub)' }}>キミが得られた相互評価　—　現在の評価完了者数</div>
@@ -303,26 +402,11 @@ function MutualEvalStart({ nav }) {
             <span style={{ fontSize: 12.5, fontWeight: 800, color: '#e8590c' }}>残り3名の方からの評価完了待ちです。</span>
           </div>
           <div className="card card--flat" style={{ padding: '14px 14px 16px' }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-sub)', marginBottom: 8 }}>回答待ち</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {[0, 1, 2].map(i => (
-                <div key={i} style={{ background: '#fff', border: '1.5px solid var(--border)', borderRadius: 'var(--r-md)', padding: '11px 13px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}><circle cx="10" cy="8" r="3.5"/><path d="M4 19c0-3.1 2.7-5.5 6-5.5s6 2.4 6 5.5"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 5.6M18.5 13.9c1.5 1 2.5 2.6 2.5 4.6"/></svg>
-                  <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text)' }}>ユーザ名は表示されません</span>
-                </div>
-              ))}
-            </div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-sub)', margin: '14px 0 8px' }}>回答済み</div>
-            <div style={{ background: '#fff', border: '1.5px solid var(--border)', borderRadius: 'var(--r-md)', padding: '11px 13px' }}>
-              <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-sub)' }}>なし</span>
-            </div>
+            <EvalReqGroup label="申請中" count={1} badge={{ text: '承認待ち', color: '#e8590c', bg: '#ffece3' }} first />
+            <EvalReqGroup label="回答待ち" count={3} />
+            <EvalReqGroup label="回答済み" count={0} />
+            <EvalReqGroup label="キャンセル済み" count={1} badge={{ text: 'キャンセル', color: '#8b8375', bg: '#f0ece3' }} muted />
           </div>
-
-          {/* QRコード */}
-          <button className="btn btn--primary btn--lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v2M20 20h-4"/></svg>
-            評価依頼用QRコード
-          </button>
 
           {/* 検索して依頼 */}
           <div className="card card--flat" style={{ padding: '14px 14px 16px' }}>
@@ -347,33 +431,22 @@ function MutualEvalStart({ nav }) {
               </span>
               <span style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 11.5, color: 'var(--text)' }}>LINEで送信</span>
             </button>
+            <button style={{ flex: 1, cursor: 'pointer', background: '#fff', border: '2px solid #1f1b16', borderRadius: 'var(--r-lg)', boxShadow: '3px 3px 0 #1f1b16', padding: '14px 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v2M20 20h-4"/></svg>
+              <span style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 11.5, color: 'var(--text)', lineHeight: 1.4 }}>評価依頼用QRコード</span>
+            </button>
           </div>
           <p style={{ fontSize: 11, color: 'var(--text-sub)', lineHeight: 1.7, textAlign: 'center' }}>QRコード・依頼文・LINEで、お友達に相互評価をお願いできるよ</p>
+          <button onClick={() => setSent3(!sent3)}
+            style={{ width: '100%', textAlign: 'left', cursor: 'pointer', background: sent3 ? 'var(--green-soft, #e6f4e6)' : '#fff', border: '2px solid #1f1b16', borderRadius: 'var(--r-lg)', boxShadow: '3px 3px 0 #1f1b16', padding: '13px 14px', display: 'flex', alignItems: 'center', gap: 11 }}>
+            <span style={{ flexShrink: 0, width: 24, height: 24, borderRadius: 7, border: '2px solid #1f1b16', background: sent3 ? 'var(--green)' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {sent3 && <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>}
+            </span>
+            <span style={{ fontSize: 13, fontWeight: 800, fontFamily: 'var(--font-round)', color: sent3 ? '#2E7D32' : 'var(--text)', lineHeight: 1.5 }}>評価リクエストを3人に送った</span>
+          </button>
+          <button className="btn btn--cta btn--lg" onClick={() => { nav.update && nav.update({ examCourses: true }); nav.tab ? nav.tab('exam') : nav.go('exam'); }}>受検の進捗を確認する</button>
         </>
-      )}
-    </>
   );
-}
-
-/* ─────────── 完了サマリー（今のキミ・自己評価版） ─────────── */
-function TaskCompleteScreen() {
-  const nav = useNav();
-  const [showModal, setShowModal] = useSm(true);
-  return (
-    <div className="screen" style={{ position: 'relative' }}>
-      <StatusBar />
-      <AppHeader />
-      <div className="scroll pad stack">
-        <SelfSummarySection />
-        {/* 注意：トリセツ完成まであと一歩 */}
-        <div style={{ background: '#fff8e1', borderRadius: 'var(--r-md)', padding: '14px 16px', borderLeft: '4px solid var(--orange)' }}>
-          <div style={{ fontSize: 12.5, fontWeight: 800, color: '#E65100', marginBottom: 6, lineHeight: 1.6 }}><span style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 5 }}><FIcon name="book" size={14} color="#E65100" /> <span>みんなの相互評価が完了すると「トリセツ」が完成するよ</span></span></div>
-          <p style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.7, fontWeight: 500 }}>トリセツが完成するまで、キミ自身が認識している性格と潜在的な気質の結果を確認してみよう</p>
-        </div>
-        <button className="btn btn--cta btn--lg" onClick={() => { nav.update && nav.update((s) => ({ diag: { ...s.diag, done: true }, self: { ...s.self, done: true }, other: { ...s.other, done: true }, seenAnnounce: false })); nav.go('exam'); }}>受検の進捗を確認する</button>
-      </div>
-      {showModal && <TaskCompleteModal onClose={() => setShowModal(false)} />}
-    </div>);
 }
 
 /* ─────────── 今のキミ（自己評価版） ─────────── */
@@ -447,4 +520,27 @@ function SelfSummarySection() {
     </>);
 }
 
-Object.assign(window, { SelfSummarySection, TaskCompleteScreen, StepCompleteScreen, StartOtherScreen, OtherStartScreen });
+/* トリセツ更新モーダル（相互評価が集まった） */
+function TorisetsuUpdatedModal({ onClose }) {
+  return (
+    <div style={{ position: 'absolute', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 22px', background: 'rgba(0,0,0,.55)', backdropFilter: 'blur(2px)' }}>
+      <div className="fade-in" style={{ width: '100%', maxWidth: 400, background: '#fff', borderRadius: 18, overflow: 'hidden', border: '2px solid #1f1b16', boxShadow: '6px 6px 0 #1f1b16' }}>
+        <div style={{ background: '#315cfa', padding: '26px 20px 22px', textAlign: 'center', color: '#fff' }}>
+          <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}><FIcon name="sparkle" size={44} color="#fff" /></div>
+          <div style={{ fontFamily: 'var(--font-round)', fontSize: 20, fontWeight: 900, lineHeight: 1.4 }}>まわりからの評価で<br />トリセツが更新されたよ！</div>
+        </div>
+        <div style={{ padding: '18px 20px 20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 16 }}>
+            {['相互評価 3/3', '今のキミ 更新', '成長のヒント'].map(t => (
+              <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: 'var(--green-soft)', color: '#2E7D32', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 11.5, padding: '5px 10px', borderRadius: 999 }}>✓ {t}</span>
+            ))}
+          </div>
+          <p style={{ fontSize: 12.5, color: 'var(--text-sub)', fontWeight: 600, lineHeight: 1.7, textAlign: 'center', marginBottom: 16 }}>友だちからの相互評価が集まったよ！<br />新しくなったトリセツを見てみよう。</p>
+          <button className="btn btn--cta btn--lg" onClick={onClose}>更新されたトリセツを見る</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { SelfSummarySection, StepCompleteScreen, StartOtherScreen, OtherStartScreen, AskEvalScreen, TorisetsuUpdatedModal });

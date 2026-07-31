@@ -9,9 +9,10 @@ const CH_RECENT_GROWTH = [
   { name: '表現力', delta: 1 },
 ];
 const CH_STRENGTH_MAP = [
-  { name: '創造力', filled: 2 },
-  { name: '実行力', filled: 1 },
-  { name: '表現力', filled: 0 },
+  { name: '創造力', filled: 2, count: 5, desc: '新しい発想やアイデアを生み出す力。問題に対して既存の風にとらわれず、ユニークなアプローチを見つけられるよ。' },
+  { name: '実行力', filled: 1, count: 4, desc: '決めたことを最後までやり抜く力。小さな一歩を継続して、目標に近づいていけるよ。' },
+  { name: '表現力', filled: 0, count: 2, desc: '自分の考えや気持ちを、相手に伝わるよう届ける力。言葉・図・行動など　1つの型にとらわれずに。' },
+  { name: '課題設定', filled: 1, count: 3, desc: '問いを見つけ、本当に大切なことは何かを見極める力。「なぜ？」を大事にしよう。' },
 ];
 const CH_WEEK_RECS = [
   { tag: '5分でできる', icon: 'bolt', color: 'var(--blue)', soft: 'var(--blue-soft)', items: [
@@ -57,6 +58,10 @@ function ChallengeScreen() {
 
   const exp = nav.state.exp || 0;
   const toNext = Math.max(1, 3 - (exp % 3));
+  const cyclePos = exp % 3;
+  const weekCleared = exp > 0 && cyclePos === 0;
+  const weekDone = weekCleared ? 3 : cyclePos;
+  const weekRemaining = 3 - weekDone;
   const Character = window.Character;
   const fg = nav.state.futureGoal;
   const [collapsed, setCollapsed] = React.useState(false);
@@ -66,28 +71,18 @@ function ChallengeScreen() {
       <StatusBar />
       <div style={{ background:'#315cfa', padding:'10px 16px 0', flexShrink:0, borderBottom:'2px solid #1f1b16' }}>
         <div style={{ display:'flex', alignItems:'center', gap:9, marginBottom: collapsed ? 9 : 9 }}>
-          <div style={{ width:34, height:34, borderRadius:11, background:'rgba(255,255,255,.2)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', flexShrink:0 }}><FIcon name="footsteps" size={18} /></div>
+          <div style={{ color:'#fff', display:'flex', alignItems:'center', flexShrink:0 }}><FIcon name="footsteps" size={20} /></div>
           <div style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:17, color:'#fff', flexShrink:0 }}>チャレンジ</div>
-          {collapsed && (
+          {collapsed && fg && (
             <div style={{ display:'flex', alignItems:'center', gap:6, marginLeft:4, minWidth:0 }}>
-              <span style={{ background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:6, padding:'1px 7px', fontSize:9.5, fontWeight:900, fontFamily:'var(--font-round)', flexShrink:0 }}>Lv.3</span>
-              {fg && <span style={{ display:'inline-flex', alignItems:'center', gap:4, fontSize:11, color:'#fff', fontWeight:800, fontFamily:'var(--font-round)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}><Emo e={fg.icon} size={12} color="#ffd633" />{fg.name}</span>}
+              <span style={{ background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:6, padding:'1px 8px', fontSize:9.5, fontWeight:900, fontFamily:'var(--font-round)', flexShrink:0, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', maxWidth:180 }}><Emo e={fg.icon} size={11} color="#1f1b16" /> {fg.name}に挑戦中</span>
             </div>
           )}
           <div style={{ marginLeft:'auto', flexShrink:0 }}><HeaderMenu dark /></div>
         </div>
 
         {/* めざす成長バナー（成長のヒント連動） */}
-        {!collapsed && fg && (
-          <div style={{ display:'flex', alignItems:'center', gap:8, background:'rgba(255,255,255,.14)', border:'1.5px solid rgba(255,255,255,.3)', borderRadius:12, padding:'8px 11px', marginBottom:8 }}>
-            <span style={{ fontSize:9.5, letterSpacing:1.2, color:'#ffd633', fontWeight:800, flexShrink:0 }}>めざす成長</span>
-            <span style={{ display:'inline-flex', alignItems:'center', gap:5, background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:8, padding:'3px 9px', fontFamily:'var(--font-round)', fontWeight:900, fontSize:12, flexShrink:0 }}>
-              <Emo e={fg.icon} size={13} color="#1f1b16" />{fg.name}
-            </span>
-            <span style={{ fontSize:11, color:'#fff', fontWeight:700, minWidth:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>「{fg.comp}」をのばす</span>
-            <button onClick={() => { nav.update && nav.update({ torisetsuStep:4, torisetsuDone:true }); nav.tab && nav.tab('home'); }} style={{ marginLeft:'auto', flexShrink:0, background:'rgba(255,255,255,.16)', color:'#fff', border:'none', borderRadius:999, padding:'4px 10px', fontSize:9.5, fontWeight:800, fontFamily:'var(--font-round)', cursor:'pointer' }}>見直す</button>
-          </div>
-        )}
+        {/* めざす成長バナーはチャレンジ中の最上部へ移動 */}
 
         {/* 成長ステータス（コンパクト） */}
         {!collapsed && (
@@ -96,14 +91,18 @@ function ChallengeScreen() {
           <div style={{ flex:1, minWidth:0 }}>
             <div style={{ display:'flex', alignItems:'center', gap:7 }}>
               <span style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:14, color:'var(--blue-dark)', whiteSpace:'nowrap' }}>探索する創造者</span>
-              <span style={{ background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:6, padding:'1px 8px', fontSize:10, fontWeight:900, fontFamily:'var(--font-round)' }}>Lv.3</span>
+              {fg && <span style={{ display:'inline-flex', alignItems:'center', gap:4, background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:6, padding:'1px 8px', fontSize:10, fontWeight:900, fontFamily:'var(--font-round)' }}><Emo e={fg.icon} size={11} color="#1f1b16" /> {fg.name}に挑戦中</span>}
             </div>
-            <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:6 }}>
-              <span style={{ fontSize:10, fontWeight:700, color:'var(--text-sub)', flexShrink:0 }}>次のLvまで</span>
+            <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:6, position:'relative' }}>
+              <span style={{ fontSize:10, fontWeight:700, color:'var(--text-sub)', flexShrink:0 }}>今週のチャレンジ</span>
               <div style={{ flex:1, height:6, background:'var(--bg)', borderRadius:3, overflow:'hidden' }}>
-                <div style={{ width:((3-toNext)/3*100)+'%', height:'100%', background:'var(--blue)', borderRadius:3, transition:'width .6s cubic-bezier(.2,.8,.2,1)' }}></div>
+                <div style={{ width:(weekDone/3*100)+'%', height:'100%', background:weekCleared?'var(--green)':'var(--blue)', borderRadius:3, transition:'width .6s cubic-bezier(.2,.8,.2,1)' }}></div>
               </div>
-              <span style={{ fontSize:10.5, fontWeight:800, color:'var(--orange)', fontFamily:'var(--font-round)', flexShrink:0 }}>あと{toNext}歩</span>
+              {weekCleared ? (
+                <span style={{ display:'inline-flex', alignItems:'center', gap:3, background:'#fff', color:'#c0392b', border:'2px solid #c0392b', borderRadius:6, padding:'2px 8px', fontSize:11, fontWeight:900, fontFamily:'var(--font-round)', letterSpacing:1, transform:'rotate(-6deg)', boxShadow:'2px 2px 0 rgba(192,57,43,.25)', flexShrink:0 }}>CLEAR!</span>
+              ) : (
+                <span style={{ fontSize:10.5, fontWeight:800, color:'var(--orange)', fontFamily:'var(--font-round)', flexShrink:0 }}>あと{weekRemaining}つ</span>
+              )}
             </div>
           </div>
         </div>
@@ -138,7 +137,7 @@ function ChallengeTab({ nav }) {
   const pending = tasks.filter(t => !t.done);
   const idxTasks = tasks.map((t, i) => ({ t, i }));
   const fromTorisetsu = idxTasks.filter(x => !x.t.done && x.t.source === 'future');
-  const otherPending = idxTasks.filter(x => !x.t.done && x.t.source !== 'future');
+  const otherPending = idxTasks.filter(x => !x.t.done);
   const [selected, setSelected] = React.useState(null);
   const [custom, setCustom] = React.useState('');
   const fg = nav.state.futureGoal;
@@ -161,33 +160,19 @@ function ChallengeTab({ nav }) {
 
   return (
     <div className="pad stack">
-      {/* トリセツで決めたチャレンジ（最上部・強調） */}
-      {fromTorisetsu.length > 0 && (
-        <div style={{ background:'#fff5cc', borderRadius:'var(--r-lg)', padding:'14px 15px 15px' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:7, marginBottom:11 }}>
-            <span style={{ width:26, height:26, borderRadius:'50%', background:'var(--orange)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', flexShrink:0 }}><FIcon name="sparkle" size={14} color="#fff" /></span>
-            <div style={{ flex:1 }}>
-              <div style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:14, color:'var(--orange-dark)', lineHeight:1.2 }}>トリセツで決めたチャレンジ</div>
-              <div style={{ fontSize:10.5, color:'#b5651a', fontWeight:600, marginTop:1 }}>成長のヒントから、ここに届いたよ</div>
-            </div>
-          </div>
-          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-            {fromTorisetsu.map(({ t, i }) => (
-              <div key={i} style={{ display:'flex', alignItems:'center', gap:11, background:'#fff', borderRadius:'var(--r-md)', padding:'12px 13px', boxShadow:'var(--shadow-sm)' }}>
-                <span style={{ flexShrink:0, color:'var(--orange)', display:'flex' }}><FIcon name="flag" size={15} color="var(--orange)" /></span>
-                <div style={{ flex:1, minWidth:0 }}>
-                  <div style={{ fontSize:13, fontWeight:700, color:'var(--text)', lineHeight:1.45 }}>{t.text}</div>
-                  <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:3 }}>
-                    <span style={{ fontSize:10, color:'var(--text-sub)' }}>登録日: {t.date}</span>
-                    <CompTag name={t.comp || t.tag} />
-                  </div>
-                </div>
-                <button onClick={() => completeTask(i)} className="btn btn--green btn--sm" style={{ width:'auto', padding:'9px 14px', flexShrink:0 }}>できた！✓</button>
-              </div>
-            ))}
-          </div>
+      {/* めざす成長バナー（チャレンジ中の最上部） */}
+      {fg && (
+        <div style={{ display:'flex', alignItems:'center', gap:8, background:'#fff5cc', border:'2px solid #1f1b16', boxShadow:'3px 3px 0 #1f1b16', borderRadius:12, padding:'10px 12px' }}>
+          <span style={{ fontSize:9.5, letterSpacing:1.2, color:'var(--orange-dark)', fontWeight:800, flexShrink:0 }}>めざす成長</span>
+          <span style={{ display:'inline-flex', alignItems:'center', gap:5, background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:8, padding:'3px 9px', fontFamily:'var(--font-round)', fontWeight:900, fontSize:12, flexShrink:0 }}>
+            <Emo e={fg.icon} size={13} color="#1f1b16" />{fg.name}
+          </span>
+          <span style={{ fontSize:11, color:'var(--text)', fontWeight:700, minWidth:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>「{fg.comp}」をのばす</span>
+          <button onClick={() => { nav.update && nav.update({ torisetsuStep:4, torisetsuDone:true }); nav.tab && nav.tab('home'); }} style={{ marginLeft:'auto', flexShrink:0, background:'#fff', color:'var(--orange-dark)', border:'1.5px solid var(--orange-dark)', borderRadius:999, padding:'4px 10px', fontSize:9.5, fontWeight:800, fontFamily:'var(--font-round)', cursor:'pointer' }}>見直す</button>
         </div>
       )}
+
+      {/* トリセツで決めたチャレンジは非表示 */}
 
       {otherPending.length > 0 && (
         <>
@@ -255,6 +240,7 @@ function ChallengeTab({ nav }) {
 }
 
 function GrowthLogTab({ nav }) {
+  const [mapOpen, setMapOpen] = React.useState(null);
   const baseCompleted = [
     { text:'好きなことを3つ書いた', date:'2025.04.10' },
     { text:'友だちに強みを聞いた', date:'2025.04.08' },
@@ -264,6 +250,26 @@ function GrowthLogTab({ nav }) {
 
   return (
     <div className="pad stack">
+      {/* サマリー */}
+      <div className="card card--flat" style={{ padding:'14px 14px 13px' }}>
+        <div style={{ fontSize:11.5, fontWeight:800, color:'var(--text-sub)', letterSpacing:.5, marginBottom:10, display:'flex', alignItems:'center', gap:6 }}><FIcon name="chart" size={13} color="var(--text-sub)" /> これまでのあしあと</div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:8 }}>
+          {[
+            { label:'やってみた', value:12, unit:'回', color:'var(--orange)' },
+            { label:'チャレンジした日', value:7, unit:'日', color:'var(--blue)' },
+            { label:'使ったコンピテンシー', value:4, unit:'種類', color:'var(--green)' },
+          ].map((s) => (
+            <div key={s.label} style={{ background:'var(--bg)', border:'1.5px solid var(--border)', borderRadius:12, padding:'10px 6px 9px', textAlign:'center' }}>
+              <div style={{ fontFamily:'var(--font-round)', color:s.color, lineHeight:1 }}>
+                <span style={{ fontSize:24, fontWeight:900 }}>{s.value}</span>
+                <span style={{ fontSize:11, fontWeight:800, marginLeft:2 }}>{s.unit}</span>
+              </div>
+              <div style={{ fontSize:10, fontWeight:700, color:'var(--text-sub)', marginTop:6, lineHeight:1.3 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* 最近育った力 */}
       <div className="card">
         <div style={{ fontSize:12.5, fontWeight:800, marginBottom:12, display:'flex', alignItems:'center', gap:6 }}><FIcon name="sprout" size={16} color="var(--green)" /> 最近育った力</div>
@@ -299,24 +305,30 @@ function GrowthLogTab({ nav }) {
         <p style={{ fontSize:12, color:'var(--text-sub)', textAlign:'center', padding:'16px 0' }}>まだ完了したチャレンジがありません。<br/>最初の一歩を踏み出そう！</p>
       )}
 
-      {/* 強みマップ */}
+      {/* チャレンジマップ */}
       <div className="card">
-        <div style={{ fontSize:12.5, fontWeight:800, marginBottom:13, display:'flex', alignItems:'center', gap:6 }}><FIcon name="compass" size={16} color="var(--blue)" /> 強みマップ</div>
-        <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-          {CH_STRENGTH_MAP.map((s) => (
-            <div key={s.name} style={{ display:'flex', alignItems:'center', gap:12 }}>
-              <span style={{ fontSize:13, fontWeight:700, color:'var(--text)', width:56, flexShrink:0 }}>{s.name}</span>
-              <div style={{ display:'flex', gap:8 }}>
-                {[0,1,2].map((d) => (
-                  <span key={d} style={{ width:16, height:16, borderRadius:'50%',
-                    background: d < s.filled ? 'var(--blue)' : '#fff',
-                    border: d < s.filled ? 'none' : '2px solid var(--border)' }}></span>
-                ))}
+        <div style={{ fontSize:12.5, fontWeight:800, marginBottom:13, display:'flex', alignItems:'center', gap:6 }}><FIcon name="compass" size={16} color="var(--blue)" /> チャレンジマップ</div>
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          {CH_STRENGTH_MAP.map((s) => {
+            const open = mapOpen === s.name;
+            return (
+              <div key={s.name} style={{ background: open ? 'var(--blue-soft)' : 'var(--bg)', border:'1.5px solid ' + (open ? 'var(--blue)' : 'var(--border)'), borderRadius:12, transition:'background .2s, border-color .2s' }}>
+                <button onClick={() => setMapOpen(open ? null : s.name)} style={{ display:'flex', alignItems:'center', gap:12, padding:'11px 13px', width:'100%', background:'none', border:'none', cursor:'pointer', textAlign:'left' }}>
+                  <span style={{ fontSize:13, fontWeight:800, color:'var(--text)', flex:1 }}>{s.name}</span>
+                  <span style={{ display:'inline-flex', alignItems:'baseline', gap:2, fontFamily:'var(--font-round)', color:'var(--blue-dark)' }}>
+                    <span style={{ fontSize:22, fontWeight:900, lineHeight:1 }}>{s.count}</span>
+                    <span style={{ fontSize:10.5, fontWeight:800 }}>回</span>
+                  </span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-sub)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: open ? 'rotate(180deg)' : 'none', transition:'transform .2s' }}><polyline points="6 9 12 15 18 9" /></svg>
+                </button>
+                {open && (
+                  <div style={{ padding:'0 13px 12px', fontSize:11.5, color:'var(--text)', lineHeight:1.75 }}>{s.desc}</div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-        <div style={{ fontSize:10.5, color:'var(--text-sub)', marginTop:12, lineHeight:1.6 }}>チャレンジを重ねると、●が増えていくよ</div>
+        <div style={{ fontSize:10.5, color:'var(--text-sub)', marginTop:12, lineHeight:1.6 }}>タップでコンピテンシーの説明が見られるよ</div>
       </div>
     </div>
   );

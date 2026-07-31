@@ -3,27 +3,27 @@ const { useState: useSd, useEffect: useEd, useRef: useRd } = React;
 
 /* 5フェーズ（Big Five）— カラーは仕様準拠：color=上段 / label=ラベル / ans=回答 */
 const DIAG_AXES = [
-  { idx: 1, axis: '外向性', result: 'エネルギッシュな挑戦者', emoji: 'fire',
+  { idx: 1, axis: '外向性', pairLabel: '外向性/内向性', funLabel: 'ワクワク発信', result: 'エネルギッシュな挑戦者', emoji: 'fire',
     color: '#C24634', label: '#F3CABF', ans: '#D98B45',
     attrL: '活発', attrR: '静か',
     wordsL: ['社交的', 'おしゃべり', '行動派', 'ノリがいい', '明るい'],
     wordsR: ['慎重', '聞き役', '控えめ', '落ち着き', 'ひとり時間'] },
-  { idx: 2, axis: '協調性', result: '調和を重んじるサポーター', emoji: 'handshake',
+  { idx: 2, axis: '協調性', pairLabel: '協調性/独立性', funLabel: 'なかまと共に', result: '調和を重んじるサポーター', emoji: 'handshake',
     color: '#2E8560', label: '#C0E2D2', ans: '#5FA98B',
     attrL: '協力', attrR: 'わが道',
     wordsL: ['思いやり', 'やさしい', '世話好き', 'チームワーク', '気配り'],
     wordsR: ['単独行動', '自分優先', 'ドライ', '競争心', 'マイペース'] },
-  { idx: 3, axis: '誠実性', result: '意志の強い努力家', emoji: 'target',
+  { idx: 3, axis: '誠実性', pairLabel: '自律性/自由性', funLabel: 'やりぬく力', result: '意志の強い努力家', emoji: 'target',
     color: '#4A3E9E', label: '#CFC9EE', ans: '#7C6EC8',
     attrL: '計画的', attrR: '気分屋',
     wordsL: ['コツコツ', '几帳面', '責任感', '準備万端', 'きっちり'],
     wordsR: ['気まぐれ', '後回し', '思いつき', '飽きっぽい', 'ゆるい'] },
-  { idx: 4, axis: '情緒安定性', result: 'リスクを察知する慎重な守り手', emoji: 'compass',
+  { idx: 4, axis: '情緒安定性', pairLabel: '繊細性/平穏性', funLabel: 'こころアンテナ', result: 'リスクを察知する慎重な守り手', emoji: 'compass',
     color: '#3457A0', label: '#C3D2EC', ans: '#4F86A8',
     attrL: 'どっしり', attrR: '敏感',
     wordsL: ['冷静', '平常心', '楽観的', '切り替え上手', 'リラックス'],
     wordsR: ['心配性', 'ドキドキ', '繊細', '緊張しやすい', '気にしがち'] },
-  { idx: 5, axis: '開放性', result: '知的好奇心旺盛な探求者', emoji: 'search',
+  { idx: 5, axis: '開放性', pairLabel: '開放性/保守性', funLabel: 'ひらめき探検', result: '知的好奇心旺盛な探求者', emoji: 'search',
     color: '#8A5A2E', label: '#EDD8BE', ans: '#C08A42',
     attrL: '挑戦', attrR: 'いつも通り',
     wordsL: ['好奇心', 'アイデア', '冒険', '新しいもの', '想像力'],
@@ -54,6 +54,46 @@ const buildQuestions = (ax) => seededShuffle([
   ...OTHER_WORDS.map(w => ({ word: w, side: 'R' })),
   { word: ax.wordsL[0], side: 'L' }, { word: ax.wordsR[0], side: 'R' },
 ], ax.idx * 17 + 7).slice(0, QUESTIONS_PER_PHASE);
+
+/* ─────────── 進捗プログレス（共通） ─────────── */
+function PhaseProgress({ done = -1, next = -1, headerLeft, headerRight }) {
+  return (
+    <div style={{ background: 'var(--blue-soft)', borderRadius: 'var(--r-lg)', padding: '14px 14px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+        <span style={{ fontSize: 11.5, color: 'var(--blue-dark)', fontWeight: 800 }}>{headerLeft}</span>
+        {headerRight && <span style={{ fontSize: 11, color: 'var(--blue-dark)', fontWeight: 700 }}>{headerRight}</span>}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${DIAG_AXES.length}, 1fr)`, gap: 8, alignItems: 'start' }}>
+        {DIAG_AXES.map((a, i) => {
+          const isDone = i <= done;
+          const isNext = i === next;
+          const active = isDone || isNext;
+          const circleBg = active ? 'var(--blue)' : '#e5dbc0';
+          const circleFg = active ? '#fff' : '#a89974';
+          const barBg = active ? 'var(--blue)' : '#e5dbc0';
+          const [top, bot] = (a.pairLabel || a.axis).split('/');
+          return (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 7, alignItems: 'stretch', textAlign: 'center' }}>
+              <div style={{ width: 38, height: 38, borderRadius: '50%', margin: '0 auto', background: circleBg, color: circleFg,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 15 }}>
+                {isDone
+                  ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  : (i + 1)}
+              </div>
+              <div style={{ height: 5, borderRadius: 999, background: barBg }}></div>
+              <div style={{ fontFamily: 'var(--font-round)', fontSize: 10, lineHeight: 1.35,
+                fontWeight: isNext ? 900 : isDone ? 800 : 700,
+                color: active ? 'var(--blue-dark)' : 'var(--text-sub)',
+                opacity: !active ? 0.75 : 1 }}>
+                <div>{top}</div>{bot && <div>{bot}</div>}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 /* ─────────── 診断開始モーダル ─────────── */
 function StartDiagModal({ onStart }) {
@@ -114,7 +154,7 @@ function StartDiagScreen() {
   const startDiag = () => {
     // 気質診断のみリセット（自己評価・相互評価の進捗は消さない）
     nav.update(s => ({ diag: { answers: {}, done: false, type: null } }));
-    nav.go('diag-game', { round: 0 });
+    nav.go('diag-words', { round: 0 });
   };
 
   return (
@@ -131,6 +171,12 @@ function StartDiagScreen() {
           </p>
         </div>
         <div style={{ flexShrink: 0, padding: '0 24px 26px' }}>
+          <div style={{ marginBottom: 16 }}>
+            <PhaseProgress done={-1} next={0} headerLeft={`全 ${DIAG_AXES.length} フェーズ`} headerRight="今からスタート！" />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: '#fff4ef', border: '1px solid #ffd3c9', borderRadius: 10, padding: '9px 12px', marginBottom: 12, fontSize: 12, fontWeight: 700, color: 'var(--orange-dark)' }}>
+            一度回答した質問には戻れません
+          </div>
           <button className="btn btn--cta btn--lg" onClick={startDiag}>診断をはじめる</button>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-sub)', marginTop: 12 }}>1 フェーズ 約 5 分</p>
         </div>
@@ -393,18 +439,11 @@ function DiagResultScreen() {
             <p style={{ fontSize: 12, color: '#388E3C', fontWeight: 600, lineHeight: 1.7 }}>お疲れさま！続けて「自己評価」に進もう。</p>
           </div>
         ) : (
-          <div style={{ background: 'var(--blue-soft)', borderRadius: 'var(--r-lg)', padding: '12px 14px' }}>
-            <div style={{ fontSize: 11, color: 'var(--blue-dark)', fontWeight: 800, marginBottom: 6 }}>あと {remaining} フェーズ</div>
-            <div style={{ display: 'flex', gap: 4 }}>
-              {DIAG_AXES.map((a, i) => (
-                <div key={i} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= round ? a.color : 'var(--border)' }}></div>
-              ))}
-            </div>
-          </div>
+          <PhaseProgress done={round} next={isLast ? -1 : round + 1} headerLeft={`${round + 1} / ${DIAG_AXES.length} フェーズ 完了`} headerRight={isLast ? 'すべて完了！' : `あと ${remaining} フェーズ`} />
         )}
 
         <button className="btn btn--cta btn--lg"
-          onClick={() => isLast ? nav.go('diag-complete', { kind: 'diag' }) : nav.go('diag-game', { round: round + 1 })}>
+          onClick={() => isLast ? nav.go('diag-complete', { kind: 'diag' }) : nav.go('diag-words', { round: round + 1 })}>
           {isLast ? '気質診断を完了する' : '次へすすむ'}
         </button>
         <p style={{ fontSize: 11, color: 'var(--text-sub)', textAlign: 'center' }}>1 フェーズ 約 5 分</p>
@@ -413,4 +452,68 @@ function DiagResultScreen() {
   );
 }
 
-Object.assign(window, { StartDiagScreen, DiagGameScreen, DiagResultScreen, DIAG_AXES });
+/* ─────────── フェーズごとの 使用ワード確認画面 ─────────── */
+const DIAG_SELF_LABEL = { label: '自分', words: SELF_WORDS };
+const DIAG_OTHER_LABEL = { label: '他人', words: OTHER_WORDS };
+
+function DiagWordsScreen() {
+  const nav = useNav();
+  const round = (nav.params && nav.params.round) || 0;
+  const ax = DIAG_AXES[round];
+
+  const CAT = ({ title, words, isTop }) => (
+    <div style={{ border: `2px solid ${ax.ans}`, borderRadius: 12, overflow: 'hidden', background: '#fff', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ background: isTop ? ax.color : ax.label, color: isTop ? '#fff' : ax.color, fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 15, textAlign: 'center', padding: '11px 6px' }}>{title}</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: 10 }}>
+        {words.map(w => (
+          <div key={w} style={{ border: `1.5px solid ${ax.ans}`, borderRadius: 8, color: 'var(--text)', fontWeight: 600, fontSize: 13, textAlign: 'center', padding: '9px 4px', background: '#fff' }}>{w}</div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="screen screen--white">
+      <StatusBar />
+      <div style={{ flexShrink: 0, background: ax.color, color: '#fff', display: 'flex', alignItems: 'center', padding: '0 16px 0 8px', height: 48 }}>
+        <button onClick={() => round === 0 ? nav.go('start-diag') : nav.go('diag-result', { round: round - 1 })}
+          style={{ border: 'none', background: 'none', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', width: 34, height: 48, padding: 0 }}>
+          <Icon name="back" size={19} />
+        </button>
+        <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 15.5 }}>フェーズ{ax.idx} - 使用ワード確認</div>
+        <div style={{ marginLeft: 'auto', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 13 }}>{ax.axis}</div>
+      </div>
+
+      <div className="scroll pad stack" style={{ paddingBottom: 8 }}>
+        <div style={{ background: 'var(--surface)', border: `1.5px solid ${ax.label}`, borderRadius: 'var(--r-md)', padding: '14px 16px' }}>
+          <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 8, fontFamily: 'var(--font-round)', color: ax.color }}>注意</div>
+          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8, margin: 0, padding: 0 }}>
+            {[
+              '上に表示される2つのカードのどちらかに分類されることばが、まん中に表示されます。各ことばには正しい分類があります。',
+              '反応が遅かった場合には、正しく計測できません。できるだけ早く反応するようにしてください。',
+              '集中できる環境で実施してください。',
+            ].map((t, i) => (
+              <li key={i} style={{ display: 'flex', gap: 8, fontSize: 12, color: 'var(--text-sub)', lineHeight: 1.7, fontWeight: 500 }}>
+                <span style={{ color: ax.color, flexShrink: 0, fontWeight: 900 }}>・</span><span>{t}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <CAT title={DIAG_SELF_LABEL.label} words={DIAG_SELF_LABEL.words} isTop={true} />
+          <CAT title={DIAG_OTHER_LABEL.label} words={DIAG_OTHER_LABEL.words} isTop={true} />
+          <CAT title={ax.attrL} words={ax.wordsL} isTop={false} />
+          <CAT title={ax.attrR} words={ax.wordsR} isTop={false} />
+        </div>
+      </div>
+
+      <div style={{ flexShrink: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, padding: '12px 16px 18px', borderTop: '1px solid var(--border-soft)', background: '#fff' }}>
+        <button className="btn btn--outline btn--lg" onClick={() => round === 0 ? nav.go('start-diag') : nav.go('diag-result', { round: round - 1 })}>取消</button>
+        <button className="btn btn--cta btn--lg" onClick={() => nav.go('diag-game', { round })}>理解した</button>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { StartDiagScreen, DiagWordsScreen, DiagGameScreen, DiagResultScreen, DIAG_AXES });

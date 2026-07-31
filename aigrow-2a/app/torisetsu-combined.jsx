@@ -189,7 +189,7 @@ function Character({ size = 60, item = 'bulb', body = 'blob' }) {
 }
 
 // ── Shell Components ──────────────────────────────────────
-function StickyHero({ collapsed }) {
+function StickyHero({ collapsed, fg }) {
   return (
     <div style={{ background: TC.blueGrad, borderBottom: '2px solid #1f1b16', padding: collapsed ? '9px 18px' : '14px 18px 16px', flexShrink: 0, transition: 'padding .25s ease' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -198,14 +198,14 @@ function StickyHero({ collapsed }) {
           <div style={{ fontSize: 10, color: 'rgba(255,255,255,.7)', fontWeight: 700, letterSpacing: .8, marginBottom: 3 }}>キミのトリセツ　総合タイプ</div>}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
             <div style={{ fontFamily: TC.fontRound, fontSize: collapsed ? 15 : 20, fontWeight: 900, color: '#fff', lineHeight: 1.2, transition: 'font-size .25s ease', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>「{TORI.typeTitle}」</div>
-            {collapsed &&
-            <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 10, fontWeight: 800, fontFamily: TC.fontRound, flexShrink: 0, transform: 'rotate(3deg)' }}>Lv.3</div>}
+            {collapsed && fg &&
+            <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 10, fontWeight: 800, fontFamily: TC.fontRound, flexShrink: 0, transform: 'rotate(3deg)', whiteSpace: 'nowrap', maxWidth: 170, overflow: 'hidden', textOverflow: 'ellipsis' }}>{fg.name}に挑戦中</div>}
           </div>
         </div>
         {!collapsed &&
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
           <Character size={58} body="bubble" item="magnifier" />
-          <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 10, fontWeight: 800, fontFamily: TC.fontRound, marginTop: -2, transform: 'rotate(3deg)' }}>Lv.3</div>
+          {fg && <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 10, fontWeight: 800, fontFamily: TC.fontRound, marginTop: -2, transform: 'rotate(3deg)', whiteSpace: 'nowrap', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis' }}>{fg.name}に挑戦中</div>}
         </div>}
         <HeaderMenu dark />
       </div>
@@ -870,7 +870,7 @@ function TorisetsuCombined({ initialTab = 0 }) {
   return (
     <div className="screen" style={{ background: TC.bg, fontFamily: TC.font, position: 'relative' }}>
       <StatusBar />
-      <StickyHero collapsed={collapsed} />
+      <StickyHero collapsed={collapsed} fg={nav.state && nav.state.futureGoal} />
       <div style={{ padding: '12px 14px 2px', flexShrink: 0 }}>
         <div style={{ display: 'flex', gap: 4, background: '#fff', border: '2px solid #1f1b16', borderRadius: 999, padding: 4, boxShadow: '3px 3px 0 #1f1b16' }}>
           {segBtn(1, '今のキミ')}
@@ -890,4 +890,73 @@ function TorisetsuCombined({ initialTab = 0 }) {
 }
 
 
-Object.assign(window, { TorisetsuCombined, ChallengeTab, EvolutionTreePage, Character });
+// ── ホーム（トリセツ）: 自己評価のみ受検パターン ─────────────
+// 「今のキミ」= 完了サマリー（自己評価版） / 「成長のヒント」= 他者評価レーダーなし
+function SelfStickyHero({ collapsed }) {
+  return (
+    <div style={{ background: TC.blueGrad, borderBottom: '2px solid #1f1b16', padding: collapsed ? '9px 18px' : '14px 18px 16px', flexShrink: 0, transition: 'padding .25s ease' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          {!collapsed &&
+          <div style={{ fontSize: 10, color: 'rgba(255,255,255,.7)', fontWeight: 700, letterSpacing: .8, marginBottom: 3 }}>今のキミ　自己評価の結果</div>}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+            <div style={{ fontFamily: TC.fontRound, fontSize: collapsed ? 15 : 20, fontWeight: 900, color: '#fff', lineHeight: 1.2, transition: 'font-size .25s ease', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>「探索者」</div>
+            {collapsed &&
+            <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 10, fontWeight: 800, fontFamily: TC.fontRound, flexShrink: 0, transform: 'rotate(3deg)' }}>自己評価</div>}
+          </div>
+        </div>
+        {!collapsed &&
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+          <Character size={58} body="arrow" item="magnifier" />
+          <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 9.5, fontWeight: 800, fontFamily: TC.fontRound, marginTop: -2, transform: 'rotate(3deg)' }}>自己評価</div>
+        </div>}
+        <HeaderMenu dark />
+      </div>
+    </div>);
+}
+
+function TorisetsuSelfHome({ initialStep = 1 }) {
+  const nav = useNav();
+  const [step, setStep] = useTc(Math.min(2, Math.max(1, initialStep)));
+  const [collapsed, setCollapsed] = useTc(false);
+  const scrollRef = React.useRef(null);
+  const SelfSummary = window.SelfSummarySection;
+  const Future = window.TorisetsuFuture;
+  const goStep = (n) => {
+    const next = Math.min(2, Math.max(1, n));
+    setStep(next);
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+    setCollapsed(false);
+  };
+  const segBtn = (n, label) => (
+    <button key={n} onClick={() => goStep(n)} style={{ flex: 1, padding: '9px 4px', borderRadius: 999, border: step === n ? '2px solid #1f1b16' : '2px solid transparent', background: step === n ? '#ffd633' : 'transparent', color: TC.text, fontWeight: 800, fontSize: 12.5, fontFamily: TC.fontRound, cursor: 'pointer', boxShadow: step === n ? '2px 2px 0 #1f1b16' : 'none', transition: 'all .15s' }}>{label}</button>
+  );
+
+  return (
+    <div className="screen" style={{ background: TC.bg, fontFamily: TC.font, position: 'relative' }}>
+      <StatusBar />
+      <SelfStickyHero collapsed={collapsed} />
+      <div style={{ padding: '12px 14px 2px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: 4, background: '#fff', border: '2px solid #1f1b16', borderRadius: 999, padding: 4, boxShadow: '3px 3px 0 #1f1b16' }}>
+          {segBtn(1, '今のキミ')}
+          {segBtn(2, '成長のヒント')}
+        </div>
+      </div>
+      <div ref={scrollRef} onScroll={(e) => { const t = e.target.scrollTop; setCollapsed((c) => c ? t > 12 : t > 40); }} style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden', WebkitOverflowScrolling: 'touch' }}>
+        <div style={{ padding: '14px 14px', display: 'flex', flexDirection: 'column', gap: 14, paddingBottom: 24 }}>
+          <div key={step} className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {step === 1 && (
+              <>
+                {SelfSummary && <SelfSummary />}
+                <StepReaction nav={nav} step={1} onGrow={() => goStep(2)} />
+              </>
+            )}
+            {step === 2 && Future && <Future nav={nav} step={step} selfOnly goBack={() => goStep(1)} goChallenge={() => nav && nav.go('challenge', { tab: 'challenge' })} />}
+          </div>
+        </div>
+      </div>
+    </div>);
+}
+
+
+Object.assign(window, { TorisetsuCombined, TorisetsuSelfHome, ChallengeTab, EvolutionTreePage, Character });

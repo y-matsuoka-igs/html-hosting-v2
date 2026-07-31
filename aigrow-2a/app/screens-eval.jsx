@@ -99,7 +99,7 @@ function EvalQuestion({ kind, qList, accent, label, store, onComplete, nameSub }
   return (
     <div className="screen screen--white">
       <StatusBar />
-      <AppHeader noMenu />
+      <AppHeader right={<button onClick={() => nav.tab ? nav.tab('exam') : nav.go('exam')} style={{ display:'flex', alignItems:'center', gap:5, background:'var(--bg)', border:'1.5px solid var(--border)', borderRadius:999, padding:'6px 13px', fontSize:12, fontWeight:800, fontFamily:'var(--font)', color:'var(--text-sub)', cursor:'pointer', WebkitTapHighlightColor:'transparent' }}>中断</button>} />
       <div style={{ padding: '10px 16px 0', flexShrink: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <span style={{ fontSize: 11.5, color: 'var(--text-sub)', fontWeight: 700 }}>{label}　Q{q + 1} / {total}</span>
@@ -165,7 +165,7 @@ function StrengthEvalScreen() {
   return (
     <div className="screen screen--white">
       <StatusBar />
-      <AppHeader noMenu />
+      <AppHeader right={<button onClick={() => nav.tab ? nav.tab('exam') : nav.go('exam')} style={{ display:'flex', alignItems:'center', gap:5, background:'var(--bg)', border:'1.5px solid var(--border)', borderRadius:999, padding:'6px 13px', fontSize:12, fontWeight:800, fontFamily:'var(--font)', color:'var(--text-sub)', cursor:'pointer', WebkitTapHighlightColor:'transparent' }}>中断</button>} />
       <div style={{ padding: '10px 16px 0', flexShrink: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <span style={{ fontSize: 11.5, color: 'var(--text-sub)', fontWeight: 700 }}>相互評価　強み（フリーワード）</span>
@@ -210,7 +210,7 @@ function StrengthEvalScreen() {
         </div>
         <button className="btn btn--lg" disabled={tags.length === 0}
           style={{ background: tags.length === 0 ? 'var(--border)' : accent, color: '#fff', boxShadow: tags.length === 0 ? 'none' : 'var(--shadow)' }}
-          onClick={() => nav.go('task-complete')}>次へ</button>
+          onClick={() => nav.go('other-complete', { kind: 'other' })}>次へ</button>
       </div>
     </div>
   );

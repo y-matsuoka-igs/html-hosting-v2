@@ -789,7 +789,7 @@ const HINT_SELF  = [0.88, 0.55, 0.62, 0.45, 0.40, 0.78];
 const HINT_OTHER = [0.80, 0.62, 0.70, 0.56, 0.44, 0.70];
 const HINT_BOOST = { producer:2, driver:1, innovator:0, cocreator:3, pioneer:5 };
 
-function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
+function TorisetsuFuture({ nav, goChallenge, step, goBack, selfOnly }) {
   const saved = (nav.state && nav.state.career) || {};
   const [selId, setSelId] = useTJ(saved.goalId || null);
   const previewRef = React.useRef(null);
@@ -831,7 +831,7 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
   const polyOther = HINT_OTHER.map((v, i) => pt(i, R*v).join(',')).join(' ');
   const boostIdx = selId != null ? HINT_BOOST[selId] : null;
   const futureVals = HINT_SELF.map((v, i) => {
-    const base = Math.max(v, HINT_OTHER[i]);
+    const base = selfOnly ? v : Math.max(v, HINT_OTHER[i]);
     return i === boostIdx ? Math.min(base + 0.28, 0.99) : base;
   });
   const polyFuture = futureVals.map((v, i) => pt(i, R*v).join(',')).join(' ');
@@ -844,21 +844,21 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack }) {
       {/* ── 成分ブレンド レーダー（自己 × 他者） ── */}
       <div style={{ background:'#fff', border:'1.5px solid #e3d9c4', borderRadius:16, padding:'13px 8px 10px' }}>
         <div style={{ padding:'0 10px' }}>
-          <div style={{ fontSize:13, fontWeight:900, fontFamily:TJ.round }}>今のキミの成分ブレンド</div>
-          <div style={{ fontSize:9.5, color:'#a89e8a', fontWeight:700, marginTop:2 }}>自己評価と、みんなから見たキミを重ねたよ</div>
+          <div style={{ fontSize:13, fontWeight:900, fontFamily:TJ.round }}>{selfOnly ? '今のキミの成分（自己評価）' : '今のキミの成分ブレンド'}</div>
+          <div style={{ fontSize:9.5, color:'#a89e8a', fontWeight:700, marginTop:2 }}>{selfOnly ? '自己評価から見た、今のキミのバランスだよ' : '自己評価と、みんなから見たキミを重ねたよ'}</div>
         </div>
         <svg viewBox={'0 0 ' + W + ' 256'} style={{ width:'100%', display:'block' }}>
           {[0.33, 0.66, 1].map(g => <polygon key={g} points={ring(g)} fill="none" stroke="#e9e0cc" strokeWidth="1" />)}
           {HINT_AXES.map((_, i) => { const [x, y] = pt(i, R); return <line key={i} x1={CX} y1={CY} x2={x} y2={y} stroke="#e9e0cc" strokeWidth="1" />; })}
           <polygon points={polySelf} fill="rgba(49,92,250,.14)" stroke="#315cfa" strokeWidth="2.5" strokeLinejoin="round" />
-          <polygon points={polyOther} fill="rgba(46,133,96,.10)" stroke="#2E8560" strokeWidth="2.5" strokeLinejoin="round" />
+          {!selfOnly && <polygon points={polyOther} fill="rgba(46,133,96,.10)" stroke="#2E8560" strokeWidth="2.5" strokeLinejoin="round" />}
           {sel && <polygon points={polyFuture} fill="rgba(255,107,94,.08)" stroke="#ff6b5e" strokeWidth="2.5" strokeDasharray="5 5" strokeLinejoin="round" />}
           {sel && boostIdx != null && (() => { const [dx, dy] = pt(boostIdx, R*futureVals[boostIdx]); return <circle cx={dx} cy={dy} r="4.5" fill="#ff6b5e" stroke="#fff" strokeWidth="2" />; })()}
           {HINT_AXES.map((l, i) => { const [lx, ly] = pt(i, R + 20); return <text key={l} x={lx} y={ly} textAnchor="middle" dominantBaseline="middle" fontSize="10" fontWeight="800" fill={i === boostIdx && sel ? '#ff6b5e' : '#5c5546'} fontFamily={TJ.round}>{l}</text>; })}
         </svg>
         <div style={{ display:'flex', justifyContent:'center', gap:13, flexWrap:'wrap', padding:'2px 8px 4px' }}>
           <span style={legendItem}><span style={{ width:10, height:10, borderRadius:'50%', background:'#315cfa' }}></span>自己</span>
-          <span style={legendItem}><span style={{ width:10, height:10, borderRadius:'50%', background:'#2E8560' }}></span>他者</span>
+          {!selfOnly && <span style={legendItem}><span style={{ width:10, height:10, borderRadius:'50%', background:'#2E8560' }}></span>他者</span>}
           <span style={legendItem}><span style={{ width:16, height:0, borderTop:'2.5px dashed #ff6b5e', display:'inline-block' }}></span>力を足した未来</span>
         </div>
         {sel ? (
