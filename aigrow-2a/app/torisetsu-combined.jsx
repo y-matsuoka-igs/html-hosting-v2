@@ -24,7 +24,7 @@ const TC = {
 
 // ── コンテンツデータ ───────────────────────────────────────
 const TORI = {
-  typeTitle: '探索する創造者',
+  typeTitle: '探索するシェイパー',
   typeSub: 'アイデアと実行力を兼ね備えた',
   strengths: ['個人的実行力', '創造力', '表現力', '影響力の行使'],
   strengthDesc: 'アイデアを生み出し、それを自分の力で形にしながら、言葉や行動で周囲に伝え、人を巻き込みながら実現していく力があります。',
@@ -204,8 +204,10 @@ function StickyHero({ collapsed, fg }) {
         </div>
         {!collapsed &&
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-          <Character size={58} body="bubble" item="magnifier" />
-          {fg && <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 10, fontWeight: 800, fontFamily: TC.fontRound, marginTop: -2, transform: 'rotate(3deg)', whiteSpace: 'nowrap', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis' }}>{fg.name}に挑戦中</div>}
+          <div style={{ width: 82, height: 82, borderRadius: '50%', background: '#fff', border: '2.5px solid #1f1b16', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+            <img src="assets/shaper.svg" alt="探索するシェイパー" style={{ height:78, width:'auto', display:'block', marginBottom:-4 }} />
+          </div>
+          {fg && <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 10, fontWeight: 800, fontFamily: TC.fontRound, marginTop: -13, position: 'relative', zIndex: 2, transform: 'rotate(3deg)', whiteSpace: 'nowrap', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis' }}>{fg.name}に挑戦中</div>}
         </div>}
         <HeaderMenu dark />
       </div>
@@ -900,15 +902,17 @@ function SelfStickyHero({ collapsed }) {
           {!collapsed &&
           <div style={{ fontSize: 10, color: 'rgba(255,255,255,.7)', fontWeight: 700, letterSpacing: .8, marginBottom: 3 }}>今のキミ　自己評価の結果</div>}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-            <div style={{ fontFamily: TC.fontRound, fontSize: collapsed ? 15 : 20, fontWeight: 900, color: '#fff', lineHeight: 1.2, transition: 'font-size .25s ease', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>「探索者」</div>
+            <div style={{ fontFamily: TC.fontRound, fontSize: collapsed ? 15 : 20, fontWeight: 900, color: '#fff', lineHeight: 1.2, transition: 'font-size .25s ease', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>「探索する者」</div>
             {collapsed &&
             <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 10, fontWeight: 800, fontFamily: TC.fontRound, flexShrink: 0, transform: 'rotate(3deg)' }}>自己評価</div>}
           </div>
         </div>
         {!collapsed &&
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-          <Character size={58} body="arrow" item="magnifier" />
-          <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 9.5, fontWeight: 800, fontFamily: TC.fontRound, marginTop: -2, transform: 'rotate(3deg)' }}>自己評価</div>
+          <div style={{ width: 82, height: 82, borderRadius: '50%', background: '#fff', border: '2.5px solid #1f1b16', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+            <img src="assets/finder.svg" alt="探索する者" style={{ height: 78, width: 'auto', display: 'block', marginBottom: -4 }} />
+          </div>
+          <div style={{ background: TC.gold, color: '#1f1b16', border: '1.5px solid #1f1b16', borderRadius: 6, padding: '2px 9px', fontSize: 9.5, fontWeight: 800, fontFamily: TC.fontRound, marginTop: -13, position: 'relative', zIndex: 2, transform: 'rotate(3deg)' }}>自己評価</div>
         </div>}
         <HeaderMenu dark />
       </div>

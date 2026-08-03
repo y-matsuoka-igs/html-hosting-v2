@@ -162,22 +162,19 @@ function StartDiagScreen() {
       <StatusBar />
       <AppHeader sub="気質診断" noMenu />
       <div className="scroll" style={{ display: 'flex', flexDirection: 'column' }}>
-        <div style={{ flex: 1, minHeight: 480, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '12px 30px 24px', gap: 6 }}>
+        <div style={{ flex: 1, minHeight: 250, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '10px 30px 14px', gap: 6 }}>
           <Pill style={{ background: 'var(--blue-soft)', color: 'var(--blue-dark)' }}>STEP 1 / 3</Pill>
-          <div style={{ margin: '18px 0 6px', display:'flex', justifyContent:'center', color:'var(--blue)' }}><FIcon name="search" size={64} sw={1.6} /></div>
-          <h1 style={{ fontSize: 22, fontWeight: 900, lineHeight: 1.5 }}>まずは、キミのタイプを<br/>サクッとチェック！</h1>
-          <p style={{ fontSize: 13.5, color: 'var(--text-sub)', fontWeight: 600, marginTop: 8, lineHeight: 1.7 }}>
+          <div style={{ margin: '14px 0 4px', display:'flex', justifyContent:'center', color:'var(--blue)' }}><FIcon name="search" size={52} sw={1.6} /></div>
+          <h1 style={{ fontSize: 21, fontWeight: 900, lineHeight: 1.5 }}>まずは、キミのタイプを<br/>サクッとチェック！</h1>
+          <p style={{ fontSize: 13, color: 'var(--text-sub)', fontWeight: 600, marginTop: 8, lineHeight: 1.7 }}>
             ことばを左右のカードに仕分けるゲーム。<br/>5つのフェーズでキミの気質がわかるよ。
           </p>
         </div>
         <div style={{ flexShrink: 0, padding: '0 24px 26px' }}>
           <div style={{ marginBottom: 16 }}>
-            <PhaseProgress done={-1} next={0} headerLeft={`全 ${DIAG_AXES.length} フェーズ`} headerRight="今からスタート！" />
+            <DiagResultStack round={-1} />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: '#fff4ef', border: '1px solid #ffd3c9', borderRadius: 10, padding: '9px 12px', marginBottom: 12, fontSize: 12, fontWeight: 700, color: 'var(--orange-dark)' }}>
-            一度回答した質問には戻れません
-          </div>
-          <button className="btn btn--cta btn--lg" onClick={startDiag}>診断をはじめる</button>
+          <button className="btn btn--cta btn--lg" onClick={startDiag}>ゲームをはじめる</button>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-sub)', marginTop: 12 }}>1 フェーズ 約 5 分</p>
         </div>
       </div>
@@ -387,6 +384,56 @@ function DiagGameScreen() {
   );
 }
 
+/* ─────────── 結果が積み上がる表現 ─────────── */
+function DiagResultStack({ round }) {
+  const total = DIAG_AXES.length;
+  const doneCount = round + 1;
+  const remaining = total - doneCount;
+  const rot = [-1.1, 0.8, -0.6, 1, -0.4];
+  return (
+    <div style={{ background: 'linear-gradient(180deg,#fffdf6 0%,#fff6e2 100%)', border: '2px solid #1f1b16', boxShadow: '3px 3px 0 #1f1b16', borderRadius: 'var(--r-lg)', padding: '10px 12px 12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+        {doneCount > 0 && <span style={{ fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 12 }}>キミのカケラが積み上がる</span>}
+        <span style={{ fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 11.5, color: 'var(--blue-dark, #2447c9)', whiteSpace: 'nowrap' }}>{doneCount} / {total} 個</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+        {Array.from({ length: remaining }).map((_, k) => {
+          const idx = total - 1 - k;
+          return (
+            <div key={'g' + idx} style={{ width: 'calc(80% - ' + ((remaining - k) * 4) + 'px)', height: 22, borderRadius: 7, border: '1.5px dashed #d9cdb6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#b8ac99', fontSize: 9.5, fontWeight: 800, fontFamily: 'var(--font-round)' }}>
+              フェーズ{DIAG_AXES[idx].idx}　{DIAG_AXES[idx].pairLabel}
+            </div>
+          );
+        })}
+        {Array.from({ length: doneCount }).map((_, k) => {
+          const idx = doneCount - 1 - k;
+          const a = DIAG_AXES[idx];
+          const isNew = idx === round;
+          return (
+            <div key={a.axis}
+              style={{ width: 'calc(80% + ' + (k * 8) + 'px)', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 7,
+                background: isNew ? a.label : '#fff', border: '2px solid #1f1b16', boxShadow: '2px 2px 0 #1f1b16', borderRadius: 9, padding: '6px 10px',
+                transform: 'rotate(' + rot[idx % rot.length] + 'deg)',
+                animation: isNew ? 'tDrop .55s cubic-bezier(.2,.9,.25,1.1) both' : 'tRise .35s ease both',
+                animationDelay: isNew ? '.15s' : (k * 0.05) + 's' }}>
+              <span style={{ width: 20, height: 20, flexShrink: 0, borderRadius: 6, background: a.color, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <FIcon name={a.emoji} size={12} color="#fff" />
+              </span>
+              <span style={{ flexShrink: 0, fontSize: 9, fontWeight: 800, color: 'var(--text-sub)' }}>{a.axis}</span>
+              <span style={{ flex: 1, minWidth: 0, textAlign: 'left', fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 11.5, color: '#1f1b16', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{a.result}</span>
+              {isNew && <span style={{ flexShrink: 0, background: '#1f1b16', color: '#ffd633', borderRadius: 999, padding: '1px 6px', fontSize: 8.5, fontWeight: 900, fontFamily: 'var(--font-round)' }}>NEW</span>}
+            </div>
+          );
+        })}
+        <div style={{ width: 'calc(80% + ' + (doneCount * 8 + 10) + 'px)', maxWidth: '100%', height: 6, borderRadius: 3, background: '#1f1b16', opacity: .85 }}></div>
+      </div>
+      <div style={{ textAlign: 'center', fontSize: 9.5, fontWeight: 700, color: 'var(--text-sub)', marginTop: 7 }}>
+        {doneCount === 0 ? 'これからキミの気質を１つずつ積み上げていこう' : remaining > 0 ? 'あと ' + remaining + ' 個で、キミの気質がそろうよ' : 'すべてのカケラがそろった！'}
+      </div>
+    </div>
+  );
+}
+
 /* ─────────── 軸別 結果 ─────────── */
 function DiagResultScreen() {
   const nav = useNav();
@@ -399,22 +446,6 @@ function DiagResultScreen() {
     <div className="screen screen--white">
       <StatusBar />
       <AppHeader noMenu />
-      {/* step indicator */}
-      <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border-soft)', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          {DIAG_AXES.map((a, i) => (
-            <React.Fragment key={i}>
-              {i > 0 && <div style={{ flex: 1, height: 2, background: 'var(--border)' }}></div>}
-              <div style={{ width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#fff',
-                background: i < round ? 'var(--green)' : i === round ? a.color : 'var(--border)' }}>
-                {i < round ? '✓' : i + 1}
-              </div>
-            </React.Fragment>
-          ))}
-        </div>
-        <div style={{ fontSize: 10, color: 'var(--text-sub)', textAlign: 'center', marginTop: 6, fontWeight: 700 }}>フェーズ {ax.idx} / 5</div>
-      </div>
-
       <div className="scroll pad stack">
         <div style={{ textAlign: 'center', paddingTop: 6 }}>
           <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 700 }}>フェーズ {ax.idx} / 5　結果</div>
@@ -433,13 +464,13 @@ function DiagResultScreen() {
           <p style={{ fontSize: 12.5, color: 'var(--text-sub)', lineHeight: 1.7 }}>スコアは優劣ではなく、キミがどのような場面で力を発揮しやすいかの傾向を示しています。引き続き診断を進めましょう。</p>
         </div>
 
-        {isLast ? (
+        <DiagResultStack round={round} />
+
+        {isLast && (
           <div style={{ background: 'var(--green-soft)', borderRadius: 'var(--r-lg)', padding: 16, textAlign: 'center' }}>
             <div style={{ fontFamily: 'var(--font-round)', fontSize: 16, fontWeight: 800, color: '#2E7D32', marginBottom: 4 }}><span style={{display:'inline-flex',alignItems:'center',gap:6}}><FIcon name="party" size={16} color="#2E7D32" /> 気質診断 完了！</span></div>
             <p style={{ fontSize: 12, color: '#388E3C', fontWeight: 600, lineHeight: 1.7 }}>お疲れさま！続けて「自己評価」に進もう。</p>
           </div>
-        ) : (
-          <PhaseProgress done={round} next={isLast ? -1 : round + 1} headerLeft={`${round + 1} / ${DIAG_AXES.length} フェーズ 完了`} headerRight={isLast ? 'すべて完了！' : `あと ${remaining} フェーズ`} />
         )}
 
         <button className="btn btn--cta btn--lg"

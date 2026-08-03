@@ -29,7 +29,7 @@ JCard = React.forwardRef(JCard);
 
 /* ════════ STEP 2: 今のキミ（トレーディングカード） ════════ */
 const NOW_TYPE_PROFILE = {
-  name:'探索する創造者',
+  name:'探索するシェイパー',
   catch:'ひらめいたら、まず動く。',
   desc:'新しいアイデアを思いつくだけでなく、実際に動いて形にできる人。人と関わるのも得意だから、キミが動くとまわりも動き出すよ。',
   traits:['アイデア','行動力','まきこみ力'],
@@ -41,40 +41,40 @@ function TypeHeroSection() {
   const Character = window.Character;
   return (
     <div style={{ display:'flex', justifyContent:'center', padding:'6px 0 2px' }}>
-      <div style={{ width:'100%', maxWidth:280, borderRadius:16, background:TJ.blue, border:'2.5px solid #1f1b16', boxShadow:'6px 6px 0 #1f1b16', position:'relative', overflow:'hidden', padding:'12px 12px 15px' }}>
+      <div style={{ width:'100%', maxWidth:280, borderRadius:16, background:'#fff', border:'2.5px solid #1f1b16', boxShadow:'6px 6px 0 #1f1b16', position:'relative', overflow:'hidden', padding:'12px 12px 15px' }}>
 
           {/* カードヘッダー */}
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-            <span style={{ fontSize:8.5, letterSpacing:2.5, fontWeight:800, color:'#ffd633' }}>KIMI NO TORISETSU</span>
+            <span style={{ fontSize:8.5, letterSpacing:2.5, fontWeight:800, color:'#1f1b16' }}>KIMI NO TORISETSU</span>
             <span style={{ display:'flex', gap:2 }}><CardStar /><CardStar /><CardStar /></span>
           </div>
 
           {/* アート枠 */}
-          <div style={{ marginTop:9, borderRadius:12, border:'2px solid #1f1b16', background:'#6e8cff', display:'flex', alignItems:'flex-end', justifyContent:'center', height:128, position:'relative', overflow:'hidden' }}>
-            <svg style={{ position:'absolute', top:10, left:14 }} width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <div style={{ marginTop:9, borderRadius:12, border:'2px solid #1f1b16', background:'#fbfaf7', backgroundImage:'radial-gradient(#e6e1d5 1px, transparent 1px)', backgroundSize:'9px 9px', display:'flex', alignItems:'flex-end', justifyContent:'center', height:164, position:'relative', overflow:'hidden' }}>
+            <svg style={{ position:'absolute', top:10, left:14 }} width="12" height="12" viewBox="0 0 24 24" fill="#cdd7ff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
             <svg style={{ position:'absolute', top:26, right:20 }} width="8" height="8" viewBox="0 0 24 24" fill="#ffd633"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
-            <svg style={{ position:'absolute', bottom:18, left:26 }} width="7" height="7" viewBox="0 0 24 24" fill="rgba(255,255,255,.65)"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
-            {Character && <Character size={78} body="bubble" item="magnifier" />}
+            <svg style={{ position:'absolute', bottom:18, left:26 }} width="7" height="7" viewBox="0 0 24 24" fill="#e3ddcd"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+            <img src="assets/shaper.svg" alt="探索するシェイパー" style={{ height:158, width:'auto', display:'block', marginBottom:-6 }} />
           </div>
 
           {/* ネームプレート */}
           <div style={{ display:'flex', justifyContent:'center', marginTop:-14, position:'relative' }}>
             <div style={{ background:'#ffd633', color:'#1f1b16', border:'2px solid #1f1b16', borderRadius:10, padding:'6px 16px', fontFamily:TJ.round, fontWeight:900, fontSize:17.5, boxShadow:'3px 3px 0 #1f1b16' }}>
-              探索する創造者
+              探索するシェイパー
             </div>
           </div>
 
-          <div style={{ fontFamily:TJ.round, fontWeight:800, fontSize:12.5, color:'#fff', textAlign:'center', marginTop:11 }}>{NOW_TYPE_PROFILE.catch}</div>
+          <div style={{ fontFamily:TJ.round, fontWeight:800, fontSize:12.5, color:'#1f1b16', textAlign:'center', marginTop:11 }}>{NOW_TYPE_PROFILE.catch}</div>
 
           {/* カードテキスト */}
-          <div style={{ background:'#fff', border:'2px solid #1f1b16', borderRadius:10, padding:'10px 12px', marginTop:9 }}>
+          <div style={{ background:'#f7f5ee', border:'2px solid #1f1b16', borderRadius:10, padding:'10px 12px', marginTop:9 }}>
             <p style={{ fontSize:11, color:'#1f1b16', lineHeight:1.75, fontWeight:600, margin:0 }}>{NOW_TYPE_PROFILE.desc}</p>
           </div>
 
           {/* とくい技 */}
           <div style={{ display:'flex', gap:6, marginTop:10, justifyContent:'center', flexWrap:'wrap' }}>
             {NOW_TYPE_PROFILE.traits.map(t => (
-              <span key={t} style={{ background:'#fff', border:'1.5px solid #1f1b16', color:'#1f1b16', borderRadius:999, padding:'3px 11px', fontSize:10, fontWeight:800, fontFamily:TJ.round, boxShadow:'2px 2px 0 #1f1b16' }}>{t}</span>
+              <span key={t} style={{ background:'#f7f5ee', border:'1.5px solid #1f1b16', color:'#1f1b16', borderRadius:999, padding:'3px 11px', fontSize:10, fontWeight:800, fontFamily:TJ.round, boxShadow:'2px 2px 0 #1f1b16' }}>{t}</span>
             ))}
           </div>
       </div>
@@ -714,37 +714,42 @@ function TorisetsuFutureOld({ nav, goChallenge, step, goBack }) {
 const HINT_NOW = { id:'creator', name:'創造者', sub:'アイデアを形にする' };
 
 const HINT_DEST = [
-  { id:'producer', tier:'up', name:'演出家', kana:'プロデューサー', key:'影響力の行使', keyShort:'影響力', reco:true, emoji:'📣',
+  { id:'producer', tier:'up', name:'モチベーター', kana:'', key:'影響力の行使', keyShort:'影響力', reco:true, emoji:'📣',
     catch:'アイデアに「人を動かす力」が加わっていくみたい',
     desc:'自分のアイデアにまわりを巻きこんで、チームで大きく形にしていくキミ。ひとりでは作れないものも、作れるようになっていくかも。',
     scenes:['文化祭の企画役','イベント運営','映像・番組づくり'],
     actions:['行事や班活動で、1回リーダー役に立候補する','自分のアイデアを3人以上に話して感想をもらう'] },
-  { id:'driver', tier:'side', name:'推進者', kana:'', key:'実行力', keyShort:'実行力', reco:true, emoji:'🚀',
+  { id:'driver', tier:'side', name:'ムーバー', kana:'', key:'実行力', keyShort:'実行力', reco:true, emoji:'🚀',
     catch:'思いついたら、すぐ動けるキミになっていくみたい',
     desc:'アイデアをあたためるだけじゃなく、まず動いてためしながら形にしていくキミ。失敗もデータに変えて前に進めていけるかも。',
     scenes:['部活の企画係','プロトタイプづくり','学級プロジェクト'],
     actions:['思いついたことを、まず小さく1つためしてみる','1週間つづける「毎日ミニ行動」を決める'] },
-  { id:'innovator', tier:'up', name:'発明家', kana:'イノベーター', key:'論理的思考', keyShort:'論理的思考', reco:false, emoji:'💡',
+  { id:'innovator', tier:'up', name:'スパーカー', kana:'', key:'論理的思考', keyShort:'論理的思考', reco:false, emoji:'💡',
     catch:'ひらめきが「発明」に変わっていくかも',
     desc:'思いつきをすじ道立てて設計し、本当に使えるものに仕上げていくキミ。「なんとなく面白い」が「世界を便利にする発明」になっていくみたい。',
     scenes:['研究・開発','商品企画','ものづくり'],
     actions:['好きな商品が「なぜ人気か」を3つ分析してみる','やりたいことを「目的→手順」の順にメモしてみる'] },
-  { id:'cocreator', tier:'side', name:'共創者', kana:'', key:'共感・傾聴力', keyShort:'共感力', reco:false, emoji:'🤝',
+  { id:'cocreator', tier:'side', name:'ウィーバー', kana:'', key:'共感・傾聴力', keyShort:'共感力', reco:false, emoji:'🤝',
     catch:'「ひとりで作る」から「みんなで作る」へ広がっていくみたい',
     desc:'仲間の気もちやアイデアを受け取って、いっしょに作品を育てていけるキミ。ひとりではとどかない完成度に近づいていくかも。',
     scenes:['班活動・グループ制作','合唱・演劇','チーム開発'],
     actions:['友だちの相談に「聞き役」として乗ってみる','班活動で、まず全員の意見を1周聞いてみる'] },
-  { id:'pioneer', tier:'up', name:'開拓者', kana:'パイオニア', key:'探究心', keyShort:'探究心', reco:false, emoji:'🧭',
+  { id:'pioneer', tier:'up', name:'ディーパー', kana:'', key:'探究心', keyShort:'探究心', reco:false, emoji:'🧭',
     catch:'「見つける力」がついて、道なき道へ進んでいくみたい',
     desc:'まだだれも気づいていないテーマを見つけて、さいしょの一歩をふみ出していくキミ。「作る人」から「切りひらく人」へ広がっていくかも。',
     scenes:['新プロジェクトの立ち上げ','フィールドワーク','冒険的な研究'],
     actions:['気になる「なぜ？」を1つ決めて調べてみる','まだだれもやってない小さな企画を1つ提案する'] },
+  { id:'changer', tier:'up', name:'インスパイアー', kana:'', key:'社会への関心', keyShort:'社会性', reco:false, emoji:'🌏',
+    catch:'「だれかのため」がアイデアの原動力になっていくみたい',
+    desc:'身のまわりの「困った」に気づいて、しくみごと変えるアイデアを出していくキミ。作品づくりが、だれかの毎日を変える力になっていくかも。',
+    scenes:['地域のプロジェクト','ボランティア企画','課題解決コンテスト'],
+    actions:['学校や町の「不便」を3つ書き出してみる','身近な人に「困っていること」をインタビューする'] },
 ];
 
 const HINT_DISTANT = [
   { id:'explorer', tier:'side', name:'探索者', kana:'', catch:'「気になる」をどこまでも追いかける' },
   { id:'supporter', tier:'side', name:'支援者', kana:'', catch:'人の力をしずかに引き出す' },
-  { id:'changer', tier:'side', name:'変革者', kana:'', catch:'あたりまえをうたがい、変えていく' },
+  { id:'changer', tier:'side', name:'インスパイアー', kana:'', catch:'あたりまえをうたがい、変えていく' },
   { id:'leader', tier:'up', name:'統率者', kana:'リーダー', catch:'みんなを動かしゴールへみちびく' },
   { id:'mentor', tier:'up', name:'育成者', kana:'メンター', catch:'人の成長に火をつける' },
   { id:'gamechanger', tier:'up', name:'革新者', kana:'ゲームチェンジャー', catch:'しくみごと未来を変える' },
@@ -787,7 +792,9 @@ function hintSym(id, size, c='#1f1b16') {
 const HINT_AXES = ['考え創る','やり抜く','巻き込む','協働する','社会を想う','発見する'];
 const HINT_SELF  = [0.88, 0.55, 0.62, 0.45, 0.40, 0.78];
 const HINT_OTHER = [0.80, 0.62, 0.70, 0.56, 0.44, 0.70];
-const HINT_BOOST = { producer:2, driver:1, innovator:0, cocreator:3, pioneer:5 };
+const HINT_BOOST = { producer:2, driver:1, innovator:0, cocreator:3, changer:4, pioneer:5 };
+/* レーダー6軸 → 足す力（成長タイプ）の対応 */
+const HINT_AXIS_TO = ['innovator','driver','producer','cocreator','changer','pioneer'];
 
 function TorisetsuFuture({ nav, goChallenge, step, goBack, selfOnly }) {
   const saved = (nav.state && nav.state.career) || {};
@@ -811,6 +818,7 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack, selfOnly }) {
     while (parent && getComputedStyle(parent).overflowY === 'visible') parent = parent.parentElement;
     if (parent) parent.scrollTo({ top: el.offsetTop - 12, behavior:'smooth' });
   };
+  const pickAxis = (i) => pick(HINT_AXIS_TO[i]);
   const pick = (id) => {
     const next = selId === id ? null : id;
     setSelId(next); persist({ goalId: next });
@@ -854,7 +862,26 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack, selfOnly }) {
           {!selfOnly && <polygon points={polyOther} fill="rgba(46,133,96,.10)" stroke="#2E8560" strokeWidth="2.5" strokeLinejoin="round" />}
           {sel && <polygon points={polyFuture} fill="rgba(255,107,94,.08)" stroke="#ff6b5e" strokeWidth="2.5" strokeDasharray="5 5" strokeLinejoin="round" />}
           {sel && boostIdx != null && (() => { const [dx, dy] = pt(boostIdx, R*futureVals[boostIdx]); return <circle cx={dx} cy={dy} r="4.5" fill="#ff6b5e" stroke="#fff" strokeWidth="2" />; })()}
-          {HINT_AXES.map((l, i) => { const [lx, ly] = pt(i, R + 20); return <text key={l} x={lx} y={ly} textAnchor="middle" dominantBaseline="middle" fontSize="10" fontWeight="800" fill={i === boostIdx && sel ? '#ff6b5e' : '#5c5546'} fontFamily={TJ.round}>{l}</text>; })}
+          {HINT_AXES.map((l, i) => {
+            const a0 = -Math.PI/2 + (i - 0.5) * 2*Math.PI/N, a1 = -Math.PI/2 + (i + 0.5) * 2*Math.PI/N, HR = R + 40;
+            return <path key={'w'+i} d={`M${CX} ${CY} L${CX + Math.cos(a0)*HR} ${CY + Math.sin(a0)*HR} A${HR} ${HR} 0 0 1 ${CX + Math.cos(a1)*HR} ${CY + Math.sin(a1)*HR} Z`}
+              fill="transparent" onClick={() => pickAxis(i)} style={{ cursor:'pointer' }} />;
+          })}
+          {HINT_AXES.map((l, i) => {
+            const on = sel && i === boostIdx;
+            const [lx, ly] = pt(i, R + 22);
+            const [vx, vy] = pt(i, R * HINT_SELF[i]);
+            const w = l.length * 10 + 16;
+            return (
+              <g key={l} onClick={() => pickAxis(i)} style={{ cursor:'pointer' }}>
+                <circle cx={vx} cy={vy} r={on ? 5 : 3.5} fill={on ? '#ff6b5e' : '#315cfa'} stroke="#fff" strokeWidth="2" />
+                <rect x={lx - w/2} y={ly - 9.5} width={w} height={19} rx={9.5}
+                  fill={on ? '#1f1b16' : '#fffbf2'} stroke={on ? '#1f1b16' : '#e3d9c4'} strokeWidth="1.5" />
+                <text x={lx} y={ly + 0.5} textAnchor="middle" dominantBaseline="middle" fontSize="10" fontWeight="800"
+                  fill={on ? '#ffd633' : '#5c5546'} fontFamily={TJ.round} style={{ pointerEvents:'none' }}>{l}</text>
+              </g>
+            );
+          })}
         </svg>
         <div style={{ display:'flex', justifyContent:'center', gap:13, flexWrap:'wrap', padding:'2px 8px 4px' }}>
           <span style={legendItem}><span style={{ width:10, height:10, borderRadius:'50%', background:'#315cfa' }}></span>自己</span>
@@ -867,50 +894,19 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack, selfOnly }) {
             <span style={{ fontSize:10, color:'#c2483c', fontWeight:700, lineHeight:1.6 }}>点線が、「{sel.key}」を足した未来のキミのカタチだよ</span>
           </div>
         ) : (
-          <div style={{ textAlign:'center', fontSize:9.5, color:'#a89e8a', fontWeight:700, padding:'2px 0 4px' }}>下のルートをえらぶと、点線で未来のキミが見えるよ</div>
+          <div style={{ textAlign:'center', fontSize:9.5, color:'#a89e8a', fontWeight:700, padding:'2px 0 4px' }}>6つの成分をタップすると、点線で未来のキミが見えるよ</div>
         )}
-      </div>
-
-      {/* ── 進化ルート（成長の可能性） ── */}
-      <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', padding:'0 2px' }}>
-        <span style={{ fontSize:11, fontWeight:800, fontFamily:TJ.round }}>キミの成長ルート</span>
-        <span style={{ fontSize:9, color:'#a89e8a', fontWeight:700 }}>今の力に、新しい力を足してみよう</span>
-      </div>
-      <div style={{ display:'flex', flexDirection:'column', gap:9 }}>
-        {['producer','driver','innovator','cocreator','pioneer'].map(id => {
-          const d = decorate(find(id));
-          const on = selId === id;
-          return (
-            <div key={id} onClick={() => pick(id)}
-              style={{ position:'relative', border:'2px solid '+(on?'#315cfa':'#e3d9c4'), background:on?'#e8edff':'#fff', borderRadius:14, padding:'11px 13px', cursor:'pointer', transition:'all .15s' }}>
-              {d.reco && <span style={{ position:'absolute', top:-8, right:10, background:'#ff6b5e', color:'#fff', fontSize:7.5, fontWeight:800, borderRadius:999, padding:'2px 7px', border:'1px solid #1f1b16', fontFamily:TJ.round }}>おすすめ</span>}
-              <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-                <span style={{ width:38, height:38, borderRadius:11, background:on?'#fff':'#f6f2e7', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>{hintSym(id, 24)}</span>
-                <div style={{ flex:1, minWidth:0 }}>
-                  <div style={{ display:'flex', alignItems:'center', gap:6, flexWrap:'wrap' }}>
-                    <span style={{ background:d.kindBg, color:d.kindFg, fontSize:8, fontWeight:800, borderRadius:999, padding:'2px 8px', fontFamily:TJ.round }}>{d.kindLabel}</span>
-                    <span style={{ fontFamily:TJ.round, fontWeight:900, fontSize:13 }}>{d.name}</span>
-                    {d.kana && <span style={{ fontSize:7.5, color:'#7a7263', fontWeight:700, letterSpacing:.5 }}>{d.kana}</span>}
-                  </div>
-                  <div style={{ fontSize:9.5, color:'#7a7263', fontWeight:700, marginTop:3 }}>「{d.key}」を足す — {d.catch}</div>
-                </div>
-                <span style={{ width:24, height:24, borderRadius:'50%', border:'2px solid '+(on?'#315cfa':'#cfc4ab'), background:on?'#315cfa':'#fff', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-                  {on && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7"/></svg>}
-                </span>
-              </div>
-            </div>
-          );
-        })}
       </div>
 
       {/* ── 詳細 ── */}
       {!sel && (
-        <div style={{ textAlign:'center', fontSize:11, color:'#7a7263', fontWeight:600, lineHeight:1.8, padding:'4px 0' }}>気になるルートをえらぶと、<br/>「成長のキミ」とチャレンジへの道が見えてくるよ</div>
+        <div style={{ textAlign:'center', fontSize:11, color:'#7a7263', fontWeight:600, lineHeight:1.8, padding:'4px 0' }}>レーダーの成分をタップすると、<br/>「成長のキミ」とチャレンジへの道が見えてくるよ</div>
       )}
       {sel && (
         <div ref={previewRef} style={{ background:'#fff', border:'2px solid #1f1b16', borderRadius:16, padding:15, boxShadow:'4px 4px 0 #1f1b16' }}>
           <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:10, flexWrap:'wrap' }}>
             <span style={{ background:sel.kindBg, color:sel.kindFg, fontSize:9, fontWeight:800, borderRadius:999, padding:'3px 9px', fontFamily:TJ.round }}>{sel.kindLabel}</span>
+            {boostIdx != null && <span style={{ background:'#1f1b16', color:'#ffd633', fontSize:9, fontWeight:800, borderRadius:999, padding:'3px 9px', fontFamily:TJ.round }}>{HINT_AXES[boostIdx]}</span>}
             <span style={{ fontSize:10.5, fontWeight:800, color:'#2447c9', fontFamily:TJ.round }}>「{sel.key}」をのばすと…</span>
           </div>
           <div style={{ background:'#1f1b16', borderRadius:14, padding:14, position:'relative', overflow:'hidden' }}>

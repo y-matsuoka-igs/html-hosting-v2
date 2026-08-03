@@ -204,8 +204,8 @@ function MonthlyBody() {
 function ReportScreen() {
   const nav = useNav();
   const PAST_REPORTS = [
-    { term: '2025年度 後期', date: '2025.11.20', type: '気質診断 + 自己/相互評価', highlight: '行動する創造者', delta: '創造力 +2 / 表現力 +1', latest: true },
-    { term: '2025年度 前期', date: '2025.06.18', type: '気質診断 + 自己/相互評価', highlight: 'ひらめきの探究者', delta: '創造力 +1', latest: false },
+    { term: '2025年度 後期', date: '2025.11.20', type: '気質診断 + 自己/相互評価', highlight: '行動する創造者', latest: true },
+    { term: '2025年度 前期', date: '2025.06.18', type: '気質診断 + 自己/相互評価', highlight: 'ひらめきの探究者', latest: false },
   ];
   return (
     <div className="screen">
@@ -228,9 +228,6 @@ function ReportScreen() {
                 <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 600 }}>{r.date}・{r.type}</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
                   <span style={{ background: 'var(--blue-soft)', color: 'var(--blue-dark)', fontSize: 10.5, fontWeight: 800, padding: '3px 10px', borderRadius: 999 }}>{r.highlight}</span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, color: '#1b7a3e', fontSize: 10.5, fontWeight: 700 }}>
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1b7a3e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>{r.delta}
-                  </span>
                 </div>
               </div>
               {r.latest && <span style={{ flexShrink: 0, color: 'var(--text-sub)', display: 'flex' }}><Icon name="chevR" size={18} /></span>}

@@ -341,6 +341,13 @@ function StartOtherScreen() {
 /* 相互評価の開始ハブ：「自分が評価する」×「評価をお願いする」タブ */
 function OtherStartScreen() {
   const nav = useNav();
+  const [declined, setDeclined] = useSm([{ name: '青田 徳彦', course: '2026年度 前期コース' }]);
+  const [accepted, setAccepted] = useSm([]);
+  const [answered] = useSm([{ name: '入江 平作', course: '2026年度 前期コース' }]);
+  const approve = (i) => {
+    setDeclined(d => d.filter((_, k) => k !== i));
+    setAccepted(a => [...a, declined[i]]);
+  };
   return (
     <div className="screen">
       <StatusBar />
@@ -350,7 +357,7 @@ function OtherStartScreen() {
           <span style={{ flexShrink: 0, display: 'flex', paddingTop: 1, color: 'var(--blue)' }}><FIcon name="sparkle" size={17} color="var(--blue)" /></span>
           <p style={{ fontSize: 12.5, fontWeight: 600, lineHeight: 1.75, color: 'var(--text)' }}>キミが相互評価する友達が表示されているので、1人ずつ選んで相互評価を進めよう</p>
         </div>
-        <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-sub)', fontFamily: 'var(--font-round)', padding: '2px 2px 0' }}>相互評価する友達</div>
+        <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-sub)', fontFamily: 'var(--font-round)', padding: '2px 2px 0' }}>未回答</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {SELF_PEERS.map((p, i) => (
             <button key={i} onClick={() => nav.go('other-eval')}
@@ -364,16 +371,71 @@ function OtherStartScreen() {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c3bba9" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M9 5l7 7-7 7"/></svg>
             </button>
           ))}
+          {accepted.map((p, i) => (
+            <button key={'ok' + i} onClick={() => nav.go('other-eval')}
+              style={{ width: '100%', textAlign: 'left', cursor: 'pointer', background: '#fff', border: '2px solid #1f1b16', borderRadius: 'var(--r-lg)', boxShadow: '3px 3px 0 #1f1b16', padding: '14px 15px', display: 'flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--green-soft, #e6f4e6)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><FIcon name="handshake" size={20} color="var(--green)" /></span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 700 }}>受検コース名：{p.course}</span>
+                  <span style={{ background: 'var(--green)', color: '#fff', borderRadius: 999, padding: '2px 8px', fontSize: 9.5, fontWeight: 800, fontFamily: 'var(--font-round)' }}>承諾ずみ</span>
+                </div>
+                <div style={{ fontSize: 14.5, fontWeight: 900, color: 'var(--text)', fontFamily: 'var(--font-round)', marginTop: 2, lineHeight: 1.35 }}>「{p.name}」を相互評価をする</div>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c3bba9" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          ))}
         </div>
+
+        {/* 回答済み */}
+        <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-sub)', fontFamily: 'var(--font-round)', padding: '8px 2px 0' }}>回答済み</div>
+        {answered.length === 0 ? (
+          <div style={{ background: '#fff', border: '1.5px dashed var(--border)', borderRadius: 'var(--r-lg)', padding: '13px 15px', fontSize: 12.5, fontWeight: 600, color: 'var(--text-sub)' }}>なし</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {answered.map((p, i) => (
+              <div key={i} style={{ background: '#fbf9f4', border: '2px solid #ded6c6', borderRadius: 'var(--r-lg)', padding: '13px 14px', display: 'flex', alignItems: 'center', gap: 11 }}>
+                <span style={{ width: 38, height: 38, borderRadius: 11, background: '#eeeae1', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><FIcon name="check" size={19} color="#9c9487" sw={2.6} /></span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 700 }}>受検コース名：{p.course}</div>
+                  <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--text)', fontFamily: 'var(--font-round)', marginTop: 2, lineHeight: 1.35 }}>{p.name}</div>
+                </div>
+                <span style={{ flexShrink: 0, background: '#e4dfd4', color: '#8b8375', borderRadius: 999, padding: '4px 11px', fontSize: 11, fontWeight: 800, fontFamily: 'var(--font-round)' }}>回答ずみ</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* リクエスト拒否 → あとから承諾できる */}
+        <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-sub)', fontFamily: 'var(--font-round)', padding: '8px 2px 0' }}>リクエスト拒否</div>
+        <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-sub)', lineHeight: 1.7, padding: '0 2px' }}>一度断ったリクエストも、あとから承諾すれば相互評価できるよ</p>
+        {declined.length === 0 ? (
+          <div style={{ background: '#fff', border: '1.5px dashed var(--border)', borderRadius: 'var(--r-lg)', padding: '13px 15px', fontSize: 12.5, fontWeight: 600, color: 'var(--text-sub)' }}>なし</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {declined.map((p, i) => (
+              <div key={i} style={{ background: '#fff', border: '2px solid #1f1b16', borderRadius: 'var(--r-lg)', boxShadow: '3px 3px 0 #1f1b16', padding: '13px 14px', display: 'flex', alignItems: 'center', gap: 11 }}>
+                <span style={{ width: 38, height: 38, borderRadius: 11, background: '#ffe8e8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><FIcon name="handshake" size={19} color="#c92a2a" /></span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 700 }}>受検コース名：{p.course}</div>
+                  <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--text)', fontFamily: 'var(--font-round)', marginTop: 2, lineHeight: 1.35 }}>{p.name}</div>
+                </div>
+                <button onClick={() => approve(i)}
+                  style={{ flexShrink: 0, width: 'auto', cursor: 'pointer', background: 'var(--green)', color: '#fff', border: '2px solid #1f1b16', borderRadius: 999, boxShadow: '2px 2px 0 #1f1b16', padding: '9px 16px', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12.5 }}>承諾する</button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-function EvalReqGroup({ label, count, badge, first, muted }) {
+function EvalReqGroup({ label, count, badge, first, muted, action, onAction, note }) {
   return (
     <>
       <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-sub)', margin: first ? '0 0 8px' : '14px 0 8px' }}>{label}</div>
+      {note && <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-sub)', lineHeight: 1.7, margin: '-4px 0 8px' }}>{note}</p>}
       {count === 0 ? (
         <div style={{ background: '#fff', border: '1.5px solid var(--border)', borderRadius: 'var(--r-md)', padding: '11px 13px' }}>
           <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-sub)' }}>なし</span>
@@ -385,6 +447,10 @@ function EvalReqGroup({ label, count, badge, first, muted }) {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}><circle cx="10" cy="8" r="3.5"/><path d="M4 19c0-3.1 2.7-5.5 6-5.5s6 2.4 6 5.5"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 5.6M18.5 13.9c1.5 1 2.5 2.6 2.5 4.6"/></svg>
               <span style={{ flex: 1, minWidth: 0, fontSize: 12.5, fontWeight: 600, color: 'var(--text)', textDecoration: muted ? 'line-through' : 'none' }}>ユーザ名は表示されません</span>
               {badge && <span style={{ flexShrink: 0, fontSize: 10.5, fontWeight: 800, color: badge.color, background: badge.bg, borderRadius: 999, padding: '3px 9px' }}>{badge.text}</span>}
+              {action && (
+                <button onClick={() => onAction && onAction(i)}
+                  style={{ flexShrink: 0, width: 'auto', cursor: 'pointer', background: 'var(--green)', color: '#fff', border: '2px solid #1f1b16', borderRadius: 999, boxShadow: '2px 2px 0 #1f1b16', padding: '6px 14px', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12 }}>{action}</button>
+              )}
             </div>
           ))}
         </div>
@@ -411,6 +477,8 @@ function AskEvalBody({ nav }) {
   const [query, setQuery] = useSm('');
   const [copied, setCopied] = useSm(false);
   const [sent3, setSent3] = useSm(false);
+  const [declined, setDeclined] = useSm(1);   // リクエスト拒否の件数
+  const [reApproved, setReApproved] = useSm(0); // 拒否後に承認した件数
   return (
     <>
           {/* 評価完了者数 */}
@@ -429,9 +497,14 @@ function AskEvalBody({ nav }) {
           </div>
           <div className="card card--flat" style={{ padding: '14px 14px 16px' }}>
             <EvalReqGroup label="申請中" count={1} badge={{ text: '承認待ち', color: '#e8590c', bg: '#ffece3' }} first />
-            <EvalReqGroup label="回答待ち" count={3} />
+            <EvalReqGroup label="回答待ち" count={3 + reApproved} />
             <EvalReqGroup label="回答済み" count={0} />
             <EvalReqGroup label="キャンセル済み" count={1} badge={{ text: 'キャンセル', color: '#8b8375', bg: '#f0ece3' }} muted />
+            <EvalReqGroup label="リクエスト拒否" count={declined}
+              note="一度断られたリクエストも、相手が承認すれば評価してもらえるよ"
+              badge={{ text: '拒否', color: '#c92a2a', bg: '#ffe8e8' }}
+              action="承諾する"
+              onAction={() => { setDeclined(d => Math.max(0, d - 1)); setReApproved(n => n + 1); }} />
           </div>
 
           {/* 検索して依頼 */}
@@ -490,26 +563,26 @@ function SelfSummarySection() {
           {/* 自己評価カード — トリセツカードと同じ見せ方 */}
           {/* 探索者カード（矢印素体＋虫眼鏡） */}
           <div style={{ display: 'flex', justifyContent: 'center', padding: '6px 0 2px' }}>
-            <div style={{ width: '100%', maxWidth: 280, borderRadius: 16, background: '#315cfa', border: '2.5px solid #1f1b16', boxShadow: '6px 6px 0 #1f1b16', position: 'relative', overflow: 'hidden', padding: '12px 12px 15px' }}>
+            <div style={{ width: '100%', maxWidth: 280, borderRadius: 16, background: '#fff', border: '2.5px solid #1f1b16', boxShadow: '6px 6px 0 #1f1b16', position: 'relative', overflow: 'hidden', padding: '12px 12px 15px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 8.5, letterSpacing: 2.5, fontWeight: 800, color: '#ffd633' }}>KIMI NO TORISETSU</span>
+                <span style={{ fontSize: 8.5, letterSpacing: 2.5, fontWeight: 800, color: '#1f1b16' }}>KIMI NO TORISETSU</span>
                 <span style={{ display: 'flex', gap: 2 }}>
                   {[0, 1, 2].map((i) => <svg key={i} width="13" height="13" viewBox="0 0 24 24" fill="#ffd633" stroke="#1f1b16" strokeWidth="1.5" strokeLinejoin="round"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.4 7-6.2-3.6L5.8 21l1.4-7L2 9.4l7-.8z" /></svg>)}
                 </span>
               </div>
               {/* アート枠 */}
-              <div style={{ marginTop: 9, borderRadius: 12, border: '2px solid #1f1b16', background: '#6e8cff', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: 128, position: 'relative', overflow: 'hidden' }}>
-                <svg style={{ position: 'absolute', top: 10, left: 14 }} width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
+              <div style={{ marginTop: 9, borderRadius: 12, border: '2px solid #1f1b16', background: '#fbfaf7', backgroundImage: 'radial-gradient(#e6e1d5 1px, transparent 1px)', backgroundSize: '9px 9px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: 164, position: 'relative', overflow: 'hidden' }}>
+                <svg style={{ position: 'absolute', top: 10, left: 14 }} width="12" height="12" viewBox="0 0 24 24" fill="#cdd7ff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
                 <svg style={{ position: 'absolute', top: 26, right: 20 }} width="8" height="8" viewBox="0 0 24 24" fill="#ffd633"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
-                {window.Character && <window.Character size={78} body="arrow" item="magnifier" />}
+                {window.Character && <img src="assets/finder.svg" alt="探索する者" style={{ height: 158, width: 'auto', display: 'block', marginBottom: -6 }} />}
               </div>
               {/* ネームプレート */}
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: -14, position: 'relative' }}>
-                <div style={{ background: '#ffd633', color: '#1f1b16', border: '2px solid #1f1b16', borderRadius: 10, padding: '6px 16px', fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 17.5, boxShadow: '3px 3px 0 #1f1b16' }}>探索者</div>
+                <div style={{ background: '#ffd633', color: '#1f1b16', border: '2px solid #1f1b16', borderRadius: 10, padding: '6px 16px', fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 17.5, boxShadow: '3px 3px 0 #1f1b16' }}>探索する者</div>
               </div>
-              <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12.5, color: '#fff', textAlign: 'center', marginTop: 11 }}>知りたいから、確かめにいく。</div>
+              <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12.5, color: '#1f1b16', textAlign: 'center', marginTop: 11 }}>知りたいから、確かめにいく。</div>
               {/* カードテキスト */}
-              <div style={{ background: '#fff', border: '2px solid #1f1b16', borderRadius: 10, padding: '10px 12px', marginTop: 9 }}>
+              <div style={{ background: '#f7f5ee', border: '2px solid #1f1b16', borderRadius: 10, padding: '10px 12px', marginTop: 9 }}>
                 <p style={{ fontSize: 11, color: '#1f1b16', lineHeight: 1.75, fontWeight: 600, margin: 0 }}>気になったことをそのままにせず、自分の目で確かめにいく人。まわりが見落とす発見を拾い上げるよ。</p>
               </div>
             </div>

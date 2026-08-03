@@ -72,44 +72,53 @@ function ChallengeScreen() {
   return (
     <div className="screen">
       <StatusBar />
-      <div style={{ background:'#315cfa', padding:'10px 16px 0', flexShrink:0, borderBottom:'2px solid #1f1b16' }}>
-        <div style={{ display:'flex', alignItems:'center', gap:9, marginBottom: collapsed ? 9 : 9 }}>
+      <div style={{ background:'#315cfa', padding:'10px 18px 0', flexShrink:0, borderBottom:'2px solid #1f1b16' }}>
+        {collapsed ? (
+        <div style={{ display:'flex', alignItems:'center', gap:9, marginBottom:8 }}>
           <div style={{ color:'#fff', display:'flex', alignItems:'center', flexShrink:0 }}><FIcon name="footsteps" size={20} /></div>
           <div style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:17, color:'#fff', flexShrink:0 }}>チャレンジ</div>
-          {collapsed && fg && (
+          {fg && (
             <div style={{ display:'flex', alignItems:'center', gap:6, marginLeft:4, minWidth:0 }}>
               <span style={{ background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:6, padding:'1px 8px', fontSize:9.5, fontWeight:900, fontFamily:'var(--font-round)', flexShrink:0, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', maxWidth:180 }}><Emo e={fg.icon} size={11} color="#1f1b16" /> {fg.name}に挑戦中</span>
             </div>
           )}
           <div style={{ marginLeft:'auto', flexShrink:0 }}><HeaderMenu dark /></div>
         </div>
+        ) : (
+        <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:10 }}>
+          <div style={{ flex:1, minWidth:0 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:7, minWidth:0 }}>
+              <div style={{ color:'#fff', display:'flex', alignItems:'center', flexShrink:0 }}><FIcon name="footsteps" size={18} /></div>
+              <div style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:16, color:'#fff', flexShrink:0 }}>チャレンジ</div>
+            </div>
+            <div style={{ fontFamily:'var(--font-round)', fontSize:12, fontWeight:800, color:'rgba(255,255,255,.85)', marginTop:4, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>「探索するシェイパー」</div>
+            <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:7 }}>
+              <span style={{ fontSize:10, fontWeight:800, color:'rgba(255,255,255,.85)', flexShrink:0 }}>今週のチャレンジ</span>
+              <div style={{ flex:1, height:7, background:'rgba(255,255,255,.28)', border:'1.5px solid #1f1b16', borderRadius:999, overflow:'hidden', minWidth:34 }}>
+                <div style={{ width:(weekDone/3*100)+'%', height:'100%', background:weekCleared?'#18b271':'#ffd633', transition:'width .6s cubic-bezier(.2,.8,.2,1)' }}></div>
+              </div>
+              {weekCleared ? (
+                <span style={{ display:'inline-flex', alignItems:'center', gap:3, background:'#fff', color:'#c0392b', border:'2px solid #c0392b', borderRadius:6, padding:'1px 8px', fontSize:11, fontWeight:900, fontFamily:'var(--font-round)', letterSpacing:1, transform:'rotate(-6deg)', flexShrink:0 }}>CLEAR!</span>
+              ) : (
+                <span style={{ fontSize:10.5, fontWeight:800, color:'#ffd633', fontFamily:'var(--font-round)', flexShrink:0 }}>あと{weekRemaining}つ</span>
+              )}
+            </div>
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', alignItems:'center', flexShrink:0 }}>
+            <div style={{ width:82, height:82, borderRadius:'50%', background:'#fff', border:'2.5px solid #1f1b16', display:'flex', alignItems:'flex-end', justifyContent:'center', overflow:'hidden' }}>
+              <img src="assets/shaper.svg" alt="探索するシェイパー" style={{ height:78, width:'auto', display:'block', marginBottom:-4 }} />
+            </div>
+            {fg && <div style={{ background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:6, padding:'2px 9px', fontSize:10, fontWeight:800, fontFamily:'var(--font-round)', marginTop:-13, position:'relative', zIndex:2, transform:'rotate(3deg)', whiteSpace:'nowrap', maxWidth:140, overflow:'hidden', textOverflow:'ellipsis' }}>{fg.name}に挑戦中</div>}
+          </div>
+          <HeaderMenu dark />
+        </div>
+        )}
 
         {/* めざす成長バナー（成長のヒント連動） */}
         {/* めざす成長バナーはチャレンジ中の最上部へ移動 */}
 
         {/* 成長ステータス（コンパクト） */}
-        {!collapsed && (
-        <div style={{ background:'#fff', borderRadius:14, padding:'9px 13px', marginBottom:10, border:'2px solid #1f1b16', boxShadow:'3px 3px 0 rgba(31,27,22,.9)', display:'flex', alignItems:'center', gap:11 }}>
-          <div style={{ flexShrink:0, display:'flex' }}>{Character && <Character size={40} body="bubble" item="magnifier" />}</div>
-          <div style={{ flex:1, minWidth:0 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:7 }}>
-              <span style={{ fontFamily:'var(--font-round)', fontWeight:900, fontSize:14, color:'var(--blue-dark)', whiteSpace:'nowrap' }}>探索する創造者</span>
-              {fg && <span style={{ display:'inline-flex', alignItems:'center', gap:4, background:'#ffd633', color:'#1f1b16', border:'1.5px solid #1f1b16', borderRadius:6, padding:'1px 8px', fontSize:10, fontWeight:900, fontFamily:'var(--font-round)' }}><Emo e={fg.icon} size={11} color="#1f1b16" /> {fg.name}に挑戦中</span>}
-            </div>
-            <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:6, position:'relative' }}>
-              <span style={{ fontSize:10, fontWeight:700, color:'var(--text-sub)', flexShrink:0 }}>今週のチャレンジ</span>
-              <div style={{ flex:1, height:6, background:'var(--bg)', borderRadius:3, overflow:'hidden' }}>
-                <div style={{ width:(weekDone/3*100)+'%', height:'100%', background:weekCleared?'var(--green)':'var(--blue)', borderRadius:3, transition:'width .6s cubic-bezier(.2,.8,.2,1)' }}></div>
-              </div>
-              {weekCleared ? (
-                <span style={{ display:'inline-flex', alignItems:'center', gap:3, background:'#fff', color:'#c0392b', border:'2px solid #c0392b', borderRadius:6, padding:'2px 8px', fontSize:11, fontWeight:900, fontFamily:'var(--font-round)', letterSpacing:1, transform:'rotate(-6deg)', boxShadow:'2px 2px 0 rgba(192,57,43,.25)', flexShrink:0 }}>CLEAR!</span>
-              ) : (
-                <span style={{ fontSize:10.5, fontWeight:800, color:'var(--orange)', fontFamily:'var(--font-round)', flexShrink:0 }}>あと{weekRemaining}つ</span>
-              )}
-            </div>
-          </div>
-        </div>
-        )}
+        {/* メタ情報はヘッダー上部に統合 */}
 
         <div style={{ display:'flex', gap:4 }}>
           {['チャレンジ中', '成長ログ'].map((t,i) => (
@@ -137,7 +146,7 @@ function ChallengeTab({ nav }) {
     { text:'得意なことを友だちにシェアしてみる', date:'2025.04.10', done:false, comp:'表現力' },
     { text:'気になることにチャレンジしてみる', date:'2025.04.15', done:false, comp:'課題設定' },
   ];
-  const tasks = nav.state.tasks && nav.state.tasks.length ? nav.state.tasks : defaultTasks;
+  const tasks = nav.state.tasks ? nav.state.tasks : defaultTasks;
   const pending = tasks.filter(t => !t.done);
   const idxTasks = tasks.map((t, i) => ({ t, i }));
   const fromTorisetsu = idxTasks.filter(x => !x.t.done && x.t.source === 'future');
@@ -151,7 +160,7 @@ function ChallengeTab({ nav }) {
 
   const addTask = (text, comp, fromFuture) => {
     const t = { text, date:todayStr(), done:false, comp, ...(fromFuture ? { source:'future' } : {}) };
-    nav.update(s => ({ tasks:[...(s.tasks&&s.tasks.length?s.tasks:defaultTasks), t] }));
+    nav.update(s => ({ tasks:[...(s.tasks ? s.tasks : defaultTasks), t] }));
     setSelected(null); setCustom('');
   };
   const selItem = recGroups.flatMap(g => g.items).find(it => it.text === selected) || {};
@@ -160,6 +169,11 @@ function ChallengeTab({ nav }) {
   const completeTask = (idx) => {
     const list = tasks.map((t,i) => i===idx?{...t,done:true,completedDate:todayStr()}:t);
     nav.update(s => ({ tasks:list, exp:(s.exp||0)+1, growthLogUpdated:true }));
+  };
+  const [delIdx, setDelIdx] = React.useState(null);
+  const deleteTask = (idx) => {
+    nav.update({ tasks: tasks.filter((_, i) => i !== idx) });
+    setDelIdx(null);
   };
 
   return (
@@ -183,19 +197,37 @@ function ChallengeTab({ nav }) {
           <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)', display:'flex', alignItems:'center', gap:5 }}>チャレンジ中 <FIcon name="fire" size={14} color="var(--orange)" /></h3>
           <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
             {otherPending.map(({ t, i }) => (
-              <div key={i} className="card card--flat" style={{ display:'flex', alignItems:'center', gap:12, padding:'13px 14px' }}>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontSize:13, fontWeight:700 }}>{t.text}</div>
-                  <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:2 }}>
-                    <span style={{ fontSize:10, color:'var(--text-sub)' }}>登録日: {t.date}</span>
-                    <CompTag name={t.comp || t.tag} />
+              <div key={i} className="card card--flat" style={{ padding:'13px 14px' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontSize:13, fontWeight:700 }}>{t.text}</div>
+                    <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:2 }}>
+                      <span style={{ fontSize:10, color:'var(--text-sub)' }}>登録日: {t.date}</span>
+                      <CompTag name={t.comp || t.tag} />
+                    </div>
                   </div>
+                  <button onClick={() => completeTask(i)} className="btn btn--green btn--sm" style={{ width:'auto', padding:'9px 14px', flexShrink:0 }}>できた！✓</button>
+                  <button onClick={() => setDelIdx(delIdx === i ? null : i)} aria-label="このチャレンジを消す"
+                    style={{ flexShrink:0, width:30, height:30, borderRadius:'50%', background:delIdx===i?'#ffe9e6':'#fff', border:'1.5px solid '+(delIdx===i?'#ff6b5e':'var(--border)'), color:delIdx===i?'#d94a3d':'#a89e8a', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  </button>
                 </div>
-                <button onClick={() => completeTask(i)} className="btn btn--green btn--sm" style={{ width:'auto', padding:'9px 14px', flexShrink:0 }}>できた！✓</button>
+                {delIdx === i && (
+                  <div style={{ display:'flex', alignItems:'center', gap:8, marginTop:11, paddingTop:10, borderTop:'1.5px dashed var(--border)' }}>
+                    <span style={{ flex:1, minWidth:0, fontSize:11.5, fontWeight:700, color:'var(--text-sub)' }}>このチャレンジを消す？</span>
+                    <button onClick={() => setDelIdx(null)}
+                      style={{ flexShrink:0, background:'#fff', border:'1.5px solid var(--border)', color:'var(--text-sub)', borderRadius:999, padding:'7px 14px', fontSize:11.5, fontWeight:800, fontFamily:'var(--font-round)', cursor:'pointer' }}>やめる</button>
+                    <button onClick={() => deleteTask(i)}
+                      style={{ flexShrink:0, background:'#ff6b5e', border:'1.5px solid #1f1b16', color:'#fff', borderRadius:999, padding:'7px 16px', fontSize:11.5, fontWeight:800, fontFamily:'var(--font-round)', cursor:'pointer' }}>消す</button>
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </>
+      )}
+      {otherPending.length === 0 && (
+        <div style={{ background:'var(--bg)', border:'1.5px dashed var(--border)', borderRadius:'var(--r-md)', padding:'16px 14px', textAlign:'center', fontSize:12, fontWeight:700, color:'var(--text-sub)', lineHeight:1.7 }}>いま挑戦中のチャレンジはないよ<br/>下から気になる一歩をえらんでみよう</div>
       )}
       <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)', marginTop:4, display:'flex', alignItems:'center', gap:5 }}>チャレンジを選ぶ <FIcon name="sparkle" size={14} color="var(--orange)" /></h3>
       <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
@@ -245,6 +277,7 @@ function ChallengeTab({ nav }) {
 
 function GrowthLogTab({ nav }) {
   const [mapOpen, setMapOpen] = React.useState(null);
+  const [showAllDone, setShowAllDone] = React.useState(false);
   const baseCompleted = [
     { text:'好きなことを3つ書いた', date:'2025.04.10' },
     { text:'友だちに強みを聞いた', date:'2025.04.08' },
@@ -274,41 +307,6 @@ function GrowthLogTab({ nav }) {
         </div>
       </div>
 
-      {/* 最近育った力 */}
-      <div className="card">
-        <div style={{ fontSize:12.5, fontWeight:800, marginBottom:12, display:'flex', alignItems:'center', gap:6 }}><FIcon name="sprout" size={16} color="var(--green)" /> 最近育った力</div>
-        <div style={{ display:'flex', flexDirection:'column', gap:9 }}>
-          {CH_RECENT_GROWTH.map((g) => (
-            <div key={g.name} style={{ display:'flex', alignItems:'center', gap:10 }}>
-              <span style={{ fontSize:13, fontWeight:700, color:'var(--text)', flex:1 }}>{g.name}</span>
-              <span style={{ display:'inline-flex', alignItems:'center', gap:4, background:'var(--green-soft)', color:'#1b7a3e', fontSize:12.5, fontWeight:900, fontFamily:'var(--font-round)', padding:'4px 12px', borderRadius:999 }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1b7a3e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+{g.delta}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 完了したチャレンジ */}
-      <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)' }}>完了したチャレンジ</h3>
-      {completed.length ? (
-        <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
-          {completed.map((t,i) => (
-            <div key={i} className="card card--flat" style={{ display:'flex', alignItems:'center', gap:10, padding:'12px 14px' }}>
-              <div style={{ width:24, height:24, borderRadius:'50%', background:'var(--green)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <div style={{ flex:1 }}>
-                <div style={{ fontSize:12.5, fontWeight:700 }}>{t.text}</div>
-                <div style={{ fontSize:10, color:'var(--text-sub)', marginTop:1 }}>完了日: {t.date}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p style={{ fontSize:12, color:'var(--text-sub)', textAlign:'center', padding:'16px 0' }}>まだ完了したチャレンジがありません。<br/>最初の一歩を踏み出そう！</p>
-      )}
-
       {/* チャレンジマップ */}
       <div className="card">
         <div style={{ fontSize:12.5, fontWeight:800, marginBottom:13, display:'flex', alignItems:'center', gap:6 }}><FIcon name="compass" size={16} color="var(--blue)" /> チャレンジマップ</div>
@@ -334,6 +332,33 @@ function GrowthLogTab({ nav }) {
         </div>
         <div style={{ fontSize:10.5, color:'var(--text-sub)', marginTop:12, lineHeight:1.6 }}>タップでコンピテンシーの説明が見られるよ</div>
       </div>
+      {/* 完了したチャレンジ */}
+      <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)' }}>完了したチャレンジ</h3>
+      {completed.length ? (
+        <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+          {(showAllDone ? completed : completed.slice(0,5)).map((t,i) => (
+            <div key={i} className="card card--flat" style={{ display:'flex', alignItems:'center', gap:10, padding:'12px 14px' }}>
+              <div style={{ width:24, height:24, borderRadius:'50%', background:'var(--green)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:12.5, fontWeight:700 }}>{t.text}</div>
+                <div style={{ fontSize:10, color:'var(--text-sub)', marginTop:1 }}>完了日: {t.date}</div>
+              </div>
+            </div>
+          ))}
+          {completed.length > 5 && (
+            <button onClick={() => setShowAllDone(!showAllDone)}
+              style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, width:'100%', background:'#fff', border:'1.5px solid var(--border)', borderRadius:999, padding:'10px 14px', fontSize:12, fontWeight:800, fontFamily:'var(--font-round)', color:'var(--text-sub)', cursor:'pointer', marginTop:2 }}>
+              {showAllDone ? '閉じる' : `もっと見る（あと${completed.length - 5}件）`}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: showAllDone ? 'rotate(180deg)' : 'none', transition:'transform .2s' }}><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          )}
+        </div>
+      ) : (
+        <p style={{ fontSize:12, color:'var(--text-sub)', textAlign:'center', padding:'16px 0' }}>まだ完了したチャレンジがありません。<br/>最初の一歩を踏み出そう！</p>
+      )}
+
     </div>
   );
 }
