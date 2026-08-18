@@ -50,11 +50,11 @@ function TypeHeroSection() {
           </div>
 
           {/* アート枠 */}
-          <div style={{ marginTop:9, borderRadius:12, border:'2px solid #1f1b16', background:'#fbfaf7', backgroundImage:'radial-gradient(#e6e1d5 1px, transparent 1px)', backgroundSize:'9px 9px', display:'flex', alignItems:'flex-end', justifyContent:'center', height:164, position:'relative', overflow:'hidden' }}>
+          <div style={{ marginTop:9, borderRadius:12, border:'2px solid #1f1b16', background:'#fbfaf7', backgroundImage:'radial-gradient(#e6e1d5 1px, transparent 1px)', backgroundSize:'9px 9px', display:'flex', alignItems:'flex-end', justifyContent:'center', height:164, position:'relative' }}>
             <svg style={{ position:'absolute', top:10, left:14 }} width="12" height="12" viewBox="0 0 24 24" fill="#cdd7ff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
             <svg style={{ position:'absolute', top:26, right:20 }} width="8" height="8" viewBox="0 0 24 24" fill="#ffd633"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
             <svg style={{ position:'absolute', bottom:18, left:26 }} width="7" height="7" viewBox="0 0 24 24" fill="#e3ddcd"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
-            <img src="assets/shaper.svg" alt="探索するシェイパー" style={{ height:158, width:'auto', display:'block', marginBottom:-6 }} />
+            <img src="assets/shaper.svg" alt="探索するシェイパー" style={{ height:244, width:'auto', display:'block', marginBottom:-20, position:'relative', zIndex:2 }} />
           </div>
 
           {/* ネームプレート */}

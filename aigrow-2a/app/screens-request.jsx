@@ -2,7 +2,7 @@
 const { useState: useRq } = React;
 
 const INCOMING_REQUESTS = [
-  { id: 'r1', name: '入江 平作', grade: '2年 B組', course: '自己・相互の全問題', sent: '2026-05-02 18:40',
+  { id: 'r1', name: '入江 あおい', grade: '2年 B組', course: '自己・相互の全問題', sent: '2026-05-02 18:40',
     period: '2026-05-01 13:15 〜 2026-07-04 00:00', msg: '同じ班だったよね。よかったら相互評価おねがい！' },
   { id: 'r2', name: '青田 徳彦', grade: '2年 A組', course: 'IAT', sent: '2026-05-02 12:05',
     period: '2026-04-27 11:05 〜 2026-07-04 00:00', msg: '部活のメンバーとして評価してほしいです。' },

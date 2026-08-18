@@ -141,7 +141,7 @@ const STEP_FLOW = [
   { key: 'other', label: '相互評価', route: 'start-other' },
 ];
 const SELF_PEERS = [
-  { course: '自己・相互の全問題', name: '入江 平作', period: '2026-05-01 13:15' },
+  { course: '自己・相互の全問題', name: '入江 あおい', period: '2026-05-01 13:15' },
   { course: '自己・相互の全問題', name: '青田 徳彦', period: '2026-05-01 13:15' },
 ];
 function StepCompleteScreen(props) {
@@ -339,11 +339,13 @@ function StartOtherScreen() {
 }
 
 /* 相互評価の開始ハブ：「自分が評価する」×「評価をお願いする」タブ */
-function OtherStartScreen() {
+function OtherStartScreen(props) {
   const nav = useNav();
+  const doneName = (props && props.doneName) || (nav.params && nav.params.doneName) || null;
   const [declined, setDeclined] = useSm([{ name: '青田 徳彦', course: '2026年度 前期コース' }]);
   const [accepted, setAccepted] = useSm([]);
-  const [answered] = useSm([{ name: '入江 平作', course: '2026年度 前期コース' }]);
+  const [answered] = useSm([{ name: '入江 あおい', course: '2026年度 前期コース' }]);
+  const todoPeers = doneName ? SELF_PEERS.filter(p => p.name !== doneName) : SELF_PEERS;
   const approve = (i) => {
     setDeclined(d => d.filter((_, k) => k !== i));
     setAccepted(a => [...a, declined[i]]);
@@ -359,7 +361,7 @@ function OtherStartScreen() {
         </div>
         <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-sub)', fontFamily: 'var(--font-round)', padding: '2px 2px 0' }}>未回答</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {SELF_PEERS.map((p, i) => (
+          {todoPeers.map((p, i) => (
             <button key={i} onClick={() => nav.go('other-eval')}
               style={{ width: '100%', textAlign: 'left', cursor: 'pointer', background: '#fff', border: '2px solid #1f1b16', borderRadius: 'var(--r-lg)', boxShadow: '3px 3px 0 #1f1b16', padding: '14px 15px', display: 'flex', alignItems: 'center', gap: 12 }}>
               <span style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--blue-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--blue)' }}><FIcon name="handshake" size={20} color="var(--blue)" /></span>
@@ -456,6 +458,47 @@ function EvalReqGroup({ label, count, badge, first, muted, action, onAction, not
         </div>
       )}
     </>
+  );
+}
+
+/* ─────────── 1人分の相互評価 完了モーダル（独立画面） ─────────── */
+function PeerDoneModal({ name, done, total, onNext }) {
+  const rest = Math.max(0, total - done);
+  return (
+    <div style={{ position: 'absolute', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 22px', background: 'rgba(0,0,0,.55)', backdropFilter: 'blur(2px)' }}>
+      <div className="fade-in" style={{ width: '100%', maxWidth: 360, background: '#fff', borderRadius: 18, overflow: 'hidden', border: '2px solid #1f1b16', boxShadow: '6px 6px 0 #1f1b16' }}>
+        <div style={{ background: 'var(--green)', padding: '24px 20px 20px', textAlign: 'center', color: '#fff' }}>
+          <div style={{ width: 56, height: 56, margin: '0 auto 10px', borderRadius: '50%', background: 'rgba(255,255,255,.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <FIcon name="check" size={30} color="#fff" sw={3} />
+          </div>
+          <div style={{ fontSize: 11.5, fontWeight: 800, opacity: .9, marginBottom: 6 }}>1人分の相互評価が完了</div>
+          <div style={{ fontFamily: 'var(--font-round)', fontSize: 19, fontWeight: 900, lineHeight: 1.45 }}>「{name}」への<br />評価を送ったよ！</div>
+        </div>
+        <div style={{ padding: '18px 20px 20px' }}>
+          <p style={{ fontSize: 12.5, color: 'var(--text-sub)', fontWeight: 600, lineHeight: 1.8, textAlign: 'center', margin: '2px 0 16px' }}>
+            回答ありがとう！<br />{rest > 0 ? <>まだ相互評価が残っているよ。<br />相互評価一覧から次の人を選ぼう。</> : <>評価する友達は全員おわったよ。<br />相互評価一覧で回答状況を確認できるよ。</>}
+          </p>
+          <button className="btn btn--cta btn--lg" onClick={onNext}>相互評価一覧にもどる</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PeerDoneScreen(props) {
+  const nav = useNav();
+  const p = props || {};
+  const name = p.name || (nav.params && nav.params.name) || '入江 あおい';
+  const total = p.total || (nav.params && nav.params.total) || 2;
+  const [open, setOpen] = useSm(true);
+  return (
+    <div className="screen" style={{ position: 'relative' }}>
+      <OtherStartScreen doneName={name} />
+      {open && (
+        <PeerDoneModal name={name} done={1} total={total}
+          onNext={() => { setOpen(false); nav.go('other-start', { doneName: name }); }} />
+      )}
+    </div>
   );
 }
 
@@ -642,4 +685,104 @@ function TorisetsuUpdatedModal({ onClose }) {
   );
 }
 
-Object.assign(window, { SelfSummarySection, StepCompleteScreen, StartOtherScreen, OtherStartScreen, AskEvalScreen, TorisetsuUpdatedModal });
+/* ─────────── トリセツ解放の演出（カタルシス） ─────────── */
+const UNLOCK_ITEMS = [
+  { icon: 'user', title: '「今のキミ」が解放', desc: '相互評価をふまえた、今の強みが見られる', color: 'var(--blue)' },
+  { icon: 'users', title: 'まわりから見たキミ', desc: '友だちが見つけてくれた強みが読める', color: '#8a5cf5' },
+  { icon: 'sprout', title: '成長のヒントが更新', desc: '次にのばす力の候補が新しくなった', color: 'var(--green)' },
+];
+
+function TorisetsuUnlockScreen() {
+  const nav = useNav();
+  const [st, setSt] = useSm(0); // 0:封 1:開封 2:内容
+  useEm(() => {
+    const a = setTimeout(() => setSt(1), 480);
+    const b = setTimeout(() => setSt(2), 1180);
+    return () => { clearTimeout(a); clearTimeout(b); };
+  }, []);
+  const open = st >= 1, done = st >= 2;
+
+  return (
+    <div className="screen" style={{ background: 'radial-gradient(120% 90% at 50% 34%, #ffd84d 0%, #ffb524 50%, #f08a1c 100%)', position: 'relative', overflow: 'hidden' }}>
+      <style>{`
+        @keyframes tuRay { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes tuPop { 0% { transform: scale(.2); opacity: 0; } 60% { opacity: 1; } 100% { transform: scale(2.6); opacity: 0; } }
+        @keyframes tuFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 0; } 12% { opacity: 1; } 100% { transform: translateY(560px) rotate(420deg); opacity: 0; } }
+        @keyframes tuBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+      `}</style>
+      <StatusBar />
+
+      {/* 光のレイ */}
+      <div aria-hidden="true" style={{ position: 'absolute', left: '50%', top: 168, width: 620, height: 620, marginLeft: -310, marginTop: -310, pointerEvents: 'none',
+        background: 'repeating-conic-gradient(from 0deg, rgba(255,255,255,.42) 0deg 7deg, rgba(255,255,255,0) 7deg 22deg)',
+        borderRadius: '50%', animation: 'tuRay 26s linear infinite', opacity: open ? 1 : 0, transform: `scale(${open ? 1 : .5})`, transition: 'opacity .8s ease, transform 1s cubic-bezier(.2,.9,.3,1.2)',
+        maskImage: 'radial-gradient(circle, #000 30%, transparent 72%)', WebkitMaskImage: 'radial-gradient(circle, #000 30%, transparent 72%)' }}></div>
+
+      {/* 紙吹雪 */}
+      {open && (
+        <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 3 }}>
+          {[['#315cfa', 8, 0], ['#fff', 22, .5], ['#2fbf6b', 34, .2], ['#ff6b5e', 47, .9], ['#fff', 58, .35], ['#8a5cf5', 70, .7], ['#1f1b16', 82, .15], ['#fff', 92, .6]].map(([c, l, d], i) => (
+            <div key={i} style={{ position: 'absolute', left: `${l}%`, top: -14, width: i % 3 === 0 ? 7 : 9, height: i % 3 === 0 ? 12 : 9,
+              borderRadius: i % 2 ? '50%' : 2, background: c, animation: `tuFall ${2.6 + (i % 4) * .5}s ${d}s linear infinite` }}></div>
+          ))}
+        </div>
+      )}
+
+      <div className="scroll" style={{ display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 4 }}>
+        <div style={{ flex: 1, minHeight: 540, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '18px 24px 8px', textAlign: 'center' }}>
+
+          {/* 封 → 開封 */}
+          <div style={{ position: 'relative', width: 116, height: 116, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            {open && (
+              <div aria-hidden="true" style={{ position: 'absolute', inset: 6, borderRadius: '50%', border: '3px solid rgba(255,255,255,.9)', animation: 'tuPop .9s ease-out forwards' }}></div>
+            )}
+            <div style={{ width: 104, height: 104, borderRadius: 30, background: '#fff', border: '3px solid #1f1b16', boxShadow: '5px 5px 0 #1f1b16',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', color: open ? 'var(--orange-dark, #e07b12)' : '#c0b7a6',
+              transform: open ? 'scale(1) rotate(0deg)' : 'scale(.86) rotate(-6deg)',
+              transition: 'transform .55s cubic-bezier(.2,1.4,.4,1.3), color .4s ease',
+              animation: done ? 'tuBob 3.2s ease-in-out infinite' : 'none' }}>
+              <FIcon name={open ? 'book' : 'lock'} size={50} sw={1.7} />
+            </div>
+          </div>
+
+          <div style={{ marginTop: 20, opacity: open ? 1 : 0, transform: open ? 'translateY(0)' : 'translateY(12px)', transition: 'all .5s .12s cubic-bezier(.2,.9,.3,1.2)' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#fff', border: '2px solid #1f1b16', color: '#1f1b16', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 11.5, padding: '5px 12px', borderRadius: 999, boxShadow: '2px 2px 0 #1f1b16' }}>
+              <FIcon name="sparkle" size={13} color="var(--orange, #ff9f1c)" /> 相互評価 3/3 コンプリート
+            </span>
+            <h1 style={{ fontFamily: 'var(--font-round)', fontSize: 27, fontWeight: 900, color: '#1f1b16', marginTop: 12, lineHeight: 1.38, textShadow: '0 2px 0 rgba(255,255,255,.55)' }}>
+              トリセツが<br />アップデートされた！
+            </h1>
+            <p style={{ fontSize: 12.5, color: 'rgba(31,27,22,.78)', fontWeight: 600, marginTop: 10, lineHeight: 1.7 }}>
+              まわりの見方が加わって、<br />キミのトリセツがひとつ深くなったよ。
+            </p>
+          </div>
+
+          <div style={{ width: '100%', marginTop: 22, display: 'flex', flexDirection: 'column', gap: 9 }}>
+            {UNLOCK_ITEMS.map((u, i) => (
+              <div key={i} style={{ background: '#fff', borderRadius: 14, border: '2px solid #1f1b16', boxShadow: '3px 3px 0 #1f1b16', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 12,
+                opacity: done ? 1 : 0, transform: done ? 'translateY(0) scale(1)' : 'translateY(18px) scale(.96)',
+                transition: `all .45s ${0.06 + i * 0.13}s cubic-bezier(.2,1,.3,1.25)` }}>
+                <div style={{ width: 42, height: 42, borderRadius: 12, flexShrink: 0, background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: u.color }}>
+                  <FIcon name={u.icon} size={21} />
+                </div>
+                <div style={{ flex: 1, textAlign: 'left' }}>
+                  <div style={{ fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 13.5, color: 'var(--text)' }}>{u.title}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 500, lineHeight: 1.5 }}>{u.desc}</div>
+                </div>
+                <div style={{ width: 21, height: 21, borderRadius: '50%', background: 'var(--green)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ flexShrink: 0, padding: '10px 24px 26px', opacity: done ? 1 : 0, transform: done ? 'translateY(0)' : 'translateY(10px)', transition: 'all .5s .5s ease' }}>
+          <button className="btn btn--lg" style={{ background: '#1f1b16', color: '#fff', border: '2px solid #1f1b16', boxShadow: '4px 4px 0 rgba(31,27,22,.28)' }} onClick={() => nav.go('home')}>トリセツを開く</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { SelfSummarySection, StepCompleteScreen, StartOtherScreen, OtherStartScreen, PeerDoneModal, PeerDoneScreen, AskEvalScreen, TorisetsuUpdatedModal, TorisetsuUnlockScreen });

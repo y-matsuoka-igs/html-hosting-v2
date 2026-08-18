@@ -136,6 +136,7 @@ function App() {
       case 'start-self':   return <StartSelfScreen />;
       case 'start-other':  return <StartOtherScreen />;
       case 'other-start':  return <OtherStartScreen />;
+      case 'peer-done':    return <PeerDoneScreen />;
       case 'ask-eval':     return <AskEvalScreen />;
       case 'eval-request': return <EvalRequestScreen />;
       case 'waiting-peer': return <WaitingPeerScreen />;
@@ -148,6 +149,7 @@ function App() {
       case 'other-eval':   return <OtherEvalScreen />;
       case 'strength-eval': return <StrengthEvalScreen />;
       case 'announce':     return <AnnounceScreen />;
+      case 'torisetsu-unlock': return <TorisetsuUnlockScreen />;
       case 'diag-complete':
       case 'self-complete':
       case 'other-complete': return <StepCompleteScreen />;
@@ -175,7 +177,7 @@ function App() {
         {screen !== 'login' && <UserBar name={state.userName} />}
         {showNav && <BottomNav active={SCREEN_TAB[screen]} onTab={nav.tab} badges={badges} locked={!state.torisetsuDone} enabledKeys={STEP_COMPLETE.has(screen) ? ['exam'] : screen === 'exam-waiting-no-tori' ? ['exam', 'report'] : undefined} />}
         {state.torisetsuUpdated && screen !== 'login' && (
-          <TorisetsuUpdatedModal onClose={() => update({ torisetsuUpdated: false })} />
+          <TorisetsuUpdatedModal onClose={() => { update({ torisetsuUpdated: false, peerDone: true }); nav.go('torisetsu-unlock'); }} />
         )}
         {state.showWelcome && screen !== 'login' && (
           <WelcomeModal name={state.userName}
@@ -209,7 +211,8 @@ function App() {
         <TweakButton label="自己評価完了（ステップ）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true } }); nav.go('self-complete', { kind: 'self' }); }} />
         <TweakButton label="全タスク完了（ステップ）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true } }); nav.go('other-complete', { kind: 'other' }); }} />
         <TweakButton label="相互評価完了（ステップ）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true } }); nav.go('other-complete-wait', { kind: 'other', waiting: true }); }} />
-        <TweakButton label="相互評価（友達一覧）" onClick={() => nav.go('other-start')} />
+        <TweakButton label="相互評価一覧" onClick={() => nav.go('other-start')} />
+        <TweakButton label="1人分完了（モーダル）" onClick={() => nav.go('peer-done', { name: '入江 あおい', total: 2 })} />
         <TweakButton label="評価をお願いする" onClick={() => nav.go('ask-eval')} />
         <TweakButton label="他者評価" onClick={() => nav.go('other-eval')} />
         <TweakButton label="評価リクエストが届いた" onClick={() => nav.go('eval-request')} />

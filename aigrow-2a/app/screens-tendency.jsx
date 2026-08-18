@@ -285,22 +285,33 @@ function TendencyCompleteScreen() {
     <div className="screen">
       <StatusBar />
       <AppHeader noMenu />
-      <div className="scroll pad" style={{ display: 'flex', flexDirection: 'column' }}>
-        <div style={{ flex: 1, minHeight: 480, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 4 }}>
-          <div className="fade-in" style={{ width: 120, height: 120, borderRadius: '50%', background: 'var(--green)', border: '2px solid #1f1b16', boxShadow: '4px 4px 0 #1f1b16', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', marginBottom: 20 }}>
-            <FIcon name="check" size={58} sw={2} />
+      <div className="scroll pad stack">
+        {/* hero */}
+        <div className="fade-in" style={{ background: '#315cfa', borderRadius: 'var(--r-lg)', padding: '26px 20px', textAlign: 'center', color: '#fff', border: '2px solid #1f1b16', boxShadow: '4px 4px 0 #1f1b16' }}>
+          <div style={{ position: 'relative', width: 124, height: 124, margin: '0 auto 12px' }}>
+            <svg width="124" height="124" viewBox="0 0 124 124" style={{ transform: 'rotate(-90deg)' }}>
+              <circle cx="62" cy="62" r="46" fill="none" stroke="rgba(255,255,255,.22)" strokeWidth="12" />
+              <circle cx="62" cy="62" r="46" fill="none" stroke="#ffd633" strokeWidth="12" strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 46} ${2 * Math.PI * 46}`} />
+            </svg>
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', color: '#ffd633' }}><FIcon name="party" size={40} color="#ffd633" /></div>
+            </div>
           </div>
-          <h1 style={{ fontSize: 23, fontWeight: 900, lineHeight: 1.45 }}>傾向チェック<br />おつかれさま！</h1>
-          <p style={{ fontSize: 13.5, color: 'var(--text-sub)', fontWeight: 600, marginTop: 10, lineHeight: 1.85, maxWidth: 280 }}>
-            回答を受け付けました。ご協力ありがとう！<br />結果は先生の分析にいかされるよ。
-          </p>
-          <div style={{ marginTop: 18, background: 'var(--green-soft)', color: '#2E7D32', borderRadius: 999, padding: '7px 16px', fontSize: 12, fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-            <FIcon name="check" size={14} color="#2E7D32" /> すべてのパートが完了しました
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, opacity: .8, marginBottom: 8 }}>すべてのパート 完了</div>
+          <div style={{ fontFamily: 'var(--font-round)', fontSize: 22, fontWeight: 900, lineHeight: 1.4 }}>傾向チェック 完了！</div>
+          <div style={{ fontSize: 12.5, opacity: .9, lineHeight: 1.7, marginTop: 8 }}>回答を受け付けました。ご協力ありがとう！</div>
+        </div>
+
+        {/* 進捗 */}
+        <div className="card card--flat" style={{ padding: '15px 16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+            <div style={{ width: 30, height: 30, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: '#fff', background: 'var(--green)' }}>✓</div>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--green)' }}>傾向チェック</span>
           </div>
         </div>
-        <div style={{ flexShrink: 0, paddingBottom: 10 }}>
-          <button className="btn btn--cta btn--lg" onClick={() => nav.go('home')}>ホームにもどる</button>
-        </div>
+
+        <button className="btn btn--cta btn--lg" onClick={() => nav.go('home')}>ホームにもどる</button>
       </div>
     </div>
   );

@@ -158,11 +158,20 @@ function ChallengeTab({ nav }) {
   const futureGroup = hasFuture ? { tag:'えらんだ成長に近づくチャレンジ', emoji:fg.icon, color:'#9a6a2e', soft:'#fff5cc', items:[{ text:fg.actions[0], comp:fg.comp, future:true }] } : null;
   const recGroups = futureGroup ? [futureGroup, ...CH_WEEK_RECS] : CH_WEEK_RECS;
 
+  const [justAdded, setJustAdded] = React.useState(null);
+  React.useEffect(() => {
+    if (!justAdded) return;
+    const id = setTimeout(() => setJustAdded(null), 2400);
+    return () => clearTimeout(id);
+  }, [justAdded]);
   const addTask = (text, comp, fromFuture) => {
     const t = { text, date:todayStr(), done:false, comp, ...(fromFuture ? { source:'future' } : {}) };
     nav.update(s => ({ tasks:[...(s.tasks ? s.tasks : defaultTasks), t] }));
-    setSelected(null); setCustom('');
+    setSelected(null); setCustom(''); setPendingCustom('');
+    setJustAdded(text);
   };
+  const [pendingCustom, setPendingCustom] = React.useState('');
+  const toastText = selected ? selected : pendingCustom;
   const selItem = recGroups.flatMap(g => g.items).find(it => it.text === selected) || {};
   const selectedComp = selItem.comp;
   const selectedFromFuture = !!selItem.future;
@@ -246,9 +255,6 @@ function ChallengeTab({ nav }) {
                       color:on?'var(--blue-dark)':'var(--text)',
                       border:'2px solid '+(on?'var(--blue)':'var(--border-soft)'),
                       background:on?'var(--blue-soft)':'#fff', transition:'all .15s', WebkitTapHighlightColor:'transparent' }}>
-                    <span style={{ width:20, height:20, borderRadius:7, flexShrink:0, border:'2px solid '+(on?'var(--blue)':'#d0d5da'), background:on?'var(--blue)':'#fff', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                      {on && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
-                    </span>
                     <span style={{ flex:1, minWidth:0 }}>{item.text}</span>
                     <CompTag name={item.comp} />
                   </button>
@@ -258,19 +264,50 @@ function ChallengeTab({ nav }) {
           </div>
         ))}
       </div>
-      <button className="btn btn--primary" disabled={!selected} onClick={() => selected && addTask(selected, selectedComp, selectedFromFuture)}>この一歩を登録する</button>
       <div className="card card--flat">
         <div style={{ fontSize:11, fontWeight:800, color:'var(--text-sub)', marginBottom:8, display:'flex', alignItems:'center', gap:5 }}><FIcon name="pencil" size={13} color="var(--text-sub)" /> 自分で入力する</div>
         <div style={{ display:'flex', gap:8, alignItems:'flex-end' }}>
-          <textarea value={custom} onChange={e=>setCustom(e.target.value)} rows={2} placeholder="例：毎朝5分、読書する"
+          <textarea value={custom} onChange={e=>{ setCustom(e.target.value); setPendingCustom(''); }} rows={2} placeholder="例：毎朝5分、読書する"
             style={{ flex:1, border:'2px solid var(--border)', borderRadius:'var(--r-md)', padding:'10px 12px', fontSize:13, fontFamily:'var(--font)', resize:'none', lineHeight:1.5, outline:'none' }}
             onFocus={e=>e.target.style.borderColor='var(--blue)'} onBlur={e=>e.target.style.borderColor='var(--border)'} />
-          <button onClick={() => custom.trim()&&addTask(custom.trim())}
-            style={{ flexShrink:0, width:44, height:44, borderRadius:'50%', background:'var(--blue)', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <button onClick={() => { if (!custom.trim()) return; setSelected(null); setPendingCustom(custom.trim()); }} aria-label="入力した一歩を送る"
+            style={{ flexShrink:0, width:44, height:44, borderRadius:'50%', background:custom.trim()?'var(--blue)':'#cfc4ab', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
         </div>
       </div>
+
+      {/* 選択トースト：カードをタップすると登録ボタンが出る */}
+      {toastText && (
+        <div style={{ position:'fixed', zIndex:300, bottom:'calc(56px + env(safe-area-inset-bottom, 0px) + 12px)',
+          left:'max(12px, calc((100vw - 480px) / 2 + 12px))', right:'max(12px, calc((100vw - 480px) / 2 + 12px))',
+          animation:'toastUp .26s cubic-bezier(.2,.9,.3,1)' }}>
+          <div style={{ background:'#fff', border:'2px solid #1f1b16', boxShadow:'4px 4px 0 #1f1b16', borderRadius:14, padding:'11px 12px', display:'flex', alignItems:'center', gap:10 }}>
+            <button onClick={() => { setSelected(null); setPendingCustom(''); }} aria-label="選択をやめる"
+              style={{ flexShrink:0, width:26, height:26, borderRadius:'50%', background:'#fff', border:'1.5px solid var(--border)', color:'#a89e8a', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <div style={{ flex:1, minWidth:0 }}>
+              <div style={{ fontSize:9.5, letterSpacing:1, fontWeight:800, color:'var(--text-sub)' }}>{selected ? 'えらんだ一歩' : '自分で入力した一歩'}</div>
+              <div style={{ fontSize:12.5, fontWeight:700, lineHeight:1.4, overflow:'hidden', textOverflow:'ellipsis', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical' }}>{toastText}</div>
+            </div>
+            <button onClick={() => selected ? addTask(selected, selectedComp, selectedFromFuture) : addTask(toastText)}
+              style={{ flexShrink:0, background:'var(--blue)', color:'#fff', border:'2px solid #1f1b16', boxShadow:'2px 2px 0 #1f1b16', borderRadius:999, padding:'10px 16px', fontFamily:'var(--font-round)', fontWeight:900, fontSize:13, cursor:'pointer' }}>登録する</button>
+          </div>
+        </div>
+      )}
+
+      {/* 登録完了トースト */}
+      {justAdded && (
+        <div style={{ position:'fixed', zIndex:300, bottom:'calc(56px + env(safe-area-inset-bottom, 0px) + 12px)',
+          left:'max(12px, calc((100vw - 480px) / 2 + 12px))', right:'max(12px, calc((100vw - 480px) / 2 + 12px))',
+          animation:'toastUp .26s cubic-bezier(.2,.9,.3,1)' }}>
+          <div style={{ background:'#18b271', border:'2px solid #1f1b16', boxShadow:'4px 4px 0 #1f1b16', borderRadius:14, padding:'12px 14px', display:'flex', alignItems:'center', gap:9 }}>
+            <FIcon name="fire" size={17} color="#fff" />
+            <div style={{ flex:1, minWidth:0, fontFamily:'var(--font-round)', fontWeight:900, fontSize:13, color:'#fff' }}>チャレンジに登録したよ！</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

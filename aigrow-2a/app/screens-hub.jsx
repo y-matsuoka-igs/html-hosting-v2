@@ -77,48 +77,49 @@ const BADGE_GROUPS = [
     key: 'comp', label: 'コンピテンシーの証', icon: '💎',
     desc: '強みや能力に関するバッジ',
     badges: [
-      { e: '🧭', l: '自己発見',     rar: 'N',  got: true },
-      { e: '💡', l: '創造の芽',     rar: 'R',  got: true },
-      { e: '🤝', l: '共感マスター', rar: 'SR', got: true },
-      { e: '🔥', l: '実行力の鬼',   rar: 'SR', got: false },
-      { e: '👑', l: '五冠達成',     rar: 'UR', got: false },
+      { e: '🧭', l: '自己発見',     rar: 'N',  got: true,  cond: '気質診断をさいごまで終える', hint: '2025.04.12 に獲得' },
+      { e: '💡', l: '創造の芽',     rar: 'R',  got: true,  cond: '「創造力」の評価が3回つづけて上がる', hint: '2025.06.18 に獲得' },
+      { e: '🤝', l: '共感マスター', rar: 'SR', got: true,  cond: '相互評価で「共感力」が学年トップ10％に入る', hint: '2025.11.20 に獲得' },
+      { e: '🔥', l: '実行力の鬼',   rar: 'SR', got: false, cond: '「実行力」のスコアを1年で+5のばす', hint: 'あと +2 でゲット' },
+      { e: '👑', l: '五冠達成',     rar: 'UR', got: false, cond: '5つのコンピテンシーすべてでレベル4以上になる', hint: '達成は 2 / 5' },
     ],
   },
   {
     key: 'challenge', label: '挑戦の記録', icon: '🚩',
     desc: 'チャレンジの達成に関するバッジ',
     badges: [
-      { e: '👣', l: '初めの一歩', rar: 'N',  got: true },
-      { e: '✅', l: '3つ達成',    rar: 'R',  got: true },
-      { e: '🏅', l: '10コンプ',   rar: 'SR', got: false },
-      { e: '🌟', l: '挑戦王',     rar: 'UR', got: false },
+      { e: '👣', l: '初めの一歩', rar: 'N',  got: true,  cond: 'チャレンジを1つ達成する', hint: '2025.04.20 に獲得' },
+      { e: '✅', l: '3つ達成',    rar: 'R',  got: true,  cond: 'チャレンジを3つ達成する', hint: '2025.09.02 に獲得' },
+      { e: '🏅', l: '10コンプ',   rar: 'SR', got: false, cond: 'チャレンジを10こ達成する', hint: 'いまは 4 / 10' },
+      { e: '🌟', l: '挑戦王',     rar: 'UR', got: false, cond: '3か月つづけて毎月チャレンジを達成する', hint: '達成は 1 / 3 か月' },
     ],
   },
   {
     key: 'action', label: '継続の習慣', icon: '🔥',
     desc: '毎日のアクセスなど行動に関するバッジ',
     badges: [
-      { e: '🌅', l: '初ログイン', rar: 'N',  got: true },
-      { e: '📅', l: '7日連続',    rar: 'R',  got: true },
-      { e: '⚡', l: '30日連続',   rar: 'SR', got: false },
-      { e: '💯', l: '皆勤の証',   rar: 'UR', got: false },
+      { e: '🌅', l: '初ログイン', rar: 'N',  got: true,  cond: 'はじめてAi GROWにログインする', hint: '2025.04.12 に獲得' },
+      { e: '📅', l: '7日連続',    rar: 'R',  got: true,  cond: '7日つづけてアプリをひらく', hint: '2025.05.03 に獲得' },
+      { e: '⚡', l: '30日連続',   rar: 'SR', got: false, cond: '30日つづけてアプリをひらく', hint: 'いまは 12日連続' },
+      { e: '💯', l: '皆勤の証',   rar: 'UR', got: false, cond: '1学期のあいだ、毎週ログインする', hint: 'いまは 9 / 16 週' },
     ],
   },
   {
     key: 'special', label: 'スペシャル', icon: '🎁',
     desc: 'イベントや特別な行動でもらえるバッジ',
     badges: [
-      { e: '🎉', l: 'はじめまして', rar: 'N',  got: true },
-      { e: '🔮', l: '占い好き',     rar: 'R',  got: false },
-      { e: '🦄', l: '隠しバッジ',   rar: 'UR', got: false },
+      { e: '🎉', l: 'はじめまして', rar: 'N',  got: true,  cond: 'プロフィールを登録する', hint: '2025.04.12 に獲得' },
+      { e: '🔮', l: '占い好き',     rar: 'R',  got: false, cond: '今日の占いを10回ひらく', hint: 'いまは 6 / 10 回' },
+      { e: '🦄', l: '隠しバッジ',   rar: 'UR', got: false, cond: '???', hint: 'じょうけんはひみつ。つづけていれば、いつか出会えるかも。' },
     ],
   },
 ];
 
-function GrowthBadge({ b }) {
+function GrowthBadge({ b, onTap }) {
   const r = RARITY[b.rar];
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, opacity: b.got ? 1 : .5 }}>
+    <div role="button" tabIndex={0} onClick={() => onTap && onTap(b)}
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, opacity: b.got ? 1 : .5, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>
       <div style={{ position: 'relative' }}>
         <div style={{ width: 58, height: 58, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 27,
           background: b.got ? r.bg : 'var(--bg)',
@@ -203,6 +204,7 @@ function MonthlyBody() {
 
 function ReportScreen() {
   const nav = useNav();
+  const REPORT_URL = 'https://feedback-report.aigrow.jp/?token=e27f3f4b-d070-4c53-8452-5858046bd994_b7d01567-7c11-4c03-add1-16cac2041791';
   const PAST_REPORTS = [
     { term: '2025年度 後期', date: '2025.11.20', type: '気質診断 + 自己/相互評価', highlight: '行動する創造者', latest: true },
     { term: '2025年度 前期', date: '2025.06.18', type: '気質診断 + 自己/相互評価', highlight: 'ひらめきの探究者', latest: false },
@@ -218,7 +220,7 @@ function ReportScreen() {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {PAST_REPORTS.map((r) => (
-            <button key={r.term} onClick={() => r.latest && nav.go('home')} disabled={!r.latest} style={{ width: '100%', textAlign: 'left', cursor: r.latest ? 'pointer' : 'default', opacity: r.latest ? 1 : .6, border: '1px solid var(--border-soft)', background: '#fff', borderRadius: 'var(--r-md)', padding: '14px 15px', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'center', gap: 13 }}>
+            <button key={r.term} onClick={() => r.latest && window.open(REPORT_URL, '_blank', 'noopener')} disabled={!r.latest} style={{ width: '100%', textAlign: 'left', cursor: r.latest ? 'pointer' : 'default', opacity: r.latest ? 1 : .6, border: '1px solid var(--border-soft)', background: '#fff', borderRadius: 'var(--r-md)', padding: '14px 15px', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'center', gap: 13 }}>
               <div style={{ width: 42, height: 42, borderRadius: 12, background: r.latest ? 'var(--blue)' : 'var(--blue-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: r.latest ? '#fff' : 'var(--blue)' }}><FIcon name="chart" size={20} color={r.latest ? '#fff' : 'var(--blue)'} /></div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 2 }}>
@@ -245,7 +247,7 @@ const EXAM_COURSES = [
   { status: '進行中', name: '自己・相互の全問題', period: '2026-05-01 13:15 〜 2026-07-04 00:00' },
 ];
 const EXAM_REQUESTS = [
-  { course: '自己・相互の全問題', name: '入江 平作', period: '2026-05-01 13:15 〜 2026-07-04 00:00' },
+  { course: '自己・相互の全問題', name: '入江 あおい', period: '2026-05-01 13:15 〜 2026-07-04 00:00' },
   { course: '自己・相互の全問題', name: '青田 徳彦', period: '2026-05-01 13:15 〜 2026-07-04 00:00' },
 ];
 const EXAM_MY_REQUESTS = [
@@ -396,13 +398,58 @@ function ExamWaitingScreen() {
 }
 
 /* ════ 成長きろく ════ */
+function BadgeSheet({ b, onClose }) {
+  if (!b) return null;
+  const r = RARITY[b.rar];
+  return (
+    <div onClick={onClose} style={{ position: 'absolute', inset: 0, zIndex: 60, background: 'rgba(24,20,16,.45)', display: 'flex', alignItems: 'flex-end', animation: 'bsFade .18s ease-out' }}>
+      <style>{`
+        @keyframes bsFade { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes bsUp { from { transform: translateY(28px); opacity: .4; } to { transform: translateY(0); opacity: 1; } }
+      `}</style>
+      <div onClick={e => e.stopPropagation()} style={{ width: '100%', background: '#fff', borderRadius: '22px 22px 0 0', border: '2px solid #1f1b16', borderBottom: 'none', padding: '16px 20px 26px', animation: 'bsUp .26s cubic-bezier(.2,.9,.3,1.1)' }}>
+        <div style={{ width: 40, height: 4, borderRadius: 999, background: 'var(--border)', margin: '0 auto 16px' }}></div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ width: 62, height: 62, borderRadius: 17, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: b.got ? r.bg : 'var(--bg)', border: `2px solid ${b.got ? r.color : 'var(--border)'}`, boxShadow: b.got ? '3px 3px 0 #1f1b16' : 'none' }}>
+            {b.got ? <Emo e={b.e} size={29} color={r.color} /> : <FIcon name="lock" size={24} color="#b3b9be" />}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <span style={{ fontFamily: 'var(--font-round)', fontSize: 17, fontWeight: 900, color: 'var(--text)' }}>{b.l}</span>
+              <span style={{ background: b.got ? r.color : '#c2c8cd', color: '#fff', fontSize: 9.5, fontWeight: 900, fontFamily: 'var(--font-round)', padding: '2px 7px', borderRadius: 999 }}>{r.label}</span>
+            </div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: b.got ? 'var(--green)' : 'var(--text-sub)', marginTop: 3 }}>
+              {b.got ? '獲得ずみ' : 'みかくとく'}・{r.name}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ background: 'var(--bg)', borderRadius: 14, padding: '13px 15px', marginTop: 16 }}>
+          <div style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--text-sub)', letterSpacing: '.04em' }}>{b.got ? 'このバッジをもらった条件' : 'もらえる条件'}</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)', marginTop: 6, lineHeight: 1.6 }}>{b.cond}</div>
+        </div>
+
+        {b.hint && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 11, color: b.got ? 'var(--text-sub)' : 'var(--blue-dark)', fontSize: 11.5, fontWeight: 700, lineHeight: 1.5 }}>
+            <FIcon name={b.got ? 'check' : 'target'} size={15} /> {b.hint}
+          </div>
+        )}
+
+        <button className="btn btn--lg" style={{ marginTop: 18 }} onClick={onClose}>とじる</button>
+      </div>
+    </div>
+  );
+}
+
 function RecordScreen() {
   const nav = useNav();
+  const [openBadge, setOpenBadge] = React.useState(null);
   const totalGot = BADGE_GROUPS.reduce((s, g) => s + g.badges.filter(b => b.got).length, 0);
   const totalAll = BADGE_GROUPS.reduce((s, g) => s + g.badges.length, 0);
 
   return (
-    <div className="screen">
+    <div className="screen" style={{ position: 'relative' }}>
       <StatusBar />
       <TabHeader icon="book" title="成長きろく" />
       <div className="scroll pad stack">
@@ -411,6 +458,7 @@ function RecordScreen() {
           <h3 style={{ fontSize: 14, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 7 }}><FIcon name="leaf" size={18} color="var(--green)" /> 成長バッジ</h3>
           <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--blue)' }}>{totalGot} / {totalAll} 獲得</span>
         </div>
+        <div style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 600, marginTop: -6 }}>バッジをタップすると、もらえる条件が見られるよ</div>
 
         {BADGE_GROUPS.map(g => {
           const gGot = g.badges.filter(b => b.got).length;
@@ -425,7 +473,7 @@ function RecordScreen() {
                 <span style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--text-sub)' }}>{gGot}/{g.badges.length}</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginTop: 12 }}>
-                {g.badges.map((b, i) => <GrowthBadge key={i} b={b} />)}
+                {g.badges.map((b, i) => <GrowthBadge key={i} b={b} onTap={setOpenBadge} />)}
               </div>
             </div>
           );
@@ -441,6 +489,7 @@ function RecordScreen() {
           ))}
         </div>
       </div>
+      <BadgeSheet b={openBadge} onClose={() => setOpenBadge(null)} />
     </div>
   );
 }

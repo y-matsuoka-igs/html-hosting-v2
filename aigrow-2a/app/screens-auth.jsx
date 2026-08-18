@@ -97,7 +97,7 @@ function LoginScreen() {
 const OB_SLIDES = [
   { img: 'assets/ob-new-1.png', title: 'まだ気づいてない\n強みがある', body: '学習の成績だけじゃない。\nキミの「強み」を見つけよう。' },
   { img: 'assets/ob-new-2.png', title: '3ステップで\n「トリセツ」が完成', body: '気質診断・自己評価・相互評価。\n終わると自分の取扱説明書ができる。' },
-  { img: 'assets/ob-new-3.png', title: 'AIコーチが\n次の一歩を提案', body: '結果をもとに、今やると良いことを\nやさしく教えてくれるよ。' },
+  { img: 'assets/ob-new-3.png', title: 'Ai GROWが\n次の一歩を提案', body: '結果をもとに、今やると良いことを\nやさしく教えてくれるよ。' },
 ];
 function OnboardScreen() {
   const nav = useNav();

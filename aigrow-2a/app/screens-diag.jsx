@@ -24,7 +24,7 @@ const DIAG_AXES = [
     wordsL: ['冷静', '平常心', '楽観的', '切り替え上手', 'リラックス'],
     wordsR: ['心配性', 'ドキドキ', '繊細', '緊張しやすい', '気にしがち'] },
   { idx: 5, axis: '開放性', pairLabel: '開放性/保守性', funLabel: 'ひらめき探検', result: '知的好奇心旺盛な探求者', emoji: 'search',
-    color: '#8A5A2E', deep: '#5E3A17', label: '#EDD8BE', ans: '#C08A42',
+    color: '#E0A81B', deep: '#A87407', label: '#FBEDC4', ans: '#D2A544',
     attrL: '挑戦', attrR: 'いつも通り',
     wordsL: ['好奇心', 'アイデア', '冒険', '新しいもの', '想像力'],
     wordsR: ['定番', '現実的', 'ルーティン', '慣れた道', '安定'] },
@@ -349,7 +349,7 @@ function DiagGameScreen() {
           {q && (
             <div key={round + '-' + qi} ref={ansRef} className="fade-in"
               onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}
-              style={{ background: ax.ans, color: '#fff', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 17,
+              style={{ background: '#d98c45', color: '#fff', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 17,
                 padding: '17px 34px', minWidth: 150, textAlign: 'center', borderRadius: 8,
                 boxShadow: drag.active ? `0 14px 30px ${ax.color}55` : '0 4px 10px rgba(0,0,0,.20)',
                 userSelect: 'none', WebkitUserSelect: 'none', touchAction: 'none',
@@ -468,8 +468,7 @@ function DiagResultScreen() {
 
         {isLast && (
           <div style={{ background: 'var(--green-soft)', borderRadius: 'var(--r-lg)', padding: 16, textAlign: 'center' }}>
-            <div style={{ fontFamily: 'var(--font-round)', fontSize: 16, fontWeight: 800, color: '#2E7D32', marginBottom: 4 }}><span style={{display:'inline-flex',alignItems:'center',gap:6}}><FIcon name="party" size={16} color="#2E7D32" /> 気質診断 完了！</span></div>
-            <p style={{ fontSize: 12, color: '#388E3C', fontWeight: 600, lineHeight: 1.7 }}>お疲れさま！続けて「自己評価」に進もう。</p>
+            <div style={{ fontFamily: 'var(--font-round)', fontSize: 16, fontWeight: 800, color: '#2E7D32' }}><span style={{display:'inline-flex',alignItems:'center',gap:6}}><FIcon name="party" size={16} color="#2E7D32" /> 気質診断 完了！</span></div>
           </div>
         )}
 
