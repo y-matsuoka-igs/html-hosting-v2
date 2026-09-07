@@ -71,12 +71,7 @@ function TypeHeroSection() {
             <p style={{ fontSize:11, color:'#1f1b16', lineHeight:1.75, fontWeight:600, margin:0 }}>{NOW_TYPE_PROFILE.desc}</p>
           </div>
 
-          {/* とくい技 */}
-          <div style={{ display:'flex', gap:6, marginTop:10, justifyContent:'center', flexWrap:'wrap' }}>
-            {NOW_TYPE_PROFILE.traits.map(t => (
-              <span key={t} style={{ background:'#f7f5ee', border:'1.5px solid #1f1b16', color:'#1f1b16', borderRadius:999, padding:'3px 11px', fontSize:10, fontWeight:800, fontFamily:TJ.round, boxShadow:'2px 2px 0 #1f1b16' }}>{t}</span>
-            ))}
-          </div>
+          {/* とくい技タグは非表示 */}
       </div>
     </div>
   );
@@ -796,7 +791,64 @@ const HINT_BOOST = { producer:2, driver:1, innovator:0, cocreator:3, changer:4, 
 /* レーダー6軸 → 足す力（成長タイプ）の対応 */
 const HINT_AXIS_TO = ['innovator','driver','producer','cocreator','changer','pioneer'];
 
-function TorisetsuFuture({ nav, goChallenge, step, goBack, selfOnly }) {
+/* ── 3軸パターン（レーダーにならない場合）── */
+const BAR_AXES  = ['考え創る','やり抜く','巻き込む'];
+const BAR_SELF   = [0.86, 0.50, 0.64];
+const BAR_OTHER  = [0.72, 0.71, 0.67];
+
+function HintBars({ selIdx, onPick, boostAdd = 0.28 }) {
+  const [grown, setGrown] = React.useState(false);
+  React.useEffect(() => {
+    setGrown(false);
+    if (selIdx == null) return;
+    const id = setTimeout(() => setGrown(true), 60);
+    return () => clearTimeout(id);
+  }, [selIdx]);
+
+  const pct = (v) => Math.round(v * 100);
+
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:11, padding:'12px 12px 6px' }}>
+      {BAR_AXES.map((label, i) => {
+        const s = BAR_SELF[i], o = BAR_OTHER[i];
+        const on = selIdx === i;
+        const base = Math.max(s, o);
+        const future = Math.min(base + boostAdd, 0.99);
+        return (
+          <div key={label} style={{ display:'flex', flexDirection:'column', gap:7 }}>
+            <button onClick={() => onPick(i)}
+              style={{ alignSelf:'flex-start', cursor:'pointer', fontFamily:TJ.round, fontWeight:800, fontSize:11.5,
+                borderRadius:999, padding:'6px 14px', transition:'transform .12s, box-shadow .12s, background .18s',
+                background: on ? '#1f1b16' : '#fffbf2', color: on ? '#ffd633' : '#5c5546',
+                border: on ? '1.5px solid #1f1b16' : '1.5px solid #e3d9c4',
+                boxShadow: on ? '2px 2px 0 rgba(31,27,22,.28)' : '2px 2px 0 #efe7d6',
+                transform: on ? 'translate(-1px,-1px)' : 'none' }}>{label}</button>
+            <div onClick={() => onPick(i)} style={{ display:'flex', flexDirection:'column', gap:4, cursor:'pointer' }}>
+              {/* 自己 */}
+              <div style={{ height:12, borderRadius:6, background:'#f4efe2' }}>
+                <div style={{ width:pct(s) + '%', height:'100%', borderRadius:6, background:'#315cfa' }}></div>
+              </div>
+              {/* 他者 */}
+              <div style={{ height:12, borderRadius:6, background:'#f4efe2' }}>
+                <div style={{ width:pct(o) + '%', height:'100%', borderRadius:6, background:'#2E8560' }}></div>
+              </div>
+              {/* 未来（選択で伸びる） */}
+              {on && (
+                <div style={{ height:12, borderRadius:6, background:'#f4efe2' }}>
+                  <div style={{ width:(grown ? pct(future) : pct(base)) + '%', height:'100%', borderRadius:6,
+                    background:'repeating-linear-gradient(115deg,#ff6b5e 0 6px,#ffa79e 6px 11px)',
+                    transition:'width .6s cubic-bezier(.22,.9,.24,1)' }}></div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function TorisetsuFuture({ nav, goChallenge, step, goBack, selfOnly, chart }) {
   const saved = (nav.state && nav.state.career) || {};
   const [selId, setSelId] = useTJ(saved.goalId || null);
   const previewRef = React.useRef(null);
@@ -847,9 +899,32 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack, selfOnly }) {
 
   return (
     <>
-      <StepHead n={2} title="成長のヒント" sub="今のキミの成分に、力を足すとカタチが変わる" />
+      <StepHead n={2} title="成長のヒント" sub={chart === 'bars' ? '今のキミの3つの成分に、力を足すと伸びる' : '今のキミの成分に、力を足すとカタチが変わる'} />
 
-      {/* ── 成分ブレンド レーダー（自己 × 他者） ── */}
+      {chart === 'bars' ? (
+      /* ── 成分（3軸）棒グラフ：自己 × 他者 ── */
+      <div style={{ background:'#fff', border:'1.5px solid #e3d9c4', borderRadius:16, padding:'13px 8px 10px' }}>
+        <div style={{ padding:'0 12px' }}>
+          <div style={{ fontSize:13, fontWeight:900, fontFamily:TJ.round }}>今のキミの成分ブレンド</div>
+          <div style={{ fontSize:9.5, color:'#a89e8a', fontWeight:700, marginTop:2 }}>自己評価と、みんなから見たキミを並べたよ</div>
+        </div>
+        <HintBars selIdx={boostIdx} onPick={pickAxis} />
+        <div style={{ display:'flex', justifyContent:'center', gap:13, flexWrap:'wrap', padding:'2px 8px 4px' }}>
+          <span style={legendItem}><span style={{ width:10, height:10, borderRadius:'50%', background:'#315cfa' }}></span>自己</span>
+          <span style={legendItem}><span style={{ width:10, height:10, borderRadius:'50%', background:'#2E8560' }}></span>他者</span>
+          <span style={legendItem}><span style={{ width:14, height:8, borderRadius:3, background:'repeating-linear-gradient(115deg,#ff6b5e 0 4px,#ffa79e 4px 8px)', display:'inline-block' }}></span>力を足した未来</span>
+        </div>
+        {sel ? (
+          <div style={{ display:'flex', alignItems:'flex-start', gap:7, background:'#fff0ee', borderRadius:10, padding:'8px 11px', margin:'2px 6px 2px' }}>
+            <span style={{ width:5, height:5, borderRadius:'50%', background:'#ff6b5e', flexShrink:0, marginTop:5 }}></span>
+            <span style={{ fontSize:10, color:'#c2483c', fontWeight:700, lineHeight:1.6 }}>「{sel.key}」を足すと、この成分がここまで伸びるよ</span>
+          </div>
+        ) : (
+          <div style={{ textAlign:'center', fontSize:9.5, color:'#a89e8a', fontWeight:700, padding:'2px 0 4px' }}>3つの成分をタップすると、棒グラフが未来まで伸びるよ</div>
+        )}
+      </div>
+      ) : (
+      /* ── 成分ブレンド レーダー（自己 × 他者） ── */
       <div style={{ background:'#fff', border:'1.5px solid #e3d9c4', borderRadius:16, padding:'13px 8px 10px' }}>
         <div style={{ padding:'0 10px' }}>
           <div style={{ fontSize:13, fontWeight:900, fontFamily:TJ.round }}>{selfOnly ? '今のキミの成分（自己評価）' : '今のキミの成分ブレンド'}</div>
@@ -897,10 +972,11 @@ function TorisetsuFuture({ nav, goChallenge, step, goBack, selfOnly }) {
           <div style={{ textAlign:'center', fontSize:9.5, color:'#a89e8a', fontWeight:700, padding:'2px 0 4px' }}>6つの成分をタップすると、点線で未来のキミが見えるよ</div>
         )}
       </div>
+      )}
 
       {/* ── 詳細 ── */}
       {!sel && (
-        <div style={{ textAlign:'center', fontSize:11, color:'#7a7263', fontWeight:600, lineHeight:1.8, padding:'4px 0' }}>レーダーの成分をタップすると、<br/>「成長のキミ」とチャレンジへの道が見えてくるよ</div>
+        <div style={{ textAlign:'center', fontSize:11, color:'#7a7263', fontWeight:600, lineHeight:1.8, padding:'4px 0' }}>{chart === 'bars' ? <>グラフの成分をタップすると、<br/>「成長のキミ」とチャレンジへの道が見えてくるよ</> : <>レーダーの成分をタップすると、<br/>「成長のキミ」とチャレンジへの道が見えてくるよ</>}</div>
       )}
       {sel && (
         <div ref={previewRef} style={{ background:'#fff', border:'2px solid #1f1b16', borderRadius:16, padding:15, boxShadow:'4px 4px 0 #1f1b16' }}>
@@ -1015,4 +1091,4 @@ function ToriStepNav({ step, goStep, onShare }) {
   );
 }
 
-Object.assign(window, { TorisetsuJourneyExt, TorisetsuStrengths, TorisetsuFuture, Top3Section, TypeHeroSection, VoicesSection, ToriStepIndicator, ToriStepNav, JStepHead: StepHead });
+Object.assign(window, { TorisetsuJourneyExt, TorisetsuStrengths, TorisetsuFuture, HintBars, Top3Section, TypeHeroSection, VoicesSection, ToriStepIndicator, ToriStepNav, JStepHead: StepHead });

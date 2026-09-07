@@ -26,7 +26,7 @@ const TC = {
 const TORI = {
   typeTitle: '探索するシェイパー',
   typeSub: 'アイデアと実行力を兼ね備えた',
-  strengths: ['個人的実行力', '創造力', '表現力', '影響力の行使'],
+  strengths: ['個人的実行力', '創造力', '表現力'],
   strengthDesc: 'アイデアを生み出し、それを自分の力で形にしながら、言葉や行動で周囲に伝え、人を巻き込みながら実現していく力があります。',
   patterns: ['人と話すなかでアイデアがどんどん出てくる', '考えるより先に動き出すことが多い', '周りを巻き込みながら進めるのが得意', '変化や新しい環境にワクワクできる'],
   usage: [['📣', 'アイデアはまず誰かに話してみる'], ['👥', '一人で抱え込まずチームで動く機会をつくる'], ['🚀', '「まずやってみる」を大切に'], ['🎯', '自分が輝けるポジション・役割を積極的に選ぶ']],
@@ -273,10 +273,9 @@ function TorisetsuTab({ nav, goChallenge }) {
       {TypeHero && <TypeHero />}
       <Card>
         <SecHead title="強み" />
-        <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginBottom: 10 }}>
+        <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
           {TORI.strengths.map((s) => <OrangeChip key={s} label={s} />)}
         </div>
-        <BodyText>{TORI.strengthDesc}</BodyText>
       </Card>
 
       <Card>
@@ -318,21 +317,7 @@ function TorisetsuTab({ nav, goChallenge }) {
     </>);
   return (
     <>
-      {peerDone ? mutualBody : (
-        <div style={{ position: 'relative', borderRadius: 16 }}>
-          <div aria-hidden="true" style={{ filter: 'blur(7px)', opacity: .9, pointerEvents: 'none', userSelect: 'none', display: 'flex', flexDirection: 'column', gap: 14, maxHeight: 540, overflow: 'hidden' }}>
-            {mutualBody}
-          </div>
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '24px 26px', textAlign: 'center', background: 'linear-gradient(180deg, rgba(255,251,242,.3), rgba(255,251,242,.92))', borderRadius: 16 }}>
-            <span style={{ width: 52, height: 52, borderRadius: '50%', background: '#1f1b16', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><FIcon name="lock" size={24} color="#ffd633" /></span>
-            <div style={{ fontFamily: TC.fontRound, fontWeight: 900, fontSize: 14.5, color: TC.text, marginTop: 2 }}>相互評価が完了するとひらくよ</div>
-            <div style={{ fontSize: 11.5, color: TC.textSub, fontWeight: 600, lineHeight: 1.7 }}>友だちからの評価が集まると、みんなの評価を<br />あわせた「今のキミ」が見られるよ</div>
-            <span style={{ background: '#fff', border: '1.5px solid #1f1b16', borderRadius: 999, padding: '4px 12px', fontSize: 11, fontWeight: 800, fontFamily: TC.fontRound, color: TC.text }}>評価完了 0 / 3 名</span>
-            <button onClick={() => nav.go('other-start')} className="btn btn--cta" style={{ width: 'auto', padding: '12px 22px', fontSize: 13.5, marginTop: 4 }}>相互評価をすすめる</button>
-          </div>
-        </div>
-      )}
-
+      {mutualBody}
       <StepReaction nav={nav} step={1} onGrow={goChallenge} />
     </>);
 
@@ -846,12 +831,12 @@ function ShareModal({ onClose }) {
 
 }
 
-function TorisetsuCombined({ initialTab = 0 }) {
+function TorisetsuCombined({ initialTab = 0, chart, initialStep }) {
   const nav = useNav();
   const [tab, setTab] = useTc(initialTab);
   const [showTree, setShowTree] = useTc(false);
   const [showShare, setShowShare] = useTc(false);
-  const savedStep = Math.min(2, nav.state && nav.state.torisetsuStep || 1);
+  const savedStep = Math.min(2, initialStep || (nav.state && nav.state.torisetsuStep) || 1);
   const [step, setStep] = useTc(savedStep);
   const [collapsed, setCollapsed] = useTc(false);
   const scrollRef = React.useRef(null);
@@ -883,7 +868,7 @@ function TorisetsuCombined({ initialTab = 0 }) {
         <div style={{ padding: '14px 14px', display: 'flex', flexDirection: 'column', gap: 14, paddingBottom: 24 }}>
           <div key={step} className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {step === 1 && <TorisetsuTab nav={nav} goChallenge={() => goStep(2)} />}
-              {step === 2 && Future && <Future nav={nav} step={step} goBack={() => goStep(1)} goChallenge={() => nav && nav.go('challenge', { tab: 'challenge' })} />}
+              {step === 2 && Future && <Future nav={nav} step={step} chart={chart} goBack={() => goStep(1)} goChallenge={() => nav && nav.go('challenge', { tab: 'challenge' })} />}
             </div>
         </div>
       </div>
@@ -952,7 +937,6 @@ function TorisetsuSelfHome({ initialStep = 1 }) {
             {step === 1 && (
               <>
                 {SelfSummary && <SelfSummary />}
-                <StepReaction nav={nav} step={1} onGrow={() => goStep(2)} />
               </>
             )}
             {step === 2 && Future && <Future nav={nav} step={step} selfOnly goBack={() => goStep(1)} goChallenge={() => nav && nav.go('challenge', { tab: 'challenge' })} />}

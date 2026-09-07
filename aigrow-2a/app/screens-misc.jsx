@@ -408,26 +408,6 @@ function OtherStartScreen(props) {
           </div>
         )}
 
-        {/* リクエスト拒否 → あとから承諾できる */}
-        <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-sub)', fontFamily: 'var(--font-round)', padding: '8px 2px 0' }}>リクエスト拒否</div>
-        <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-sub)', lineHeight: 1.7, padding: '0 2px' }}>一度断ったリクエストも、あとから承諾すれば相互評価できるよ</p>
-        {declined.length === 0 ? (
-          <div style={{ background: '#fff', border: '1.5px dashed var(--border)', borderRadius: 'var(--r-lg)', padding: '13px 15px', fontSize: 12.5, fontWeight: 600, color: 'var(--text-sub)' }}>なし</div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {declined.map((p, i) => (
-              <div key={i} style={{ background: '#fff', border: '2px solid #1f1b16', borderRadius: 'var(--r-lg)', boxShadow: '3px 3px 0 #1f1b16', padding: '13px 14px', display: 'flex', alignItems: 'center', gap: 11 }}>
-                <span style={{ width: 38, height: 38, borderRadius: 11, background: '#ffe8e8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><FIcon name="handshake" size={19} color="#c92a2a" /></span>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 10.5, color: 'var(--text-sub)', fontWeight: 700 }}>受検コース名：{p.course}</div>
-                  <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--text)', fontFamily: 'var(--font-round)', marginTop: 2, lineHeight: 1.35 }}>{p.name}</div>
-                </div>
-                <button onClick={() => approve(i)}
-                  style={{ flexShrink: 0, width: 'auto', cursor: 'pointer', background: 'var(--green)', color: '#fff', border: '2px solid #1f1b16', borderRadius: 999, boxShadow: '2px 2px 0 #1f1b16', padding: '9px 16px', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12.5 }}>承諾する</button>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );
@@ -520,13 +500,11 @@ function AskEvalBody({ nav }) {
   const [query, setQuery] = useSm('');
   const [copied, setCopied] = useSm(false);
   const [sent3, setSent3] = useSm(false);
-  const [declined, setDeclined] = useSm(1);   // リクエスト拒否の件数
-  const [reApproved, setReApproved] = useSm(0); // 拒否後に承認した件数
   return (
     <>
           {/* 評価完了者数 */}
           <div className="card card--flat" style={{ textAlign: 'center', padding: '16px 14px' }}>
-            <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-sub)' }}>キミが得られた相互評価　—　現在の評価完了者数</div>
+            <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-sub)' }}>キミが得られた相互評価</div>
             <div style={{ fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: 34, color: 'var(--text)', marginTop: 4 }}>0<span style={{ fontSize: 18 }}> / 3 名</span></div>
             <div style={{ display: 'flex', justifyContent: 'center', gap: 5, marginTop: 6 }}>
               {[0, 1, 2].map(i => <span key={i} style={{ width: 26, height: 6, borderRadius: 3, background: 'var(--border)' }}></span>)}
@@ -540,14 +518,9 @@ function AskEvalBody({ nav }) {
           </div>
           <div className="card card--flat" style={{ padding: '14px 14px 16px' }}>
             <EvalReqGroup label="申請中" count={1} badge={{ text: '承認待ち', color: '#e8590c', bg: '#ffece3' }} first />
-            <EvalReqGroup label="回答待ち" count={3 + reApproved} />
+            <EvalReqGroup label="回答待ち" count={3} />
             <EvalReqGroup label="回答済み" count={0} />
             <EvalReqGroup label="キャンセル済み" count={1} badge={{ text: 'キャンセル', color: '#8b8375', bg: '#f0ece3' }} muted />
-            <EvalReqGroup label="リクエスト拒否" count={declined}
-              note="一度断られたリクエストも、相手が承認すれば評価してもらえるよ"
-              badge={{ text: '拒否', color: '#c92a2a', bg: '#ffe8e8' }}
-              action="承諾する"
-              onAction={() => { setDeclined(d => Math.max(0, d - 1)); setReApproved(n => n + 1); }} />
           </div>
 
           {/* 検索して依頼 */}
@@ -641,12 +614,6 @@ function SelfSummarySection() {
         <div style={{ background: '#fff', borderRadius: 'var(--r-lg)', border: '2px solid #1f1b16', boxShadow: '4px 4px 0 #1f1b16', overflow: 'hidden' }}>
           <div style={{ background: 'var(--blue)', color: '#fff', padding: '11px 16px', fontFamily: 'var(--font-round)', fontSize: 13, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 6, borderBottom: '2px solid #1f1b16' }}><FIcon name="search" size={15} color="#fff" /> キミの性格・傾向コメント</div>
           <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {/* 総合タイプ */}
-            <div style={{ background: 'var(--blue-softer)', borderRadius: 'var(--r-md)', padding: 14, borderLeft: '3px solid var(--blue)' }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--blue)', marginBottom: 6 }}>総合タイプ</div>
-              <div style={{ fontFamily: 'var(--font-round)', fontSize: 15, fontWeight: 900, color: 'var(--text)', marginBottom: 8, lineHeight: 1.45 }}>アイデアと実行力を兼ね備えた<br />「行動する創造者」タイプ</div>
-              <p style={{ fontSize: 12, color: 'var(--text-sub)', lineHeight: 1.85, fontWeight: 500 }}>新しいアイデアを次々と生み出しながら、自分の力で形にしていく力がキミの核心。エネルギッシュな挑戦者で人との関わりから刺激を受けやすく、それがさらにエネルギーとなって行動を加速させます。</p>
-            </div>
             {TC_TRAITS.map((t, i) => (
               <div key={i} style={{ background: t.bg, borderRadius: 'var(--r-md)', padding: '12px 14px', display: 'flex', gap: 11 }}>
                 <span style={{ display: 'flex', color: t.color, flexShrink: 0, paddingTop: 2 }}><FIcon name={t.emoji} size={18} color={t.color} /></span>
@@ -673,7 +640,7 @@ function TorisetsuUpdatedModal({ onClose }) {
         </div>
         <div style={{ padding: '18px 20px 20px' }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 16 }}>
-            {['相互評価 3/3', '今のキミ 更新', '成長のヒント'].map(t => (
+            {['今のキミ 更新', '成長のヒント'].map(t => (
               <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: 'var(--green-soft)', color: '#2E7D32', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 11.5, padding: '5px 10px', borderRadius: 999 }}>✓ {t}</span>
             ))}
           </div>

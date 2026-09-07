@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiGROW 成長きろく（ゲーム風・別案）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:#315cfa; --blue-dark:#2447c9; --blue-soft:#e8edff;
+    --orange:#ff6b5e; --green:#18b271; --green-soft:#e4f9ec;
+    --bg:#fffbf2; --surface:#fff; --text:#1f1b16; --text-sub:#7a7263;
+    --border:#cfc4ab; --border-soft:#e3d9c4;
+    --font:'Noto Sans JP',system-ui,sans-serif;
+    --font-round:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;
+  }
+  html, body { width:100%; height:100%; font-family:var(--font); color:var(--text); background:#f1ead9; overflow:hidden; -webkit-font-smoothing:antialiased; }
+  a { color:var(--blue-dark); }
+  a:hover { color:var(--blue); }
+  #app { width:100%; max-width:480px; height:100%; margin:0 auto; background:var(--bg); display:flex; flex-direction:column; position:relative; overflow:hidden; }
+  @media (min-width:481px) { #app { box-shadow:0 0 60px rgba(10,30,60,.18); } }
+
+  .appbar { flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:12px 18px; background:var(--surface); border-bottom:1.5px solid var(--border-soft); }
+  .logo { font-family:var(--font-round); font-weight:900; font-size:21px; letter-spacing:-.5px; }
+  .logo .ai { color:var(--orange); } .logo .sub { font-size:11px; color:var(--text-sub); font-weight:700; margin-left:5px; }
+
+  .scroll { flex:1; min-height:0; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
+  .scroll::-webkit-scrollbar { width:0; }
+
+  .hero { padding:16px 16px 14px; background:var(--surface); border-bottom:2px solid var(--text); }
+  .hero__row { display:flex; align-items:center; gap:12px; }
+  .hero__title { font-family:var(--font-round); font-weight:900; font-size:19px; display:flex; align-items:center; gap:8px; }
+  .hero__count { margin-left:auto; font-family:var(--font-round); font-weight:900; font-size:13px; color:var(--text); background:#fffbf2; border:2px solid var(--text); box-shadow:2px 2px 0 var(--text); border-radius:999px; padding:5px 12px; }
+  .hero__bar { margin-top:12px; height:14px; border-radius:999px; background:#f2ecdd; border:2px solid var(--text); overflow:hidden; }
+  .hero__fill { display:block; height:100%; width:47%; background:repeating-linear-gradient(115deg,var(--green) 0 9px,#3fd08d 9px 18px); }
+  .hero__meta { margin-top:7px; display:flex; justify-content:space-between; font-size:10.5px; font-weight:800; color:var(--text-sub); }
+
+  .legend { display:flex; gap:7px; padding:12px 16px 4px; flex-wrap:wrap; }
+  .legend span { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-round); font-weight:800; font-size:10px; color:var(--text-sub); background:#fff; border:1.5px solid var(--border-soft); border-radius:999px; padding:4px 9px; }
+  .legend i { width:11px; height:11px; border-radius:50%; display:block; }
+
+  .sec { padding:14px 16px 4px; }
+  .sec__head { display:flex; align-items:center; gap:9px; }
+  .sec__mark { width:5px; height:19px; border-radius:3px; background:var(--blue); flex-shrink:0; }
+  .sec__title { font-family:var(--font-round); font-weight:900; font-size:14.5px; }
+  .sec__got { margin-left:auto; font-size:10.5px; font-weight:800; color:var(--text-sub); }
+  .sec__rule { border:0; border-top:1.5px solid var(--border-soft); margin:11px 0 0; }
+
+  .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px 8px; padding:16px 16px 18px; }
+
+  .cell { display:flex; flex-direction:column; align-items:center; gap:6px; background:none; border:0; cursor:pointer; -webkit-tap-highlight-color:transparent; font-family:var(--font); }
+  .cell:active .medal { transform:scale(.94); }
+
+  .medal { position:relative; width:74px; height:74px; display:flex; align-items:center; justify-content:center; transition:transform .12s ease; }
+  .medal__ring, .medal__ring2, .medal__core { position:absolute; }
+  .medal__ring { inset:0; }
+  .medal__ring2 { inset:4px; }
+  .medal__core { inset:7px; display:flex; align-items:center; justify-content:center; font-size:27px; line-height:1; }
+  .medal__lv { position:absolute; right:-5px; bottom:-3px; min-width:36px; padding:2px 7px; border-radius:999px; background:#fff; border:2px solid var(--text); font-family:var(--font-round); font-weight:900; font-size:10.5px; letter-spacing:-.3px; z-index:2; }
+  .medal__rar { position:absolute; left:-4px; top:-3px; min-width:22px; height:20px; padding:0 5px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-family:var(--font-round); font-weight:900; font-size:9.5px; color:#fff; border:2px solid var(--text); z-index:2; }
+
+  .cell__name { font-family:var(--font-round); font-weight:800; font-size:10.5px; text-align:center; line-height:1.25; }
+  .cell__bar { display:block; width:100%; height:9px; border-radius:999px; background:#f2ecdd; border:1.5px solid var(--border-soft); overflow:hidden; }
+  .cell__fill { display:block; height:100%; background:var(--green); }
+  .cell__max { width:100%; height:15px; border-radius:999px; background:var(--green); border:1.5px solid var(--text); color:#fff; font-family:var(--font-round); font-weight:900; font-size:9px; display:flex; align-items:center; justify-content:center; letter-spacing:.5px; }
+  .cell__lvtext { font-family:var(--font-round); font-weight:900; font-size:9.5px; color:var(--text-sub); }
+
+  .locked .cell__name { color:var(--text-sub); }
+
+  .footer { flex-shrink:0; padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px)); background:var(--surface); border-top:2px solid var(--text); display:flex; gap:10px; }
+  .btn { flex:1; font-family:var(--font-round); font-weight:800; font-size:15px; border-radius:14px; padding:14px 20px; cursor:pointer; border:2px solid var(--text); box-shadow:4px 4px 0 var(--text); transition:box-shadow .12s, transform .12s; }
+  .btn:active { box-shadow:2px 2px 0 var(--text); transform:translate(2px,2px); }
+  .btn--back { background:#fff; color:var(--text); flex:0 0 108px; }
+  .btn--cta { background:var(--blue); color:#fff; }
+
+  .sheet-wrap { position:absolute; inset:0; z-index:60; display:none; }
+  .sheet-wrap.open { display:block; }
+  .sheet-bd { position:absolute; inset:0; background:rgba(31,27,22,.45); }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:var(--surface); border-top:2px solid var(--text); border-radius:20px 20px 0 0; padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px)); animation:up .24s cubic-bezier(.2,.8,.2,1); }
+  @keyframes up { from { transform:translateY(100%); } to { transform:none; } }
+  .sheet__grip { width:44px; height:4px; border-radius:999px; background:var(--border); margin:0 auto 14px; }
+  .sheet__row { display:flex; gap:14px; align-items:center; }
+  .sheet__name { font-family:var(--font-round); font-weight:900; font-size:17px; }
+  .sheet__rar { font-family:var(--font-round); font-weight:900; font-size:11px; padding:3px 9px; border-radius:999px; color:#fff; }
+  .sheet__cond { margin-top:14px; background:#fffbf2; border:1.5px solid var(--border-soft); border-radius:12px; padding:12px 14px; font-size:12.5px; font-weight:600; line-height:1.7; }
+  .sheet__cond b { display:block; font-family:var(--font-round); font-size:10.5px; color:var(--text-sub); margin-bottom:4px; }
+  .sheet__hint { margin-top:9px; font-size:11.5px; font-weight:700; color:var(--blue-dark); }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="appbar">
+    <div class="logo"><span class="ai">Ai</span><span>GROW</span><span class="sub">成長きろく</span></div>
+    <div style="font-size:11px;font-weight:800;color:var(--text-sub)">3年A組 さくら</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero__row">
+      <div class="hero__title">🏆 バッジコレクション</div>
+      <div class="hero__count" id="count">8 / 17</div>
+    </div>
+    <div class="hero__bar"><span class="hero__fill" id="fill"></span></div>
+    <div class="hero__meta"><span id="remain">コンプリートまであと 9 こ</span><span id="pct">47%</span></div>
+  </div>
+
+  <div class="scroll">
+    <div class="legend">
+      <span><i style="background:#9AA1AC"></i>N ノーマル</span>
+      <span><i style="background:#3B5BDB"></i>R レア</span>
+      <span><i style="background:#7C5CE0"></i>SR スーパーレア</span>
+      <span><i style="background:#D99A1F"></i>UR ウルトラレア</span>
+    </div>
+    <div id="sections"></div>
+  </div>
+
+  <div class="footer">
+    <button class="btn btn--back">もどる</button>
+    <button class="btn btn--cta">つぎのチャレンジへ</button>
+  </div>
+
+  <div class="sheet-wrap" id="sheetWrap">
+    <div class="sheet-bd" onclick="closeSheet()"></div>
+    <div class="sheet" id="sheet"></div>
+  </div>
+</div>
+<div id="tweaks-root"></div>
+
+<script>
+const RARITY = {
+  N:  { label:'N',  name:'ノーマル',     ring:'#C9CDD3', ring2:'#EDEFF1', core:'#F2F3F5', chip:'#9AA1AC' },
+  R:  { label:'R',  name:'レア',         ring:'#4C6EF5', ring2:'#BFCEFB', core:'#EDF1FE', chip:'#3B5BDB' },
+  SR: { label:'SR', name:'スーパーレア', ring:'#8B6FE8', ring2:'#D6C9F7', core:'#F4EFFE', chip:'#7C5CE0' },
+  UR: { label:'UR', name:'ウルトラレア', ring:'#E8B33C', ring2:'#FFE59B', core:'#FDF6E6', chip:'#D99A1F' },
+};
+
+const GROUPS = [
+  { label:'コンピテンシーの証', mark:'#315cfa', badges:[
+    { e:'🧭', l:'自己発見',     rar:'N',  lv:10, max:10, cond:'気質診断をさいごまで終える', hint:'2025.04.12 に獲得' },
+    { e:'💡', l:'創造の芽',     rar:'R',  lv:10, max:10, cond:'「創造力」の評価が3回つづけて上がる', hint:'2025.06.18 に獲得' },
+    { e:'🤝', l:'共感マスター', rar:'SR', lv:10, max:10, cond:'相互評価で「共感力」が学年トップ10％に入る', hint:'2025.11.20 に獲得' },
+    { e:'🔥', l:'実行力の鬼',   rar:'SR', lv:6,  max:10, cond:'「実行力」のスコアを1年で+5のばす', hint:'あと +2 でゲット' },
+    { e:'👑', l:'五冠達成',     rar:'UR', lv:4,  max:10, cond:'5つのコンピテンシーすべてでレベル4以上になる', hint:'達成は 2 / 5' },
+  ]},
+  { label:'挑戦の記録', mark:'#ff6b5e', badges:[
+    { e:'👣', l:'初めの一歩', rar:'N',  lv:10, max:10, cond:'チャレンジを1つ達成する', hint:'2025.04.20 に獲得' },
+    { e:'✅', l:'3つ達成',    rar:'R',  lv:10, max:10, cond:'チャレンジを3つ達成する', hint:'2025.09.02 に獲得' },
+    { e:'🏅', l:'10コンプ',   rar:'SR', lv:4,  max:10, cond:'チャレンジを10こ達成する', hint:'いまは 4 / 10' },
+    { e:'🌟', l:'挑戦王',     rar:'UR', lv:3,  max:10, cond:'3か月つづけて毎月チャレンジを達成する', hint:'達成は 1 / 3 か月' },
+  ]},
+  { label:'継続の習慣', mark:'#18b271', badges:[
+    { e:'🌅', l:'初ログイン', rar:'N',  lv:10, max:10, cond:'はじめてAi GROWにログインする', hint:'2025.04.12 に獲得' },
+    { e:'📅', l:'7日連続',    rar:'R',  lv:10, max:10, cond:'7日つづけてアプリをひらく', hint:'2025.05.03 に獲得' },
+    { e:'⚡', l:'30日連続',   rar:'SR', lv:4,  max:10, cond:'30日つづけてアプリをひらく', hint:'いまは 12日連続' },
+    { e:'💯', l:'皆勤の証',   rar:'UR', lv:6,  max:10, cond:'1学期のあいだ、毎週ログインする', hint:'いまは 9 / 16 週' },
+  ]},
+  { label:'スペシャル', mark:'#8a6cf0', badges:[
+    { e:'🎉', l:'はじめまして', rar:'N',  lv:10, max:10, cond:'プロフィールを登録する', hint:'2025.04.12 に獲得' },
+    { e:'🔮', l:'占い好き',     rar:'R',  lv:6,  max:10, cond:'今日の占いを10回ひらく', hint:'いまは 6 / 10 回' },
+    { e:'🎨', l:'表現者',       rar:'SR', lv:2,  max:10, cond:'ふりかえりコメントを20回書く', hint:'いまは 4 / 20 回' },
+    { e:'🦄', l:'隠しバッジ',   rar:'UR', lv:0,  max:10, cond:'???', hint:'じょうけんはひみつ。つづけていれば、いつか出会えるかも。' },
+  ]},
+];
+
+const got = (b) => b.lv >= b.max;
+
+/* ── 見た目のバリエーション（Tweaks から差し替え） ── */
+const SHAPE = {
+  'メダル':   { radius:'50%', clip:'none', gap:'16px 8px' },
+  'エンブレム':{ radius:'26% 26% 46% 46% / 22% 22% 62% 62%', clip:'none', gap:'18px 8px' },
+  'カード':   { radius:'16px', clip:'none', gap:'18px 9px' },
+};
+
+let T = {
+  shape: 'メダル',        // メダルの形
+  progress: 'バー',       // 進捗の見せ方
+  locked: 'グレー',       // 未獲得の演出
+};
+
+function lockStyle(kind) {
+  if (kind === 'シルエット') return { ring:'#E3D9C4', ring2:'#F2ECDD', core:'#EFE9DC', coreFx:'filter:brightness(0) opacity(.22)', chip:'#BDB4A2', dash:false, hideName:true };
+  if (kind === 'カラー')    return { ring:null,      ring2:null,      core:null,      coreFx:'opacity:.9',                      chip:null,      dash:true,  hideName:false };
+  return                          { ring:'#E3D9C4', ring2:'#F2ECDD', core:'#F7F4EC', coreFx:'filter:grayscale(1);opacity:.55', chip:'#BDB4A2', dash:false, hideName:false };
+}
+
+function medalHTML(b, size) {
+  const r = RARITY[b.rar], on = got(b), sh = SHAPE[T.shape] || SHAPE['メダル'];
+  const lk = lockStyle(T.locked);
+  const ringA = on ? r.ring : (lk.ring || r.ring);
+  const ringB = on ? r.ring2 : (lk.ring2 || r.ring2);
+  const coreBg = on ? r.core : (lk.core || r.core);
+  const fx = on ? '' : lk.coreFx;
+  const pct = Math.round(b.lv / b.max * 100);
+  const ringProgress = T.progress === 'リング' && !on
+    ? `background:conic-gradient(var(--green) 0 ${pct}%, ${ringA} ${pct}% 100%)`
+    : `background:${ringA}`;
+  const dash = !on && lk.dash ? 'border:2px dashed #1f1b16;' : '';
+  const card = T.shape === 'カード';
+  const w = size || 74;
+  return `
+    <div class="medal" style="width:${w}px;height:${w}px">
+      <div class="medal__ring" style="border-radius:${sh.radius};${ringProgress};${dash}"></div>
+      <div class="medal__ring2" style="border-radius:${sh.radius};background:${ringB}"></div>
+      <div class="medal__core" style="border-radius:${card ? '10px' : sh.radius};background:${coreBg}">
+        <span style="font-size:${Math.round(w * .36)}px;${fx}">${b.lv === 0 || (!on && lk.hideName) ? (b.lv === 0 ? '❔' : b.e) : b.e}</span>
+      </div>
+      <span class="medal__rar" style="background:${on ? r.chip : (lk.chip || r.chip)}">${r.label}</span>
+      <span class="medal__lv">Lv.${b.lv}</span>
+    </div>`;
+}
+
+function cellHTML(b, gi, bi) {
+  const on = got(b), lk = lockStyle(T.locked);
+  const pct = Math.round(b.lv / b.max * 100);
+  let foot = '';
+  if (T.progress === 'バー') {
+    foot = on ? '<span class="cell__max">MAX</span>'
+              : `<span class="cell__bar"><span class="cell__fill" style="width:${pct}%"></span></span>`;
+  } else if (T.progress === 'リング') {
+    foot = on ? '<span class="cell__max">MAX</span>'
+              : `<span class="cell__lvtext">${pct}%</span>`;
+  } else {
+    foot = on ? '<span class="cell__lvtext" style="color:var(--green)">MAX</span>'
+              : `<span class="cell__lvtext">つぎ Lv.${b.lv + 1}</span>`;
+  }
+  const name = (!on && lk.hideName) ? '？？？' : b.l;
+  return `
+    <button class="cell ${on ? '' : 'locked'}" onclick="openSheet(${gi},${bi})">
+      ${medalHTML(b)}
+      <span class="cell__name">${name}</span>
+      ${foot}
+    </button>`;
+}
+
+function render() {
+  const sh = SHAPE[T.shape] || SHAPE['メダル'];
+  document.getElementById('sections').innerHTML = GROUPS.map((g, gi) => `
+    <div class="sec">
+      <div class="sec__head">
+        <span class="sec__mark" style="background:${g.mark}"></span>
+        <span class="sec__title">${g.label}</span>
+        <span class="sec__got">${g.badges.filter(got).length} / ${g.badges.length}</span>
+      </div>
+      <hr class="sec__rule">
+    </div>
+    <div class="grid" style="gap:${sh.gap}">${g.badges.map((b, bi) => cellHTML(b, gi, bi)).join('')}</div>
+  `).join('');
+
+  const all = GROUPS.flatMap(g => g.badges);
+  const nGot = all.filter(got).length;
+  const p = Math.round(nGot / all.length * 100);
+  document.getElementById('count').textContent = `${nGot} / ${all.length}`;
+  document.getElementById('fill').style.width = p + '%';
+  document.getElementById('pct').textContent = p + '%';
+  document.getElementById('remain').textContent = `コンプリートまであと ${all.length - nGot} こ`;
+}
+render();
+
+function openSheet(gi, bi) {
+  const b = GROUPS[gi].badges[bi], r = RARITY[b.rar], on = got(b);
+  const lk = lockStyle(T.locked);
+  const name = (!on && lk.hideName) ? '？？？' : b.l;
+  document.getElementById('sheet').innerHTML = `
+    <div class="sheet__grip"></div>
+    <div class="sheet__row">
+      ${medalHTML(b, 82)}
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span class="sheet__rar" style="background:${on ? r.chip : '#BDB4A2'}">${r.label}・${r.name}</span>
+        </div>
+        <div class="sheet__name">${name}</div>
+        <div style="font-size:11px;font-weight:800;color:var(--text-sub);margin-top:3px">Lv.${b.lv} / ${b.max}${on ? '（MAX）' : ''}</div>
+      </div>
+    </div>
+    <div class="sheet__cond"><b>ゲットのじょうけん</b>${b.cond}</div>
+    <div class="sheet__hint">${on ? '🎉 ' : '➡ '}${b.hint}</div>`;
+  document.getElementById('sheetWrap').classList.add('open');
+}
+function closeSheet() { document.getElementById('sheetWrap').classList.remove('open'); }
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "shape": "メダル",
+  "progress": "バー",
+  "locked": "グレー"
+}/*EDITMODE-END*/;
+
+function TweaksApp() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(() => { T = { ...T, ...t }; render(); }, [t.shape, t.progress, t.locked]);
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="バッジの見た目" />
+      <TweakRadio label="形" value={t.shape} options={['メダル', 'エンブレム', 'カード']}
+                  onChange={(v) => setTweak('shape', v)} />
+      <TweakSection label="進捗の見せ方" />
+      <TweakRadio label="表現" value={t.progress} options={['バー', 'リング', 'Lvのみ']}
+                  onChange={(v) => setTweak('progress', v)} />
+      <TweakSection label="未獲得の演出" />
+      <TweakRadio label="トーン" value={t.locked} options={['グレー', 'シルエット', 'カラー']}
+                  onChange={(v) => setTweak('locked', v)} />
+    </TweaksPanel>
+  );
+}
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+</script>
+</body>
+</html>

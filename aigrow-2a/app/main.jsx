@@ -61,6 +61,7 @@ const SCREEN_TAB = {
   home: 'home', exam: 'exam', report: 'report',
   'exam-waiting-no-tori': 'exam',
   torisetsu: 'home',     // トリセツはホームタブ内
+  'hint-bars': 'home',   // 成長のヒント（棒グラフ版：レーダーにならない場合）
   'home-self': 'home',   // 自己評価のみパターンもホームタブ
   challenge: 'challenge', tree: 'challenge',
   record: 'record',
@@ -72,7 +73,7 @@ const SCREEN_TAB = {
 // 完了画面：受検メニュー以外はロック
 const STEP_COMPLETE = new Set(['diag-complete', 'self-complete', 'other-complete', 'other-complete-wait', 'tendency-complete', 'tendency-phase-complete']);
 // screens that show the bottom nav
-const TABBED = new Set(['home', 'home-self', 'exam', 'exam-waiting-no-tori', 'report', 'torisetsu', 'next-step', 'tree', 'challenge', 'record', ...STEP_COMPLETE]);
+const TABBED = new Set(['home', 'home-self', 'hint-bars', 'exam', 'exam-waiting-no-tori', 'report', 'torisetsu', 'next-step', 'tree', 'challenge', 'record', ...STEP_COMPLETE]);
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
@@ -113,6 +114,9 @@ function App() {
     } else if (h === 'home') {
       update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true }, seenAnnounce: true });
       setScreen('home');
+    } else if (h === 'hint-bars') {
+      update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true }, seenAnnounce: true, torisetsuDone: true });
+      setScreen('hint-bars');
     }
   }, []);
 
@@ -156,6 +160,7 @@ function App() {
       case 'other-complete-wait': return <StepCompleteScreen />;
       case 'home':    return <TorisetsuCombined />;  // ホームタブ = 新トリセツ
       case 'home-self': return <TorisetsuSelfHome />;  // 自己評価のみ受検パターン
+      case 'hint-bars': return <TorisetsuCombined initialStep={2} chart="bars" />;  // 成長のヒント：3本の棒グラフ版
       case 'exam':    return selfOnly ? <StepCompleteScreen kind="other" waiting noModal /> : (state.examCourses ? <ExamCoursesScreen /> : ((comp >= 100 && state.seenAnnounce) ? <ExamWaitingScreen /> : <HomeScreen />));
       case 'exam-waiting-no-tori': return <ExamWaitingNoToriScreen />;
       case 'torisetsu': return <TorisetsuScreen />;   // エイリアス
@@ -222,14 +227,13 @@ function App() {
         <TweakButton label="傾向チェック 診断" onClick={() => nav.go('tendency-game', { block: 0 })} />
         <TweakButton label="傾向チェック フェーズ完了" onClick={() => nav.go('tendency-phase-complete', { phase: 1 })} />
         <TweakButton label="傾向チェック 完了" onClick={() => nav.go('tendency-complete')} />
-        <TweakToggle label="相互評価 完了（今のキミ解放）" value={!!state.peerDone}
-          onChange={v => update({ peerDone: v })} />
         <TweakButton label="トリセツ更新の通知（モーダル）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true }, seenAnnounce: true, torisetsuDone: true, peerDone: true, torisetsuUpdated: true }); nav.tab ? nav.tab('home') : nav.go('home'); }} />
         <TweakButton label="機能解放の通知" onClick={() => nav.go('announce')} />
         <TweakButton label="相互評価まちトリセツ未解放" onClick={() => nav.go('waiting-peer')} />
         <TweakSection label="メイン画面（タブ）" />
         <TweakButton label="ホーム（トリセツ）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true }, seenAnnounce: true }); setScreen('home'); }} />
         <TweakButton label="ホーム（自己評価のみ）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: false }, torisetsuDone: true }); setScreen('home-self'); }} />
+        <TweakButton label="成長のヒント（棒グラフ版）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true }, seenAnnounce: true, torisetsuDone: true }); setScreen('hint-bars'); }} />
         <TweakButton label="受検（進捗リング）" onClick={() => { update({ examCourses: false }); setScreen('exam'); }} />
         <TweakButton label="受検：待機画面" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true }, seenAnnounce: true, examCourses: false }); setScreen('exam'); }} />
         <TweakButton label="受検：待機画面（トリセツなし）" onClick={() => { update({ examCourses: false, torisetsuDone: false }); setScreen('exam-waiting-no-tori'); }} />

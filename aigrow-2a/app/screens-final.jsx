@@ -18,14 +18,23 @@ const CH_WEEK_RECS = [
   { tag: '5分でできる', icon: 'bolt', color: 'var(--blue)', soft: 'var(--blue-soft)', items: [
     { text:'好きなことを3つ書き出してみる', comp:'創造力' },
     { text:'今日できたことを1つメモする', comp:'課題設定' },
+  ], alt: [
+    { text:'気になるニュースを1つ調べてみる', comp:'創造力' },
+    { text:'今週の目標をノートに書く', comp:'課題設定' },
   ] },
   { tag: '友だちとできる', icon: 'handshake', color: 'var(--green)', soft: 'var(--green-soft)', items: [
     { text:'友だちに「強み」を聞いてみる', comp:'共感・傾聴力' },
     { text:'得意なことを1つ友だちに教える', comp:'表現力' },
+  ], alt: [
+    { text:'友だちの良いところを伝えてみる', comp:'共感・傾聴力' },
+    { text:'グループワークで進行役をやる', comp:'表現力' },
   ] },
   { tag: 'ちょっと挑戦', icon: 'fire', color: 'var(--orange)', soft: 'rgba(255,107,94,.13)', items: [
     { text:'授業で1回、自分の意見を発言する', comp:'表現力' },
     { text:'行事で係・リーダーに立候補する', comp:'影響力の行使' },
+  ], alt: [
+    { text:'苦手な科目の問題を1つやり切る', comp:'完遂力' },
+    { text:'初めての部活・行事を見学に行く', comp:'影響力の行使' },
   ] },
 ];
 
@@ -155,8 +164,9 @@ function ChallengeTab({ nav }) {
   const [custom, setCustom] = React.useState('');
   const fg = nav.state.futureGoal;
   const hasFuture = !!(fg && fg.actions && fg.actions.length);
-  const futureGroup = hasFuture ? { tag:'えらんだ成長に近づくチャレンジ', emoji:fg.icon, color:'#9a6a2e', soft:'#fff5cc', items:[{ text:fg.actions[0], comp:fg.comp, future:true }] } : null;
-  const recGroups = futureGroup ? [futureGroup, ...CH_WEEK_RECS] : CH_WEEK_RECS;
+  const futureGroup = null;
+  const [recSet, setRecSet] = React.useState(0);
+  const recGroups = (futureGroup ? [futureGroup, ...CH_WEEK_RECS] : CH_WEEK_RECS).map(g => (recSet === 1 && g.alt) ? { ...g, items: g.alt } : g);
 
   const [justAdded, setJustAdded] = React.useState(null);
   React.useEffect(() => {
@@ -238,7 +248,14 @@ function ChallengeTab({ nav }) {
       {otherPending.length === 0 && (
         <div style={{ background:'var(--bg)', border:'1.5px dashed var(--border)', borderRadius:'var(--r-md)', padding:'16px 14px', textAlign:'center', fontSize:12, fontWeight:700, color:'var(--text-sub)', lineHeight:1.7 }}>いま挑戦中のチャレンジはないよ<br/>下から気になる一歩をえらんでみよう</div>
       )}
-      <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)', marginTop:4, display:'flex', alignItems:'center', gap:5 }}>チャレンジを選ぶ <FIcon name="sparkle" size={14} color="var(--orange)" /></h3>
+      <div style={{ display:'flex', alignItems:'center', gap:8, marginTop:4 }}>
+        <h3 style={{ fontSize:13, fontWeight:800, color:'var(--text-sub)', display:'flex', alignItems:'center', gap:5 }}>チャレンジを選ぶ <FIcon name="sparkle" size={14} color="var(--orange)" /></h3>
+        <button onClick={() => { setRecSet(v => v === 0 ? 1 : 0); setSelected(null); }}
+          style={{ marginLeft:'auto', flexShrink:0, display:'inline-flex', alignItems:'center', gap:5, background:'#fff', border:'1.5px solid var(--border)', color:'var(--text-sub)', borderRadius:999, padding:'6px 12px', fontSize:11, fontWeight:800, fontFamily:'var(--font-round)', cursor:'pointer' }}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-8.5-6M3 12a9 9 0 0 1 9-9 9 9 0 0 1 8.5 6"/><path d="M21 3v6h-6M3 21v-6h6"/></svg>
+          別の候補にする
+        </button>
+      </div>
       <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
         {recGroups.map((g) => (
           <div key={g.tag}>

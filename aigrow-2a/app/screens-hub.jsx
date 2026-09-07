@@ -63,12 +63,20 @@ const BADGES = [
   { e: '🌳', l: '成長の証', need: 'tree' },
 ];
 
-/* ── レア度 ── */
+/* ── レア度（獲得済み／未獲得の配色） ── */
 const RARITY = {
-  N:  { label: 'N',  name: 'ノーマル',     color: '#9aa3aa', bg: '#eef0f2', glow: 'none' },
-  R:  { label: 'R',  name: 'レア',         color: '#315cfa', bg: '#e8edff', glow: '3px 3px 0 #1f1b16' },
-  SR: { label: 'SR', name: 'スーパーレア', color: '#8a6cf0', bg: '#efeaff', glow: '3px 3px 0 #1f1b16' },
-  UR: { label: 'UR', name: 'ウルトラレア', color: '#ff6b5e', bg: '#fff1e0', glow: '3px 3px 0 #1f1b16' },
+  N:  { label: 'N',  name: 'ノーマル',
+        chipBg: '#9AA1AC', chipFg: '#FFFFFF', tileBg: '#F2F3F5', tileBd: '#E3E5E9', color: '#9AA1AC', glyph: '#2A2F37',
+        lockChipBg: '#DCDEE2', lockChipFg: '#6E757F', lockTileBg: '#F7F8F8', lockTileBd: '#EBECEE', lockIcon: '#C9CDD3' },
+  R:  { label: 'R',  name: 'レア',
+        chipBg: '#3B5BDB', chipFg: '#FFFFFF', tileBg: '#EDF1FE', tileBd: '#4C6EF5', color: '#3B5BDB', glyph: '#3B5BDB',
+        lockChipBg: '#C8D2F0', lockChipFg: '#4B5C9C', lockTileBg: '#F6F8FD', lockTileBd: '#E2E8F7', lockIcon: '#B4C0E4' },
+  SR: { label: 'SR', name: 'スーパーレア',
+        chipBg: '#7C5CE0', chipFg: '#FFFFFF', tileBg: '#F4EFFE', tileBd: '#8B6FE8', color: '#7C5CE0', glyph: '#7C5CE0',
+        lockChipBg: '#D3C6F0', lockChipFg: '#63509C', lockTileBg: '#F8F5FE', lockTileBd: '#EBE4F8', lockIcon: '#C2B2E6' },
+  UR: { label: 'UR', name: 'ウルトラレア',
+        chipBg: '#D99A1F', chipFg: '#FFFFFF', tileBg: '#FDF6E6', tileBd: '#E8B33C', color: '#D99A1F', glyph: '#D99A1F',
+        lockChipBg: '#EBD9A6', lockChipFg: '#8A6817', lockTileBg: '#FDF9EC', lockTileBd: '#F2E6C2', lockIcon: '#DCC68C' },
 };
 
 /* ── 成長バッジ（カテゴリ分け＋レア度） ── */
@@ -77,62 +85,99 @@ const BADGE_GROUPS = [
     key: 'comp', label: 'コンピテンシーの証', icon: '💎',
     desc: '強みや能力に関するバッジ',
     badges: [
-      { e: '🧭', l: '自己発見',     rar: 'N',  got: true,  cond: '気質診断をさいごまで終える', hint: '2025.04.12 に獲得' },
-      { e: '💡', l: '創造の芽',     rar: 'R',  got: true,  cond: '「創造力」の評価が3回つづけて上がる', hint: '2025.06.18 に獲得' },
-      { e: '🤝', l: '共感マスター', rar: 'SR', got: true,  cond: '相互評価で「共感力」が学年トップ10％に入る', hint: '2025.11.20 に獲得' },
-      { e: '🔥', l: '実行力の鬼',   rar: 'SR', got: false, cond: '「実行力」のスコアを1年で+5のばす', hint: 'あと +2 でゲット' },
-      { e: '👑', l: '五冠達成',     rar: 'UR', got: false, cond: '5つのコンピテンシーすべてでレベル4以上になる', hint: '達成は 2 / 5' },
+      { e: '🧭', l: '自己発見',     g: 'eye-discover', rar: 'N',  got: true,  cond: '気質診断をさいごまで終える', hint: '2025.04.12 に獲得' },
+      { e: '💡', l: '創造の芽',     g: 'core-crystal', rar: 'R',  got: true,  cond: '「創造力」の評価が3回つづけて上がる', hint: '2025.06.18 に獲得' },
+      { e: '🤝', l: '共感マスター', g: 'pair', rar: 'SR', got: true,  cond: '相互評価で「共感力」が学年トップ10％に入る', hint: '2025.11.20 に獲得' },
+      { e: '🔥', l: '実行力の鬼',   g: 'ridge-peak', rar: 'SR', got: false, cond: '「実行力」のスコアを1年で+5のばす', hint: 'あと +2 でゲット' },
+      { e: '👑', l: '五冠達成',     g: 'triad', rar: 'UR', got: false, cond: '5つのコンピテンシーすべてでレベル4以上になる', hint: '達成は 2 / 5' },
     ],
   },
   {
     key: 'challenge', label: '挑戦の記録', icon: '🚩',
     desc: 'チャレンジの達成に関するバッジ',
     badges: [
-      { e: '👣', l: '初めの一歩', rar: 'N',  got: true,  cond: 'チャレンジを1つ達成する', hint: '2025.04.20 に獲得' },
-      { e: '✅', l: '3つ達成',    rar: 'R',  got: true,  cond: 'チャレンジを3つ達成する', hint: '2025.09.02 に獲得' },
-      { e: '🏅', l: '10コンプ',   rar: 'SR', got: false, cond: 'チャレンジを10こ達成する', hint: 'いまは 4 / 10' },
-      { e: '🌟', l: '挑戦王',     rar: 'UR', got: false, cond: '3か月つづけて毎月チャレンジを達成する', hint: '達成は 1 / 3 か月' },
+      { e: '👣', l: '初めの一歩', g: 'footsteps', rar: 'N',  got: true,  cond: 'チャレンジを1つ達成する', hint: '2025.04.20 に獲得' },
+      { e: '✅', l: '3つ達成',    g: 'stairs', rar: 'R',  got: true,  cond: 'チャレンジを3つ達成する', hint: '2025.09.02 に獲得' },
+      { e: '🏅', l: '10コンプ',   g: 'broaden', rar: 'SR', got: false, cond: 'チャレンジを10こ達成する', hint: 'いまは 4 / 10' },
+      { e: '🌟', l: '挑戦王',     g: 'change-arrow', rar: 'UR', got: false, cond: '3か月つづけて毎月チャレンジを達成する', hint: '達成は 1 / 3 か月' },
     ],
   },
   {
     key: 'action', label: '継続の習慣', icon: '🔥',
     desc: '毎日のアクセスなど行動に関するバッジ',
     badges: [
-      { e: '🌅', l: '初ログイン', rar: 'N',  got: true,  cond: 'はじめてAi GROWにログインする', hint: '2025.04.12 に獲得' },
-      { e: '📅', l: '7日連続',    rar: 'R',  got: true,  cond: '7日つづけてアプリをひらく', hint: '2025.05.03 に獲得' },
-      { e: '⚡', l: '30日連続',   rar: 'SR', got: false, cond: '30日つづけてアプリをひらく', hint: 'いまは 12日連続' },
-      { e: '💯', l: '皆勤の証',   rar: 'UR', got: false, cond: '1学期のあいだ、毎週ログインする', hint: 'いまは 9 / 16 週' },
+      { e: '🌅', l: '初ログイン', g: 'door', rar: 'N',  got: true,  cond: 'はじめてAi GROWにログインする', hint: '2025.04.12 に獲得' },
+      { e: '📅', l: '7日連続',    g: 'hourglass', rar: 'R',  got: true,  cond: '7日つづけてアプリをひらく', hint: '2025.05.03 に獲得' },
+      { e: '⚡', l: '30日連続',   g: 'season-cycle', rar: 'SR', got: false, cond: '30日つづけてアプリをひらく', hint: 'いまは 12日連続' },
+      { e: '💯', l: '皆勤の証',   g: 'overlap-1', rar: 'UR', got: false, cond: '1学期のあいだ、毎週ログインする', hint: 'いまは 9 / 16 週' },
     ],
   },
   {
     key: 'special', label: 'スペシャル', icon: '🎁',
     desc: 'イベントや特別な行動でもらえるバッジ',
     badges: [
-      { e: '🎉', l: 'はじめまして', rar: 'N',  got: true,  cond: 'プロフィールを登録する', hint: '2025.04.12 に獲得' },
-      { e: '🔮', l: '占い好き',     rar: 'R',  got: false, cond: '今日の占いを10回ひらく', hint: 'いまは 6 / 10 回' },
-      { e: '🦄', l: '隠しバッジ',   rar: 'UR', got: false, cond: '???', hint: 'じょうけんはひみつ。つづけていれば、いつか出会えるかも。' },
+      { e: '🎉', l: 'はじめまして', g: 'season-spring', rar: 'N',  got: true,  cond: 'プロフィールを登録する', hint: '2025.04.12 に獲得' },
+      { e: '🔮', l: '占い好き',     g: 'deepen', rar: 'R',  got: false, cond: '今日の占いを10回ひらく', hint: 'いまは 6 / 10 回' },
+      { e: '🦄', l: '隠しバッジ',   g: 'season-newyear', rar: 'UR', got: false, cond: '???', hint: 'じょうけんはひみつ。つづけていれば、いつか出会えるかも。' },
     ],
   },
 ];
 
-function GrowthBadge({ b, onTap }) {
+/* ── グリフ（単色マスク／トークン仕様 24pxビュー・タイルの75%） ── */
+const __glyphCache = {};
+let __glyphSeq = 0;
+function Glyph({ name, size, color }) {
+  const [svg, setSvg] = React.useState(__glyphCache[name] || null);
+  React.useEffect(() => {
+    let live = true;
+    if (__glyphCache[name]) { setSvg(__glyphCache[name]); return; }
+    fetch(`assets/glyphs/${name}.svg`).then(r => r.text()).then(t => {
+      __glyphCache[name] = t;
+      if (live) setSvg(t);
+    }).catch(() => {});
+    return () => { live = false; };
+  }, [name]);
+  // mask の id はインスタンスごとに一意化する（インライン展開時の衝突対策）
+  const html = React.useMemo(() => {
+    if (!svg) return '';
+    const uid = `_i${++__glyphSeq}`;
+    return svg.replace(/id="([^"]+)"/g, `id="$1${uid}"`).replace(/url\(#([^)]+)\)/g, `url(#$1${uid})`);
+  }, [svg]);
+  return (
+    <span aria-hidden="true" style={{ width: size, height: size, display: 'block', color, lineHeight: 0 }}
+      dangerouslySetInnerHTML={{ __html: html.replace('<svg ', `<svg style="width:100%;height:100%;display:block" `) }}></span>
+  );
+}
+
+/* ── バッジタイル（96:20:1 の比率で縮尺・獲得済みのみソリッドシャドウ） ── */
+function BadgeTile({ b, size = 68 }) {
   const r = RARITY[b.rar];
+  const k = size / 96;
+  return (
+    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
+      <div style={{ width: '100%', height: '100%', borderRadius: 20 * k,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: b.got ? r.tileBg : r.lockTileBg,
+        border: `${b.got && b.rar === 'UR' ? 1.5 : 1}px solid ${b.got ? r.tileBd : r.lockTileBd}`,
+        boxShadow: b.got ? `${4 * k}px ${4 * k}px 0 #1A1A2E` : 'none' }}>
+        {b.got
+          ? <Glyph name={b.g} size={72 * k} color={r.glyph} />
+          : <FIcon name="lock" size={40 * k} color={r.lockIcon} />}
+      </div>
+      <span style={{ position: 'absolute', top: -8 * k, right: -8 * k, width: 28 * k, height: 28 * k, borderRadius: 999,
+        background: b.got ? r.chipBg : r.lockChipBg, color: b.got ? r.chipFg : r.lockChipFg,
+        fontSize: Math.max(9, 11 * k), fontWeight: 700, fontFamily: 'var(--font-round)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{r.label}</span>
+    </div>
+  );
+}
+
+function GrowthBadge({ b, onTap }) {
   return (
     <div role="button" tabIndex={0} onClick={() => onTap && onTap(b)}
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, opacity: b.got ? 1 : .5, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>
-      <div style={{ position: 'relative' }}>
-        <div style={{ width: 58, height: 58, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 27,
-          background: b.got ? r.bg : 'var(--bg)',
-          border: `2px solid ${b.got ? r.color : 'var(--border)'}`,
-          boxShadow: b.got ? r.glow : 'none' }}>
-          {b.got ? <Emo e={b.e} size={26} color={r.color} /> : <FIcon name="lock" size={22} color="#b3b9be" />}
-        </div>
-        {/* レア度バッジ */}
-        <span style={{ position: 'absolute', top: -6, right: -6, minWidth: 20, height: 20, padding: '0 5px', borderRadius: 999,
-          background: b.got ? r.color : '#c2c8cd', color: '#fff', fontSize: 9.5, fontWeight: 900, fontFamily: 'var(--font-round)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 1px 3px rgba(0,0,0,.2)' }}>{r.label}</span>
-      </div>
-      <span style={{ fontSize: 10, fontWeight: 700, color: b.got ? 'var(--text)' : 'var(--text-sub)', textAlign: 'center', lineHeight: 1.2 }}>{b.l}</span>
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>
+      <BadgeTile b={b} size={64} />
+      <span style={{ fontSize: 10.5, fontWeight: 700, color: b.got ? '#1A1A2E' : '#A8ADB5', textAlign: 'center', lineHeight: 1.25 }}>{b.l}</span>
     </div>
   );
 }
@@ -328,6 +373,29 @@ function ExamCoursesScreen() {
             </div>
           ))}
         </div>
+        {/* 届いたリクエスト */}
+        <SectionHead>届いたリクエスト</SectionHead>
+        <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-sub)', lineHeight: 1.7, padding: '0 2px' }}>一度断ったリクエストも、あとから承諾すれば相互評価できるよ</p>
+        <div className="card" style={{ padding: '4px 16px' }}>
+          {[
+            { id: 'r1', name: '入江 あおい', grade: '2年 B組', course: '自己・相互の全問題', sent: '2026-05-02 18:40', st: 'declined' },
+            { id: 'r2', name: '青田 徳彦', grade: '2年 A組', course: 'IAT', sent: '2026-05-02 12:05', st: null },
+          ].map((r, i) => (
+            <div key={i} onClick={() => !r.st && nav.go('eval-request', { reqId: r.id, reqStatus: { r1: 'declined' } })}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 0', cursor: r.st ? 'default' : 'pointer', borderTop: i > 0 ? '1px solid var(--border-soft)' : 'none', opacity: r.st ? .62 : 1 }}>
+              <Avatar name={r.name} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontFamily: 'var(--font-round)', fontSize: 15.5, fontWeight: 900, color: 'var(--text)' }}>{r.name}</div>
+                <div style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--text-sub)', marginTop: 2 }}>{r.grade}・{r.course}</div>
+                <div style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-sub)', marginTop: 3 }}>受信: {r.sent}</div>
+              </div>
+              {r.st
+                ? <span style={{ flexShrink: 0, fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 11, padding: '5px 10px', borderRadius: 999, background: '#efece6', color: 'var(--text-sub)' }}>辞退した</span>
+                : <span style={{ flexShrink: 0, fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 12.5, padding: '9px 16px', borderRadius: 999, background: 'var(--green)', color: '#fff', border: '2px solid #1f1b16', boxShadow: '2px 2px 0 #1f1b16' }}>確認する</span>}
+            </div>
+          ))}
+        </div>
+
       </div>
     </div>
   );
@@ -410,14 +478,11 @@ function BadgeSheet({ b, onClose }) {
       <div onClick={e => e.stopPropagation()} style={{ width: '100%', background: '#fff', borderRadius: '22px 22px 0 0', border: '2px solid #1f1b16', borderBottom: 'none', padding: '16px 20px 26px', animation: 'bsUp .26s cubic-bezier(.2,.9,.3,1.1)' }}>
         <div style={{ width: 40, height: 4, borderRadius: 999, background: 'var(--border)', margin: '0 auto 16px' }}></div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{ width: 62, height: 62, borderRadius: 17, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: b.got ? r.bg : 'var(--bg)', border: `2px solid ${b.got ? r.color : 'var(--border)'}`, boxShadow: b.got ? '3px 3px 0 #1f1b16' : 'none' }}>
-            {b.got ? <Emo e={b.e} size={29} color={r.color} /> : <FIcon name="lock" size={24} color="#b3b9be" />}
-          </div>
+          <BadgeTile b={b} size={72} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
               <span style={{ fontFamily: 'var(--font-round)', fontSize: 17, fontWeight: 900, color: 'var(--text)' }}>{b.l}</span>
-              <span style={{ background: b.got ? r.color : '#c2c8cd', color: '#fff', fontSize: 9.5, fontWeight: 900, fontFamily: 'var(--font-round)', padding: '2px 7px', borderRadius: 999 }}>{r.label}</span>
+              <span style={{ background: b.got ? r.chipBg : r.lockChipBg, color: b.got ? r.chipFg : r.lockChipFg, fontSize: 9.5, fontWeight: 900, fontFamily: 'var(--font-round)', padding: '2px 7px', borderRadius: 999 }}>{r.label}</span>
             </div>
             <div style={{ fontSize: 11, fontWeight: 700, color: b.got ? 'var(--green)' : 'var(--text-sub)', marginTop: 3 }}>
               {b.got ? '獲得ずみ' : 'みかくとく'}・{r.name}
@@ -472,7 +537,7 @@ function RecordScreen() {
                 </div>
                 <span style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--text-sub)' }}>{gGot}/{g.badges.length}</span>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginTop: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '16px 10px', marginTop: 14, justifyItems: 'center' }}>
                 {g.badges.map((b, i) => <GrowthBadge key={i} b={b} onTap={setOpenBadge} />)}
               </div>
             </div>

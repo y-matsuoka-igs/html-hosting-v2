@@ -10,9 +10,14 @@ const INCOMING_REQUESTS = [
 
 function Avatar({ name, size = 46, bg = 'var(--blue-soft)', color = 'var(--blue-dark)' }) {
   return (
-    <span style={{ width: size, height: size, flexShrink: 0, borderRadius: '50%', background: bg, color, border: '2px solid #1f1b16',
+    <span style={{ width: size, height: size, flexShrink: 0, borderRadius: '50%', background: bg, color, border: '2px solid #325CFA',
       display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-round)', fontWeight: 900, fontSize: size * 0.42 }}>
-      {name.slice(0, 1)}
+      <svg width={size * 0.56} height={size * 0.56} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6.29 6.32C6.73 5.68 7.64 5.09 8.41 4.95C9.17 4.81 10.24 5.04 10.88 5.49C11.52 5.93 12.11 6.84 12.25 7.61C12.39 8.37 12.16 9.44 11.71 10.08C11.27 10.72 10.36 11.31 9.59 11.45C8.83 11.59 7.76 11.36 7.12 10.91C6.48 10.47 5.89 9.56 5.75 8.79C5.61 8.03 5.84 6.96 6.29 6.32L6.29 6.32" />
+        <path d="M3 20.6C3.08 20.07 3.03 18.27 3.5 17.4C3.97 16.53 4.88 15.83 5.8 15.4C6.72 14.97 7.93 14.8 9 14.8C10.07 14.8 11.28 14.97 12.2 15.4C13.12 15.83 14.03 16.53 14.5 17.4C14.97 18.27 14.92 20.07 15 20.6" />
+        <path d="M19 9Q19 12 19 15" />
+        <path d="M16 12Q19 12 22 12" />
+      </svg>
     </span>
   );
 }
@@ -38,7 +43,7 @@ function RequestDetailModal({ req, onDecline, onAccept, onClose }) {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 12 }}>
-            {[['コース', req.course], ['受検期間', req.period], ['受信日時', req.sent]].map(([k, v]) => (
+            {[['コース', req.course], ['受検期間', req.period]].map(([k, v]) => (
               <div key={k} style={{ display: 'flex', gap: 10, fontSize: 12 }}>
                 <span style={{ flexShrink: 0, width: 62, fontWeight: 700, color: 'var(--text-sub)' }}>{k}</span>
                 <span style={{ fontWeight: 700, color: 'var(--text)', lineHeight: 1.5 }}>{v}</span>
@@ -46,21 +51,13 @@ function RequestDetailModal({ req, onDecline, onAccept, onClose }) {
             ))}
           </div>
 
-          <div style={{ background: '#fffdf5', border: '1px solid #f0e3b8', borderRadius: 'var(--r-md)', padding: '11px 13px', fontSize: 12.5, fontWeight: 600, color: 'var(--text)', lineHeight: 1.7, marginBottom: 16 }}>
-            「{req.msg}」
-          </div>
-
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
             <button onClick={onDecline}
               style={{ flex: 1, cursor: 'pointer', background: '#fff', color: 'var(--text)', border: '2px solid #1f1b16', borderRadius: 999, boxShadow: '3px 3px 0 #1f1b16', padding: '13px 8px', fontFamily: 'var(--font-round)', fontWeight: 800, fontSize: 14 }}>
               断る
             </button>
             <button className="btn btn--cta" onClick={onAccept} style={{ flex: 1, width: 'auto', padding: '13px 8px' }}>承諾する</button>
           </div>
-          <button onClick={onClose}
-            style={{ width: '100%', marginTop: 10, background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: 'var(--text-sub)' }}>
-            あとで決める
-          </button>
         </div>
       </div>
     </div>
@@ -98,8 +95,9 @@ function RequestResultModal({ kind, req, onClose }) {
 /* ─────────── 一覧画面 ─────────── */
 function EvalRequestScreen() {
   const nav = useNav();
-  const [status, setStatus] = useRq({});           // id → 'accepted' | 'declined'
-  const [openId, setOpenId] = useRq(INCOMING_REQUESTS[0].id);
+  const initStatus = (nav.params && nav.params.reqStatus) || {};
+  const [status, setStatus] = useRq(initStatus);   // id → 'accepted' | 'declined'
+  const [openId, setOpenId] = useRq((nav.params && nav.params.reqId) || INCOMING_REQUESTS[0].id);
   const [result, setResult] = useRq(null);         // { kind, req }
 
   const open = INCOMING_REQUESTS.find(r => r.id === openId);
@@ -170,9 +168,9 @@ function EvalRequestScreen() {
       {result && (
         <RequestResultModal kind={result.kind} req={result.req}
           onClose={() => {
-            const accepted = result.kind === 'accepted';
             setResult(null);
-            if (accepted) { nav.update && nav.update({ examCourses: true }); nav.tab ? nav.tab('exam') : nav.go('exam'); }
+            nav.update && nav.update({ examCourses: true });
+            nav.tab ? nav.tab('exam') : nav.go('exam');
           }} />
       )}
     </div>
