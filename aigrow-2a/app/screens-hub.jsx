@@ -289,7 +289,7 @@ function ReportScreen() {
 /* ════ 受検コース登録あり ════ */
 const EXAM_COURSES = [
   { status: '進行中', name: 'IAT', period: '2026-04-27 11:05 〜 2026-07-04 00:00' },
-  { status: '進行中', name: '自己・相互の全問題', period: '2026-05-01 13:15 〜 2026-07-04 00:00' },
+  { status: '進行中', name: '自己・相互の全問題', period: '2026-05-01 13:15 〜 2026-07-04 00:00', active: true },
 ];
 const EXAM_REQUESTS = [
   { course: '自己・相互の全問題', name: '入江 あおい', period: '2026-05-01 13:15 〜 2026-07-04 00:00' },
@@ -329,7 +329,7 @@ function ExamCoursesScreen() {
           {EXAM_COURSES.map((c, i) => (
             <div key={i} onClick={() => nav.go('start-diag')}
               style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '15px 0', cursor: 'pointer', borderTop: i > 0 ? '1px solid var(--border-soft)' : 'none' }}>
-              <span style={{ background: 'var(--green)', color: '#fff', fontSize: 10.5, fontWeight: 800, fontFamily: 'var(--font-round)', padding: '4px 9px', borderRadius: 7, flexShrink: 0 }}>{c.status}</span>
+              {c.active && <span style={{ background: '#ffe4e4', color: '#d94a3d', fontSize: 10.5, fontWeight: 800, fontFamily: 'var(--font-round)', padding: '4px 9px', borderRadius: 7, flexShrink: 0 }}>未回答</span>}
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', fontFamily: 'var(--font-round)' }}>{c.name}</div>
                 <div style={{ fontSize: 11, color: 'var(--text-sub)', fontWeight: 500, marginTop: 3 }}>期間: {c.period}</div>

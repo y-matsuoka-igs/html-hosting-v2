@@ -1,0 +1,147 @@
+{
+  "$meta": {
+    "name": "Ai GROW / Growth Badge Colors",
+    "version": "1.0.0",
+    "decidedAt": "2026-08-31",
+    "decision": "earned = pale tile + tier-colored glyph (N glyph is near-black) / locked = candidate A",
+    "note": "UR earned tile is a gradient and cannot be stored as a Figma Variable. Use the fallback solid for the variable and define a separate Fill Style. See $gradients."
+  },
+  "collection": "badge",
+  "modes": [
+    "default"
+  ],
+  "tokens": {
+    "N": {
+      "earned": {
+        "tile-bg": "#F2F3F5",
+        "tile-border": "#E3E5E9",
+        "glyph": "#2A2F37",
+        "chip-bg": "#9AA1AC",
+        "chip-fg": "#FFFFFF",
+        "label": "#1A1A2E"
+      },
+      "locked": {
+        "tile-bg": "#F7F8F8",
+        "tile-border": "#EBECEE",
+        "glyph": "#C9CDD3",
+        "chip-bg": "#DCDEE2",
+        "chip-fg": "#6E757F",
+        "label": "#A8ADB5",
+        "lock-icon": "#C9CDD3"
+      }
+    },
+    "R": {
+      "earned": {
+        "tile-bg": "#EDF1FE",
+        "tile-border": "#4C6EF5",
+        "glyph": "#3B5BDB",
+        "chip-bg": "#3B5BDB",
+        "chip-fg": "#FFFFFF",
+        "label": "#1A1A2E"
+      },
+      "locked": {
+        "tile-bg": "#F6F8FD",
+        "tile-border": "#E2E8F7",
+        "glyph": "#B4C0E4",
+        "chip-bg": "#C8D2F0",
+        "chip-fg": "#4B5C9C",
+        "label": "#A8ADB5",
+        "lock-icon": "#B4C0E4"
+      }
+    },
+    "SR": {
+      "earned": {
+        "tile-bg": "#F4EFFE",
+        "tile-border": "#8B6FE8",
+        "glyph": "#7C5CE0",
+        "chip-bg": "#7C5CE0",
+        "chip-fg": "#FFFFFF",
+        "label": "#1A1A2E"
+      },
+      "locked": {
+        "tile-bg": "#F8F5FE",
+        "tile-border": "#EBE4F8",
+        "glyph": "#C2B2E6",
+        "chip-bg": "#D3C6F0",
+        "chip-fg": "#63509C",
+        "label": "#A8ADB5",
+        "lock-icon": "#C2B2E6"
+      }
+    },
+    "UR": {
+      "earned": {
+        "tile-bg": "#FDF6E6",
+        "tile-border": "#E8B33C",
+        "glyph": "#D99A1F",
+        "chip-bg": "#D99A1F",
+        "chip-fg": "#FFFFFF",
+        "label": "#1A1A2E"
+      },
+      "locked": {
+        "tile-bg": "#FDF9EC",
+        "tile-border": "#F2E6C2",
+        "glyph": "#DCC68C",
+        "chip-bg": "#EBD9A6",
+        "chip-fg": "#8A6817",
+        "label": "#A8ADB5",
+        "lock-icon": "#DCC68C"
+      }
+    }
+  },
+  "$surfaces": {
+    "page-bg": "#FDF9EF",
+    "card-bg": "#FFFFFF",
+    "card-border": "#F0EBE0",
+    "shadow": "#1A1A2E"
+  },
+  "$geometry": {
+    "tile": {
+      "size": 96,
+      "radius": 20,
+      "borderWidth": 1
+    },
+    "tileUR": {
+      "borderWidth": 1.5
+    },
+    "glyph": {
+      "size": 72
+    },
+    "lockIcon": {
+      "size": 40,
+      "strokeWidth": 2
+    },
+    "chip": {
+      "diameter": 28,
+      "offsetX": 8,
+      "offsetY": -8,
+      "fontSize": 11,
+      "fontWeight": 700
+    },
+    "label": {
+      "marginTop": 8,
+      "fontSize": 13,
+      "fontWeight": 700,
+      "align": "center"
+    },
+    "shadowEarned": {
+      "offsetX": 4,
+      "offsetY": 4,
+      "blur": 0
+    },
+    "shadowLocked": null,
+    "card": {
+      "radius": 16,
+      "padding": 20,
+      "columns": 4
+    }
+  },
+  "$variableNaming": "badge/{tier}/{earned|locked}/{token}",
+  "$glyphSpec": {
+    "viewBox": "0 0 24 24",
+    "fit": "longest side to 24 (no inner margin)",
+    "color": "fill=currentColor",
+    "stroke": "none",
+    "transparency": "mask (true holes)",
+    "minFeatureWidth": 3
+  }
+}

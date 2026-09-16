@@ -482,6 +482,34 @@ function PeerDoneScreen(props) {
   );
 }
 
+
+/* ─────────── 独立画面：相互評価 完了（受検一覧にもどる） ─────────── */
+function PeerDoneFullScreen(props) {
+  const nav = useNav();
+  const p = props || {};
+  const name = p.name || (nav.params && nav.params.name) || '入江 あおい';
+  return (
+    <div className="screen screen--white" style={{ position: 'relative' }}>
+      <StatusBar />
+      <AppHeader sub="相互評価" noMenu />
+      <div className="scroll" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="fade-in" style={{ flex: 1, minHeight: 460, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '12px 30px 24px' }}>
+          <div style={{ width: 96, height: 96, borderRadius: '50%', background: 'var(--green)', border: '2px solid #1f1b16', boxShadow: '4px 4px 0 #1f1b16', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
+            <FIcon name="check" size={46} color="#fff" sw={3} />
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-round)', fontSize: 21, fontWeight: 900, lineHeight: 1.55, color: 'var(--text)' }}>「{name}」さんへの<br />相互評価完了</h1>
+          <p style={{ fontFamily: 'var(--font-round)', fontSize: 15, fontWeight: 800, color: 'var(--green)', marginTop: 16 }}>お疲れさまでした！</p>
+          <p style={{ fontSize: 13, color: 'var(--text-sub)', fontWeight: 600, marginTop: 10, lineHeight: 1.8 }}>他にタスクがないか確認してください。</p>
+        </div>
+        <div style={{ flexShrink: 0, padding: '0 24px 26px' }}>
+          <button className="btn btn--cta btn--lg" onClick={() => nav.go('exam')}>受検一覧に戻る</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+Object.assign(window, { PeerDoneFullScreen });
+
 /* 独立画面：評価をお願いする */
 function AskEvalScreen() {
   const nav = useNav();
@@ -587,10 +615,10 @@ function SelfSummarySection() {
                 </span>
               </div>
               {/* アート枠 */}
-              <div style={{ marginTop: 9, borderRadius: 12, border: '2px solid #1f1b16', background: '#fbfaf7', backgroundImage: 'radial-gradient(#e6e1d5 1px, transparent 1px)', backgroundSize: '9px 9px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: 164, position: 'relative', overflow: 'hidden' }}>
+              <div style={{ marginTop: 9, borderRadius: 12, border: '2px solid #1f1b16', background: '#fbfaf7', backgroundImage: 'radial-gradient(#e6e1d5 1px, transparent 1px)', backgroundSize: '9px 9px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: 164, position: 'relative' }}>
                 <svg style={{ position: 'absolute', top: 10, left: 14 }} width="12" height="12" viewBox="0 0 24 24" fill="#cdd7ff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
                 <svg style={{ position: 'absolute', top: 26, right: 20 }} width="8" height="8" viewBox="0 0 24 24" fill="#ffd633"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" /></svg>
-                {window.Character && <img src="assets/finder.svg" alt="探索する者" style={{ height: 158, width: 'auto', display: 'block', marginBottom: -6 }} />}
+                {window.Character && <img src="assets/finder.svg" alt="探索する者" style={{ height: 225, width: 225, display: 'block', marginBottom: -20, position: 'relative', zIndex: 2 }} />}
               </div>
               {/* ネームプレート */}
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: -14, position: 'relative' }}>
@@ -745,7 +773,7 @@ function TorisetsuUnlockScreen() {
         </div>
 
         <div style={{ flexShrink: 0, padding: '10px 24px 26px', opacity: done ? 1 : 0, transform: done ? 'translateY(0)' : 'translateY(10px)', transition: 'all .5s .5s ease' }}>
-          <button className="btn btn--lg" style={{ background: '#1f1b16', color: '#fff', border: '2px solid #1f1b16', boxShadow: '4px 4px 0 rgba(31,27,22,.28)' }} onClick={() => nav.go('home')}>トリセツを開く</button>
+          <button className="btn btn--lg" style={{ background: '#1f1b16', color: '#fff', border: '2px solid #1f1b16', boxShadow: '4px 4px 0 rgba(31,27,22,.28)' }} onClick={() => { window.__toriDustPending = true; nav.go('home'); }}>トリセツを開く</button>
         </div>
       </div>
     </div>

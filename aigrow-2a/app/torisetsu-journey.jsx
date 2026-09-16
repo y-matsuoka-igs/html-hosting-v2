@@ -37,11 +37,67 @@ const NOW_TYPE_PROFILE = {
 function CardStar({ size = 11 }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="#ffd633" stroke="#1f1b16" strokeWidth="1.5" strokeLinejoin="round"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.4 7-6.2-3.6L5.8 21l1.4-7L2 9.4l7-.8z"/></svg>;
 }
+const PRE_TYPE_PROFILE = {
+  name:'探索する者',
+  catch:'知りたいから、確かめにいく。',
+  desc:'気になったことをそのままにせず、自分の目で確かめにいく人。まわりが見落とす発見を拾い上げるよ。',
+  img:'assets/finder.svg',
+};
+const DUST_CSS = `
+  .tt-puff { position:absolute; inset:-48px; pointer-events:none; display:grid; place-items:center; z-index:30; }
+  .tt-puff > img { position:absolute; opacity:0; }
+  .tt-char-self, .tt-char-other { transform-origin:50% 82%; }
+  @keyframes tt-build-out-dust { 0%{opacity:1;transform:scale(1);} 70%{opacity:1;transform:scale(1.05);} 100%{opacity:0;transform:scale(1.05);} }
+  @keyframes tt-land { 0%{opacity:0;transform:scale(1.12);} 14%{opacity:1;} 100%{opacity:1;transform:scale(1);} }
+  @keyframes tt-cover {
+    0%{opacity:0;transform:translateY(-4px) scale(.5);animation-timing-function:cubic-bezier(.2,.85,.3,1);}
+    25%{opacity:1;transform:translateY(-4px) scale(1);animation-timing-function:linear;}
+    60%{opacity:1;transform:translateY(-4px) scale(1.06);animation-timing-function:cubic-bezier(.4,0,.7,1);}
+    100%{opacity:0;transform:translateY(-8px) scale(1.5);}
+  }
+  @keyframes tt-puff {
+    0%{opacity:0;transform:translate(0,0) scale(.14) rotate(var(--rot));animation-timing-function:cubic-bezier(.2,.85,.3,1);}
+    16%{opacity:1;}
+    42%{opacity:1;transform:translate(calc(var(--px) * .82), calc(var(--py) * .82)) scale(var(--sc)) rotate(var(--rot));animation-timing-function:linear;}
+    66%{opacity:1;animation-timing-function:cubic-bezier(.4,0,.7,1);}
+    100%{opacity:0;transform:translate(calc(var(--px) * 1.85), calc(var(--py) * 1.85)) scale(calc(var(--sc) * 1.22)) rotate(var(--rot));}
+  }
+  @keyframes tt-blink { 0%,57%{opacity:1;} 58%,70%{opacity:0;} 71%,100%{opacity:1;} }
+  .tt-play .tt-char-self { animation:tt-build-out-dust 660ms cubic-bezier(.4,0,.6,1) both; }
+  .tt-play .tt-char-other { animation:tt-land 540ms cubic-bezier(.18,.9,.25,1) 660ms both; }
+  .tt-play .tt-txt { animation:tt-blink 930ms linear both; }
+  .tt-play .tt-puff-cover { animation:tt-cover 930ms 285ms both; }
+  .tt-play .tt-puff > .tt-puff-blob { animation:tt-puff 930ms both; }
+  .tt-play .tt-puff-blob:nth-child(2){animation-delay:408ms;}
+  .tt-play .tt-puff-blob:nth-child(3){animation-delay:426ms;}
+  .tt-play .tt-puff-blob:nth-child(4){animation-delay:453ms;}
+  .tt-play .tt-puff-blob:nth-child(5){animation-delay:441ms;}
+  .tt-play .tt-puff-blob:nth-child(6){animation-delay:486ms;}
+  .tt-play .tt-puff-blob:nth-child(7){animation-delay:504ms;}
+  @media (prefers-reduced-motion: reduce) {
+    .tt-play .tt-char-self, .tt-play .tt-char-other, .tt-play .tt-txt, .tt-play .tt-puff > * { animation:none !important; }
+    .tt-play .tt-char-self { opacity:0; }
+  }
+`;
 function TypeHeroSection() {
   const Character = window.Character;
+  const [dust] = useTJ(() => { if (window.__toriDustPending) { window.__toriDustPending = false; return true; } return false; });
+  const [playing, setPlaying] = useTJ(false);
+  const [post, setPost] = useTJ(!dust);
+  React.useEffect(() => {
+    if (!dust) return;
+    const t = [
+      setTimeout(() => setPlaying(true), 750),
+      setTimeout(() => setPost(true), 750 + 660),
+      setTimeout(() => setPlaying(false), 750 + 2250),
+    ];
+    return () => t.forEach(clearTimeout);
+  }, [dust]);
+  const p = post ? { ...NOW_TYPE_PROFILE, img:'assets/shaper.svg' } : PRE_TYPE_PROFILE;
   return (
-    <div style={{ display:'flex', justifyContent:'center', padding:'6px 0 2px' }}>
-      <div style={{ width:'100%', maxWidth:280, borderRadius:16, background:'#fff', border:'2.5px solid #1f1b16', boxShadow:'6px 6px 0 #1f1b16', position:'relative', overflow:'hidden', padding:'12px 12px 15px' }}>
+    <div className={playing ? 'tt-play' : ''} style={{ display:'flex', justifyContent:'center', padding:'6px 0 2px' }}>
+      <style>{DUST_CSS}</style>
+      <div style={{ width:'100%', maxWidth:280, borderRadius:16, background:'#fff', border:'2.5px solid #1f1b16', boxShadow:'6px 6px 0 #1f1b16', position:'relative', overflow: playing ? 'visible' : 'hidden', padding:'12px 12px 15px' }}>
 
           {/* カードヘッダー */}
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
@@ -54,21 +110,37 @@ function TypeHeroSection() {
             <svg style={{ position:'absolute', top:10, left:14 }} width="12" height="12" viewBox="0 0 24 24" fill="#cdd7ff"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
             <svg style={{ position:'absolute', top:26, right:20 }} width="8" height="8" viewBox="0 0 24 24" fill="#ffd633"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
             <svg style={{ position:'absolute', bottom:18, left:26 }} width="7" height="7" viewBox="0 0 24 24" fill="#e3ddcd"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
-            <img src="assets/shaper.svg" alt="探索するシェイパー" style={{ height:244, width:'auto', display:'block', marginBottom:-20, position:'relative', zIndex:2 }} />
+            <div style={{ position:'absolute', left:0, right:0, bottom:-20, display:'flex', justifyContent:'center', zIndex:2 }} className={playing ? 'tt-char-self' : ''}>
+              <img src={playing ? PRE_TYPE_PROFILE.img : p.img} alt={playing ? PRE_TYPE_PROFILE.name : p.name} style={{ height:225, width:225, display:'block' }} />
+            </div>
+            {playing &&
+              <div className="tt-char-other" style={{ position:'absolute', left:0, right:0, bottom:-20, display:'flex', justifyContent:'center', zIndex:3 }}>
+                <img src="assets/shaper.svg" alt="探索するシェイパー" style={{ height:225, width:225, display:'block' }} />
+              </div>}
+            {playing &&
+              <div className="tt-puff" aria-hidden="true">
+                <img className="tt-puff-cover" src="assets/dust-cloud-a.svg" alt="" style={{ width:214, height:201 }} />
+                <img className="tt-puff-blob" src="assets/dust-cloud-b.svg" alt="" style={{ width:104, height:93, '--px':'-54px', '--py':'-24px', '--sc':1, '--rot':'9deg' }} />
+                <img className="tt-puff-blob" src="assets/dust-cloud-a.svg" alt="" style={{ width:92, height:86, '--px':'56px', '--py':'-18px', '--sc':1.02, '--rot':'-13deg' }} />
+                <img className="tt-puff-blob" src="assets/dust-cloud-b.svg" alt="" style={{ width:82, height:73, '--px':'-42px', '--py':'36px', '--sc':.96, '--rot':'15deg' }} />
+                <img className="tt-puff-blob" src="assets/dust-cloud-a.svg" alt="" style={{ width:76, height:71, '--px':'46px', '--py':'40px', '--sc':1, '--rot':'-9deg' }} />
+                <img className="tt-puff-blob" src="assets/dust-cloud-b.svg" alt="" style={{ width:58, height:52, '--px':'-78px', '--py':'6px', '--sc':.9, '--rot':'19deg' }} />
+                <img className="tt-puff-blob" src="assets/dust-cloud-a.svg" alt="" style={{ width:52, height:49, '--px':'80px', '--py':'18px', '--sc':.88, '--rot':'-17deg' }} />
+              </div>}
           </div>
 
           {/* ネームプレート */}
           <div style={{ display:'flex', justifyContent:'center', marginTop:-14, position:'relative' }}>
-            <div style={{ background:'#ffd633', color:'#1f1b16', border:'2px solid #1f1b16', borderRadius:10, padding:'6px 16px', fontFamily:TJ.round, fontWeight:900, fontSize:17.5, boxShadow:'3px 3px 0 #1f1b16' }}>
-              探索するシェイパー
+            <div className="tt-txt" style={{ background:'#ffd633', color:'#1f1b16', border:'2px solid #1f1b16', borderRadius:10, padding:'6px 16px', fontFamily:TJ.round, fontWeight:900, fontSize:17.5, boxShadow:'3px 3px 0 #1f1b16' }}>
+              {p.name}
             </div>
           </div>
 
-          <div style={{ fontFamily:TJ.round, fontWeight:800, fontSize:12.5, color:'#1f1b16', textAlign:'center', marginTop:11 }}>{NOW_TYPE_PROFILE.catch}</div>
+          <div className="tt-txt" style={{ fontFamily:TJ.round, fontWeight:800, fontSize:12.5, color:'#1f1b16', textAlign:'center', marginTop:11 }}>{p.catch}</div>
 
           {/* カードテキスト */}
-          <div style={{ background:'#f7f5ee', border:'2px solid #1f1b16', borderRadius:10, padding:'10px 12px', marginTop:9 }}>
-            <p style={{ fontSize:11, color:'#1f1b16', lineHeight:1.75, fontWeight:600, margin:0 }}>{NOW_TYPE_PROFILE.desc}</p>
+          <div className="tt-txt" style={{ background:'#f7f5ee', border:'2px solid #1f1b16', borderRadius:10, padding:'10px 12px', marginTop:9 }}>
+            <p style={{ fontSize:11, color:'#1f1b16', lineHeight:1.75, fontWeight:600, margin:0 }}>{p.desc}</p>
           </div>
 
           {/* とくい技タグは非表示 */}

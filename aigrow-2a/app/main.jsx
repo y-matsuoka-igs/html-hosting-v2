@@ -141,6 +141,7 @@ function App() {
       case 'start-other':  return <StartOtherScreen />;
       case 'other-start':  return <OtherStartScreen />;
       case 'peer-done':    return <PeerDoneScreen />;
+      case 'peer-done-full': return <PeerDoneFullScreen />;
       case 'ask-eval':     return <AskEvalScreen />;
       case 'eval-request': return <EvalRequestScreen />;
       case 'waiting-peer': return <WaitingPeerScreen />;
@@ -217,6 +218,7 @@ function App() {
         <TweakButton label="全タスク完了（ステップ）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true } }); nav.go('other-complete', { kind: 'other' }); }} />
         <TweakButton label="相互評価完了（ステップ）" onClick={() => { update({ diag: { ...state.diag, done: true }, self: { ...state.self, done: true }, other: { ...state.other, done: true } }); nav.go('other-complete-wait', { kind: 'other', waiting: true }); }} />
         <TweakButton label="相互評価一覧" onClick={() => nav.go('other-start')} />
+        <TweakButton label="1人分完了（独立画面）" onClick={() => nav.go('peer-done-full', { name: '入江 あおい' })} />
         <TweakButton label="1人分完了（モーダル）" onClick={() => nav.go('peer-done', { name: '入江 あおい', total: 2 })} />
         <TweakButton label="評価をお願いする" onClick={() => nav.go('ask-eval')} />
         <TweakButton label="他者評価" onClick={() => nav.go('other-eval')} />
